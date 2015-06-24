@@ -1,0 +1,5 @@
+suites:
+    main:
+        namespace: Dodona
+        psr4_prefix: Dodona
+        src_path: app
