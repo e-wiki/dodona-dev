@@ -11,6 +11,25 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/**
+ * Main page route.
+ */
+Route::get('/', 'StatusController@index');
+
+/**
+ * Status Controller routes.
+ */
+Route::get('/status/', ['as' => 'status', 'user' => 'StatusController@index']);
+Route::get('/status/client/{id?}', 'StatusController@client');
+Route::get('/status/service/{id?}', 'StatusController@service');
+Route::get('/status/server/{id?}', 'StatusController@server');
+Route::get('/status/ticket/create/{id?}', 'StatusController@createTicket');
+Route::get('/status/ticket/show/{id?}', 'StatusController@showTicket');
+Route::post('/status/ticket/store/', 'StatusController@storeTicket');
+//Route::resource('status', 'StatusController');
+
+/**
+ * Report Controller routes.
+ */
+Route::get('/report/', ['as' => 'report', 'uses' => 'ReportController@index']);
+Route::post('/report/level/', 'ReportController@index');
