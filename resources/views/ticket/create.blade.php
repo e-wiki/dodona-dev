@@ -12,7 +12,7 @@
 		completed and submitted.</p>
 	
 	<div class="col-lg-6">
-	{!! Form::open(['class' => 'form-horizontal', 'url' => 'status/ticket/store']) !!}
+	{!! Form::open(['action' => 'TicketController@store', 'class' => 'form-horizontal']) !!}
 		<h3>Required Details</h3>
 		
 		{!! Form::hidden('server_id', $server->id) !!}
@@ -85,7 +85,7 @@
 				{!! Form::submit('Create', ['value' => 'store', 'class' => 'btn btn-primary btn-block']) !!}
 			</div>
 			<div class="col-lg-5">
-				<a href="{{ url('/status/ticket/create/' . $server_check_result->id) }}" class="btn btn-primary btn-block">Reset</a>
+                {{ HTML::linkAction('TicketController@create', '<span class="fa fa-ticket"></span>&nbsp;Reset', [$server_check_result->id], ['class' => 'btn btn-primary btn-xs btn-block']) }}
 			</div>
 		</div>
 	{!! Form::close() !!}

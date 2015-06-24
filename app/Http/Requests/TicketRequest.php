@@ -4,7 +4,7 @@ namespace Dodona\Http\Requests;
 
 use Dodona\Http\Requests\Request;
 
-class CreateTicketRequest extends Request
+class TicketRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.

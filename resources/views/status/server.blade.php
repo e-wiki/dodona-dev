@@ -36,13 +36,9 @@
 				<td class="col-lg-1 ">
 					@if($check->checkResult->alert_id === \Dodona\Alert::AMBER or $check->checkResult->alert_id === \Dodona\Alert::RED)
 						@if(empty($check->ticket_id))
-					<a href="{{ url("status/ticket/create/" . $check->id) }}" class="btn btn-primary btn-xs btn-block">
-						<span class="fa fa-ticket"></span>&nbsp;Create Ticket
-					</a>
+                            {{ HTML::linkAction('TicketController@create', '<span class="fa fa-ticket"></span>&nbsp;Create Ticket', [$check->id], ['class' => 'btn btn-primary btn-xs btn-block']) }}
 						@else
-					<a href="{{ url("status/ticket/show/" . $check->ticket_id) }}" class="btn btn-default btn-xs btn-block">
-						<span class="fa fa-ticket"></span>&nbsp;Show Ticket
-					</a>
+                            {{ HTML::linkAction('TicketController@show', '<span class="fa fa-ticket"></span>&nbsp;Show Ticket', [$check->ticket_id], ['class' => 'btn btn-primary btn-xs btn-block']) }}
 						@endif
 					@endif
 				</td>
