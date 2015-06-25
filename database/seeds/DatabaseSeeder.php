@@ -171,6 +171,8 @@ class OperatingSystemsTableSeeder extends Seeder {
 		OperatingSystem::create(['name' => 'Redhat 5.4']);
 		OperatingSystem::create(['name' => 'Redhat 6.5']);
 		OperatingSystem::create(['name' => 'Redhat 7.0']);
+		OperatingSystem::create(['name' => 'CentOS 6.5']);
+		OperatingSystem::create(['name' => 'CentOS 7.0']);
 		OperatingSystem::create(['name' => 'Windows']);
 		OperatingSystem::create(['name' => 'Windows Server 2003']);
 		OperatingSystem::create(['name' => 'Windows Server 2005']);
@@ -529,6 +531,10 @@ class CheckResultsTableSeeder extends Seeder {
 		CheckResult::create(['id' => 'COL001G01', 'name' => 'Capacity measured at below AMBER level for all tablespaces', 'check_id' => 'COL001', 'alert_id' => 'G']);
 		CheckResult::create(['id' => 'COL001R01', 'name' => 'Capacity measured at RED level and up for at least one tablespace', 'check_id' => 'COL001', 'alert_id' => 'R']);
 		CheckResult::create(['id' => 'COL001R02', 'name' => 'Cannot connect to the instance', 'check_id' => 'COL001', 'alert_id' => 'R']);
+		CheckResult::create(['id' => 'PML001G01', 'name' => 'Connection pool utilisation is less than AMBER level', 'check_id' => 'PML001', 'alert_id' => 'G']);
+		CheckResult::create(['id' => 'PML001A01', 'name' => 'Connection pool utilisation is between AMBER (inclusive) and RED (exclusive) level', 'check_id' => 'PML001', 'alert_id' => 'A']);
+		CheckResult::create(['id' => 'PML001R01', 'name' => 'Cannot connect to the instance', 'check_id' => 'PML001', 'alert_id' => 'R']);
+		CheckResult::create(['id' => 'PML001R02', 'name' => 'Connection pool utilisation is at RED level and up', 'check_id' => 'PML001', 'alert_id' => 'R']);
 		CheckResult::create(['id' => 'PNL001A01', 'name' => 'Physical memory utilisation is between AMBER and RED level', 'check_id' => 'PNL001', 'alert_id' => 'A']);
 		CheckResult::create(['id' => 'PNL001G01', 'name' => 'Physical memory utilisation is less than AMBER level', 'check_id' => 'PNL001', 'alert_id' => 'G']);
 		CheckResult::create(['id' => 'PNL001R01', 'name' => 'Physical memory utilisation is at RED level and up', 'check_id' => 'PNL001', 'alert_id' => 'R']);

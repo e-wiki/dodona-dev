@@ -85,7 +85,7 @@
 				{!! Form::submit('Create', ['value' => 'store', 'class' => 'btn btn-primary btn-block']) !!}
 			</div>
 			<div class="col-lg-5">
-                {{ HTML::linkAction('TicketController@create', '<span class="fa fa-ticket"></span>&nbsp;Reset', [$server_check_result->id], ['class' => 'btn btn-primary btn-xs btn-block']) }}
+                {!! HTML::linkAction('TicketController@create', 'Reset', [$server_check_result->id], ['class' => 'btn btn-primary btn-block']) !!}
 			</div>
 		</div>
 	{!! Form::close() !!}

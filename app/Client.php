@@ -124,6 +124,11 @@ class Client extends Model {
 			{
 				$result = Alert::find(Alert::AMBER);
 			}
+			
+			if ($status->id === Alert::GREEN && $result->id === Alert::BLUE)
+			{
+				$result = Alert::find(Alert::GREEN);
+			}
 		}
 		
 		return $result;

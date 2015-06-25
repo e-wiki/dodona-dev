@@ -483,11 +483,15 @@ class Dodona extends Migration {
 		
 		DB::unprepared(
 				"CREATE PROCEDURE sp_new_server_check_result(IN a_server_id CHAR(10), IN a_check_result_id CHAR(9), IN a_raised_at TIMESTAMP)
-BEGIN
+proc_label:BEGIN
 	DECLARE v_id                       int;
     DECLARE v_check_result_id          CHAR(9);
 	DECLARE v_server_check_result_id   CHAR(10);
 	DECLARE v_ticket_id                INT;
+	
+	IF (SUBSTR(a_check_result_id, 7, 1) = 'B') THEN
+		LEAVE proc_label;
+	END IF;
 	
 	IF (SUBSTR(a_check_result_id, 7, 1) = 'G') THEN
 		INSERT INTO server_check_results (server_id, check_result_id, raised_at, check_id)

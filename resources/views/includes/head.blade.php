@@ -17,3 +17,5 @@
 	{!! HTML::script('js/bootstrap-datetimepicker.min.js') !!}
 
 	<link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
+	
+	<meta http-equiv="refresh" content="60">
