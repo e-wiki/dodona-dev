@@ -11,7 +11,6 @@ namespace Dodona\Http\Controllers;
 
 use Carbon\Carbon;
 
-use Dodona\Http\Requests;
 use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\TicketRequest;
 use Dodona\Server;
@@ -20,8 +19,6 @@ use Dodona\Ticket;
 use Dodona\TicketCategory;
 use Dodona\TicketPriority;
 use Dodona\TicketType;
-
-use Illuminate\Http\Request;
 
 /**
  * Handles thes tickets for the Dodona Framework.

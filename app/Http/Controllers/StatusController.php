@@ -10,12 +10,8 @@
 use Dodona\CheckCategory;
 use Dodona\Client;
 use Dodona\Http\Controllers\Controller;
-use Dodona\Http\Requests\TicketRequest;
 use Dodona\Server;
-use Dodona\ServerCheckResult;
 use Dodona\Service;
-
-use Illuminate\Support\Facades\Request;
 
 /**
  * Handles the status capabilities of the Dodona Framework.

@@ -36,3 +36,8 @@ Route::post('/ticket/store', 'TicketController@store');
  */
 Route::get('/report/', ['as' => 'report', 'uses' => 'ReportController@index']);
 Route::post('/report/level/', 'ReportController@index');
+
+/**
+ * Administration Controller routes.
+ */
+Route::get('/administration/', ['as' => 'administration', 'uses' => 'AdministrationController@index']);
