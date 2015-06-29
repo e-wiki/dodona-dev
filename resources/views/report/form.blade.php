@@ -3,10 +3,10 @@
 @section('content')
 	<h2>Report Creation</h2>
 	
-	@include('includes.breadcrumb')
+	<p>Create a report based on the choices below.</p>
 	
 	<div class="col-lg-6">
-	{!! Form::open(['class' => 'form-horizontal', 'url' => 'report/level']) !!}
+	{!! Form::open(['class' => 'form-horizontal', 'url' => '/report/']) !!}
 		
 		<div class="form-group">
 			{!! Form::label('', 'Level:', ['class' => 'col-lg-2 control-label']) !!}

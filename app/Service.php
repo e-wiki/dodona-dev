@@ -35,6 +35,16 @@ class Service extends Model {
 	 * @var array
 	 */
 	protected $fillable = ['id', 'name', 'enabled', 'description', 'client_id'];
+
+	/**
+	 * Is the service enabled or not.
+	 * 
+	 * @return boolean
+	 */
+	public function isEnabled()
+	{
+		return ($this->enabled === 1) ? TRUE : FALSE;
+	}
 	
 	/**
 	 * Get all enabled services.
@@ -183,6 +193,17 @@ class Service extends Model {
 	public function performanceStatus()
 	{
 		return $this->areaStatus(CheckCategory::PERFORMANCE_ID);
+	}
+	
+	/**
+	 * Enable the service and its client.
+	 */
+	public function enable()
+	{
+		$this->enabled = TRUE;
+		$this->save();
+		
+		$this->client->enable();
 	}
 	
 	/**

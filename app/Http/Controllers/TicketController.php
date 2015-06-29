@@ -32,9 +32,8 @@ class TicketController extends Controller
 	 * @param unsigned integer $id
 	 * @return string
 	 */
-	public function show($id = NULL)
+	public function show(Ticket $ticket)
 	{
-		$ticket              = Ticket::find($id);
 		$server              = Server::find($ticket->serverCheckResult->server_id);
 		$service             = $server->service();
 		$client              = $service->client;
@@ -50,9 +49,8 @@ class TicketController extends Controller
 	 * @param unsigned integer $id
 	 * @return string
 	 */
-	public function create($id)
+	public function create(ServerCheckResult $server_check_result)
 	{
-		$server_check_result = ServerCheckResult::find($id);
 		$server              = Server::find($server_check_result->server->id);
 		$service             = $server->service();
 		$client              = $service->client;

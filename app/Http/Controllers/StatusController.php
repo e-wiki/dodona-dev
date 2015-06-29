@@ -36,15 +36,8 @@ class StatusController extends Controller {
 	 * @param unsigned integer $id
 	 * @return string
 	 */
-	public function client($id = NULL)
+	public function client(Client $client)
 	{
-		if (is_null($id))
-		{
-			return redirect('status');
-		}
-		
-		$client   = Client::find($id);
-		
 		return view('status.client', compact('client'));
 	}
 	
@@ -54,14 +47,8 @@ class StatusController extends Controller {
 	 * @param unsigned integer $id
 	 * @return string
 	 */
-	public function service($id = NULL)
+	public function service(Service $service)
 	{
-		if (is_null($id))
-		{
-			return redirect('status');
-		}
-		
-		$service = Service::find($id);
 		$client  = $service->client;
 		
 		return view('status.service', compact('client', 'service'));
@@ -73,14 +60,8 @@ class StatusController extends Controller {
 	 * @param unsigned integer $id
 	 * @return string
 	 */
-	public function server($id = NULL)
+	public function server(Server $server)
 	{
-		if (is_null($id))
-		{
-			return redirect('status');
-		}
-		
-		$server           = Server::find($id);
 		$service          = $server->service();
 		$client           = $service->client;
 		$checks           = $server->latestServerCheckResults();

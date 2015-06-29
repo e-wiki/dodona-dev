@@ -30,7 +30,7 @@ class AdministrationController extends Controller
 		$sites_count    = Site::count();
 		$servers_count  = Server::count();
 		
-		$checks_count       = Check::count();
+		$checks_count        = Check::count();
 		$check_results_count = CheckResult::count();
 		
 		return view('administration.main',
@@ -42,5 +42,33 @@ class AdministrationController extends Controller
 					'checks_count',
 					'check_results_count'
 		));
+	}
+	
+	public function clients()
+	{
+		$clients = Client::orderBy('name', 'asc')->get();
+		
+		return view('administration.clients', compact('clients'));
+	}
+	
+	public function services()
+	{
+		$services = Service::orderBy('name', 'asc')->get();
+		
+		return view('administration.services', compact('services'));
+	}
+	
+	public function sites()
+	{
+		$sites = Site::orderBy('name', 'asc')->get();
+		
+		return view('administration.sites', compact('sites'));
+	}
+	
+	public function servers()
+	{
+		$servers = Server::orderBy('name', 'asc')->get();
+		
+		return view('administration.servers', compact('servers'));
 	}
 }

@@ -54,13 +54,20 @@ class ReportController extends Controller
 	{
 		$fields['report_level_id'] = Request::get('report_level_id');
 		$fields['report_type_id']  = Request::get('report_type_id');
+		$fields['start_date']      = $this->_parseDate(Request::get('start_date'))->format('d/m/Y');
+		$fields['view_mode']       = "days";
+		$fields['format']          = "DD/MM/YYYY";
 		
+		$fields = $this->_parseReportType($fields);
+		
+		return $fields;
+	}
+	
+	private function _parseReportType($fields)
+	{
 		switch ($fields['report_type_id'])
 		{
 			case ReportType::CUSTOM:
-				$fields['view_mode']  = "days";
-				$fields['format']     = "DD/MM/YYYY";
-				$fields['start_date'] = $this->_parseDate(Request::get('start_date'))->format('d/m/Y');
 				$fields['end_date']   = $this->_parseDate(Request::get('end_date'))->format('d/m/Y');
 				break;
 			case ReportType::YEARLY:
@@ -75,9 +82,6 @@ class ReportController extends Controller
 				break;
 			case ReportType::DAILY:
 			default:
-				$fields['view_mode']  = "days";
-				$fields['format']     = "DD/MM/YYYY";
-				$fields['start_date'] = $this->_parseDate(Request::get('start_date'))->format('d/m/Y');
 				break;
 		}
 		

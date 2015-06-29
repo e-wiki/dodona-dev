@@ -48,6 +48,16 @@ class Server extends Model {
 		'database_technology_id',
 		'automatic_checks',
 	];
+
+	/**
+	 * Is the server enabled or not.
+	 * 
+	 * @return boolean
+	 */
+	public function isEnabled()
+	{
+		return ($this->enabled === 1) ? TRUE : FALSE;
+	}
 	
 	/**
 	 * Get the service the server belongs to.
@@ -249,6 +259,17 @@ class Server extends Model {
 	public function tickets()
 	{
 		return $this->hasManyThrough('Dodona\Ticket', 'Dodona\ServerCheckResult');
+	}
+	
+	/**
+	 * Enable the server, its service, and its client.
+	 */
+	public function enable()
+	{
+		$this->enabled = TRUE;
+		$this->save();
+		
+		$this->service()->enable();
 	}
 	
 	/**

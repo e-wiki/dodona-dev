@@ -21,7 +21,7 @@ class Check extends Model {
 	 * 
 	 * @var array
 	 */
-	protected $fillable = [ 'id', 'name', 'check_category_id' ];
+	protected $fillable = [ 'id', 'name', 'check_category_id', 'check_module_id' ];
 
 	/**
 	 * Get the check category of the check.
@@ -31,6 +31,11 @@ class Check extends Model {
 	public function checkCategory()
 	{
 		return $this->belongsTo('Dodona\CheckCategory');
+	}
+	
+	public function checkModule()
+	{
+		return $this->belongsTo('Dodona\CheckModule');
 	}
 	
 	/**

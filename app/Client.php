@@ -36,7 +36,16 @@ class Client extends Model {
 	 * @var array
 	 */
 	protected $fillable = ['id', 'name', 'enabled', 'description'];
-	
+
+	/**
+	 * Is the client enabled or not.
+	 * 
+	 * @return boolean
+	 */
+	public function isEnabled()
+	{
+		return ($this->enabled === 1) ? TRUE : FALSE;
+	}
 
 	/**
 	 * Get all enabled clients.
@@ -196,6 +205,15 @@ class Client extends Model {
 	public function performanceStatus()
 	{
 		return $this->areaStatus(CheckCategory::PERFORMANCE_ID);
+	}
+	
+	/**
+	 * Enable the Client, but not its services.
+	 */
+	public function enable()
+	{
+		$this->enabled = TRUE;
+		$this->save();
 	}
 	
 	/**
