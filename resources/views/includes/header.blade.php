@@ -11,7 +11,6 @@
 			<div class="collapse navbar-collapse" id="mainNavBar">
 				<ul class="nav navbar-nav">
 					<li><a href="{{ url('/') }}"><span class="fa fa-home"></span>&nbsp;Status</a></li>
-					<li><a href="{{ url('/report/') }}"><span class="fa fa-area-chart"></span>&nbsp;Report</a></li>
 					<li><a href="{{ url('/administration/') }}"><span class="fa fa-dashboard"></span>&nbsp;Administration</a></li>
 				</ul>
 			</div>

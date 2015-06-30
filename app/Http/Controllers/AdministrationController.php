@@ -13,7 +13,10 @@ namespace Dodona\Http\Controllers;
 use Dodona\Check;
 use Dodona\CheckResult;
 use Dodona\Client;
+use Dodona\DatabaseTechnology;
+use Dodona\Environment;
 use Dodona\Http\Controllers\Controller;
+use Dodona\OperatingSystem;
 use Dodona\Server;
 use Dodona\Service;
 use Dodona\Site;
@@ -53,22 +56,35 @@ class AdministrationController extends Controller
 	
 	public function services()
 	{
-		$services = Service::orderBy('name', 'asc')->get();
+		$client_list = Client::lists('name', 'id');
+		$services    = Service::orderBy('name', 'asc')->get();
 		
-		return view('administration.services', compact('services'));
+		return view('administration.services', compact('client_list', 'services'));
 	}
 	
 	public function sites()
 	{
-		$sites = Site::orderBy('name', 'asc')->get();
+		$service_list     = Service::lists('name', 'id');
+		$environment_list = Environment::lists('name', 'id');
+		$sites            = Site::orderBy('name', 'asc')->get();
 		
-		return view('administration.sites', compact('sites'));
+		return view('administration.sites', compact('service_list', 'environment_list', 'sites'));
 	}
 	
 	public function servers()
 	{
-		$servers = Server::orderBy('name', 'asc')->get();
+		$service_list             = Service::lists('name', 'id');
+		$site_list                = Site::lists('name', 'id');
+		$operating_system_list    = OperatingSystem::lists('name', 'id');
+		$database_technology_list = DatabaseTechnology::lists('name', 'id');
+		$servers                  = Server::orderBy('name', 'asc')->get();
 		
-		return view('administration.servers', compact('servers'));
+		return view('administration.servers', compact(
+				'service_list',
+				'site_list',
+				'operating_system_list',
+				'database_technology_list',
+				'servers'
+		));
 	}
 }

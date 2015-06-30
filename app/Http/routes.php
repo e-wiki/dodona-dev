@@ -38,7 +38,7 @@ Route::get('/report/', ['as' => 'report', 'uses' => 'ReportController@index']);
 Route::post('/report/', 'ReportController@index');
 
 /**
- * Administration Controller routes.
+ * Administration Controllers routes.
  */
 Route::get('/administration/', ['as' => 'administration', 'uses' => 'AdministrationController@index']);
 Route::get('/administration/clients', 'AdministrationController@clients');
@@ -54,6 +54,7 @@ Route::get('/administration/client/disable/{client}', function(Dodona\Client $cl
 
 	return redirect('administration/clients/');
 });
+Route::post('/client/store/', 'Administration\ClientController@store');
 Route::get('/administration/services', 'AdministrationController@services');
 Route::get('/administration/service/enable/{service}', function(Dodona\Service $service)
 {
@@ -67,7 +68,9 @@ Route::get('/administration/service/disable/{service}', function(Dodona\Service 
 
 	return redirect('administration/services/');
 });
+Route::post('/service/store/', 'Administration\ServiceController@store');
 Route::get('/administration/sites', 'AdministrationController@sites');
+Route::post('/site/store/', 'Administration\SiteController@store');
 Route::get('/administration/servers', 'AdministrationController@servers');
 Route::get('/administration/server/enable/{server}', function(Dodona\Server $server)
 {
@@ -81,3 +84,4 @@ Route::get('/administration/server/disable/{server}', function(Dodona\Server $se
 
 	return redirect('administration/servers/');
 });
+Route::post('/server/store/', 'Administration\ServerController@store');

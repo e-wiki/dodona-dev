@@ -145,6 +145,7 @@ return [
         Dodona\Providers\EventServiceProvider::class,
         Dodona\Providers\RouteServiceProvider::class,
 
+		Laracasts\Flash\FlashServiceProvider::class,
     ],
 
     /*
@@ -173,6 +174,7 @@ return [
         'Eloquent'  => Illuminate\Database\Eloquent\Model::class,
         'Event'     => Illuminate\Support\Facades\Event::class,
         'File'      => Illuminate\Support\Facades\File::class,
+		'Flash'     => Laracasts\Flash\Flash::class,
 		'Form'      => Collective\Html\FormFacade::class,
         'Hash'      => Illuminate\Support\Facades\Hash::class,
 		'HTML'      => Collective\Html\HtmlFacade::class,
