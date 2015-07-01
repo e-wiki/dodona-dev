@@ -8,7 +8,6 @@ use Dodona\Site;
 
 class SiteController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      *
@@ -16,16 +15,15 @@ class SiteController extends Controller
      */
     public function store(SiteRequest $request)
     {
-		Site::create([
-			'id'             => $request->get('id'),
-			'name'           => $request->get('name'),
-			'service_id'     => $request->get('service_id'),
-			'environment_id' => $request->get('environment_id'),
-		]);
+        Site::create([
+            'id'             => $request->get('id'),
+            'name'           => $request->get('name'),
+            'service_id'     => $request->get('service_id'),
+            'environment_id' => $request->get('environment_id'),
+        ]);
 
-		\Flash::success("Site {$request->get('name')} ({$request->get('id')}) successfully created.");
+        \Flash::success("Site {$request->get('name')} ({$request->get('id')}) successfully created.");
 
-		return redirect('administration/sites');
+        return redirect('administration/sites');
     }
-	
 }

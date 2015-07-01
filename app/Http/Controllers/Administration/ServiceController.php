@@ -8,7 +8,6 @@ use Dodona\Service;
 
 class ServiceController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      *
@@ -16,17 +15,16 @@ class ServiceController extends Controller
      */
     public function store(ServiceRequest $request)
     {
-		Service::create([
-			'id'          => $request->get('id'),
-			'name'        => $request->get('name'),
-			'enabled'     => (is_null($request->get('enabled')) ? FALSE : TRUE),
-			'description' => $request->get('description'),
-			'client_id'   => $request->get('client_id'),
-		]);
+        Service::create([
+            'id'          => $request->get('id'),
+            'name'        => $request->get('name'),
+            'enabled'     => (is_null($request->get('enabled')) ? false : true),
+            'description' => $request->get('description'),
+            'client_id'   => $request->get('client_id'),
+        ]);
 
-		\Flash::success("Service {$request->get('name')} ({$request->get('id')}) successfully created.");
+        \Flash::success("Service {$request->get('name')} ({$request->get('id')}) successfully created.");
 
-		return redirect('administration/services');
+        return redirect('administration/services');
     }
-	
 }

@@ -8,7 +8,6 @@ use Dodona\Http\Controllers\Controller;
 
 class ClientController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      *
@@ -16,16 +15,15 @@ class ClientController extends Controller
      */
     public function store(ClientRequest $request)
     {
-		Client::create([
-			'id'          => $request->get('id'),
-			'name'        => $request->get('name'),
-			'enabled'     => (is_null($request->get('enabled')) ? FALSE : TRUE),
-			'description' => $request->get('description'),
-		]);
+        Client::create([
+            'id'          => $request->get('id'),
+            'name'        => $request->get('name'),
+            'enabled'     => (is_null($request->get('enabled')) ? false : true),
+            'description' => $request->get('description'),
+        ]);
 
-		\Flash::success("Client {$request->get('name')} ({$request->get('id')}) successfully created.");
-		
-		return redirect('administration/clients');
+        \Flash::success("Client {$request->get('name')} ({$request->get('id')}) successfully created.");
+        
+        return redirect('administration/clients');
     }
-	
 }

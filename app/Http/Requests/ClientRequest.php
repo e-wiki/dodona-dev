@@ -13,7 +13,7 @@ class ClientRequest extends Request
      */
     public function authorize()
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -25,8 +25,8 @@ class ClientRequest extends Request
     {
         return [
             'id'          => ['required', 'regex:/[A-Z][A-Z]/'],
-			'name'        => 'required|min:2|max:50',
-			'description' => 'required|min:10|max:450',
+            'name'        => 'required|min:2|max:50',
+            'description' => 'required|min:10|max:450',
         ];
     }
 }

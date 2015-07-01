@@ -8,7 +8,6 @@ use Dodona\Server;
 
 class ServerController extends Controller
 {
-
     /**
      * Store a newly created resource in storage.
      *
@@ -16,19 +15,18 @@ class ServerController extends Controller
      */
     public function store(ServerRequest $request)
     {
-		Server::create([
-			'id'                     => $request->get('id'),
-			'name'                   => $request->get('name'),
-			'enabled'                => (is_null($request->get('enabled')) ? FALSE : TRUE),
-			'description'            => $request->get('description'),
-			'site_id'                => $request->get('site_id'),
-			'operating_system_id'     => $request->get('operating_system_id'),
-			'database_technology_id' => $request->get('database_technology_id'),
-		]);
+        Server::create([
+            'id'                     => $request->get('id'),
+            'name'                   => $request->get('name'),
+            'enabled'                => (is_null($request->get('enabled')) ? false : true),
+            'description'            => $request->get('description'),
+            'site_id'                => $request->get('site_id'),
+            'operating_system_id'     => $request->get('operating_system_id'),
+            'database_technology_id' => $request->get('database_technology_id'),
+        ]);
 
-		\Flash::success("Server {$request->get('name')} ({$request->get('id')}) successfully created.");
+        \Flash::success("Server {$request->get('name')} ({$request->get('id')}) successfully created.");
 
-		return redirect('administration/servers');
+        return redirect('administration/servers');
     }
-	
 }

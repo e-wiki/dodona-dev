@@ -13,7 +13,7 @@ class SiteRequest extends Request
      */
     public function authorize()
     {
-        return TRUE;
+        return true;
     }
 
     /**
@@ -25,7 +25,7 @@ class SiteRequest extends Request
     {
         return [
             'id'          => ['required', 'regex:/[A-Z]{2}([0-9]{2}[1-9]|[0-9][1-9][0-9]|[1-9][0-9]{2})[PSTD][1-9]/'],
-			'name'        => 'required|min:2|max:50',
+            'name'        => 'required|min:2|max:50',
         ];
     }
 }

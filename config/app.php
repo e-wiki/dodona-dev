@@ -143,7 +143,7 @@ return [
         Dodona\Providers\AppServiceProvider::class,
         Dodona\Providers\EventServiceProvider::class,
         Dodona\Providers\RouteServiceProvider::class,
-		
+        
         /*
          * Third Party Service Providers...
          */

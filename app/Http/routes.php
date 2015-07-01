@@ -42,46 +42,40 @@ Route::post('/report/', 'ReportController@index');
  */
 Route::get('/administration/', ['as' => 'administration', 'uses' => 'AdministrationController@index']);
 Route::get('/administration/clients', 'AdministrationController@clients');
-Route::get('/administration/client/enable/{client}', function(Dodona\Client $client)
-{
-	$client->enable();
+Route::get('/administration/client/enable/{client}', function (Dodona\Client $client) {
+    $client->enable();
 
-	return redirect('administration/clients/');
+    return redirect('administration/clients/');
 });
-Route::get('/administration/client/disable/{client}', function(Dodona\Client $client)
-{
-	$client->disable();
+Route::get('/administration/client/disable/{client}', function (Dodona\Client $client) {
+    $client->disable();
 
-	return redirect('administration/clients/');
+    return redirect('administration/clients/');
 });
 Route::post('/client/store/', 'Administration\ClientController@store');
 Route::get('/administration/services', 'AdministrationController@services');
-Route::get('/administration/service/enable/{service}', function(Dodona\Service $service)
-{
-	$service->enable();
+Route::get('/administration/service/enable/{service}', function (Dodona\Service $service) {
+    $service->enable();
 
-	return redirect('administration/services/');
+    return redirect('administration/services/');
 });
-Route::get('/administration/service/disable/{service}', function(Dodona\Service $service)
-{
-	$service->disable();
+Route::get('/administration/service/disable/{service}', function (Dodona\Service $service) {
+    $service->disable();
 
-	return redirect('administration/services/');
+    return redirect('administration/services/');
 });
 Route::post('/service/store/', 'Administration\ServiceController@store');
 Route::get('/administration/sites', 'AdministrationController@sites');
 Route::post('/site/store/', 'Administration\SiteController@store');
 Route::get('/administration/servers', 'AdministrationController@servers');
-Route::get('/administration/server/enable/{server}', function(Dodona\Server $server)
-{
-	$server->enable();
+Route::get('/administration/server/enable/{server}', function (Dodona\Server $server) {
+    $server->enable();
 
-	return redirect('administration/servers/');
+    return redirect('administration/servers/');
 });
-Route::get('/administration/server/disable/{server}', function(Dodona\Server $server)
-{
-	$server->disable();
+Route::get('/administration/server/disable/{server}', function (Dodona\Server $server) {
+    $server->disable();
 
-	return redirect('administration/servers/');
+    return redirect('administration/servers/');
 });
 Route::post('/server/store/', 'Administration\ServerController@store');
