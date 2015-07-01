@@ -2,12 +2,14 @@
 
 @section('content')
 	<h2>Site Management Console</h2>
-	
+
 	@include('includes.breadcrumb')
-	
+
 	<p>Actions will take effect immediately. Please note that no data will be
 		deleted at any point.</p>
-	
+
+	@include('flash::message')
+
 	<table class="table table-responsive">
 		<thead>
 			<tr>

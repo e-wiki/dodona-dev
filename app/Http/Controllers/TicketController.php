@@ -94,6 +94,8 @@ class TicketController extends Controller
 			$child->ticket_id = $ticket->id;
 			$child->save();
 		}
+
+		\Flash::success("Ticket email {$request->get('reference')} successfully created.");
 		
 		return redirect('status/server/' . $request->get('server_id'));
 	}

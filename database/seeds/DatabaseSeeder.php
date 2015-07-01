@@ -1,7 +1,7 @@
 <?php
 /**
  * Dodona Framework DB Seeder.
- * 
+ *
  * @author  Nikolaos Gaitanis <ngaitanis@gmail.com>
  * @version 1.0.0
  * @copyright (c) 2015, Nikolaos Gaitanis
@@ -10,6 +10,7 @@
 use Dodona\Alert;
 use Dodona\Check;
 use Dodona\CheckCategory;
+use Dodona\CheckModule;
 use Dodona\CheckResult;
 use Dodona\Client;
 use Dodona\DatabaseTechnology;
@@ -30,7 +31,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * DatabaseSeeder class
- * 
+ *
  * Populates the database with the necessary seeds based on the environment.
  */
 class DatabaseSeeder extends Seeder {
@@ -40,11 +41,11 @@ class DatabaseSeeder extends Seeder {
 	 *
 	 * @return void
 	 */
-	
+
 	public function run()
 	{
 		Model::unguard();
-		
+
 		/**
 		 * Disable foreign key checks for this
 		 * connection before running seeders.
@@ -53,6 +54,7 @@ class DatabaseSeeder extends Seeder {
 
 		$this->call('AlertsTableSeeder');
 		$this->call('CheckCategoriesTableSeeder');
+		$this->call('CheckModulesTableSeeder');
 		$this->call('ChecksTableSeeder');
 		$this->call('CheckResultsTableSeeder');
 		$this->call('DatabaseTechnologiesTableSeeder');
@@ -63,7 +65,7 @@ class DatabaseSeeder extends Seeder {
 		$this->call('TicketCategoriesTableSeeder');
 		$this->call('TicketPrioritiesTableSeeder');
 		$this->call('TicketTypesTableSeeder');
-		
+
 		/**
 		 * Will not seed clients, services, servers, and server check
 		 * results if this is the production environment.
@@ -76,7 +78,7 @@ class DatabaseSeeder extends Seeder {
 			$this->call('ServersTableSeeder');
 			$this->call('ServerCheckResultsTableSeeder');
 		}
-		
+
 		// Reset foreign key checks.
 		DB::statement('SET FOREIGN_KEY_CHECKS = 1;');
 	}
@@ -84,16 +86,16 @@ class DatabaseSeeder extends Seeder {
 }
 
 class DatabaseTechnologiesTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the database_technologies table seeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		DatabaseTechnology::truncate();
-		
+
 		DatabaseTechnology::create(['name' => 'All Database Technologies']);
 		DatabaseTechnology::create(['name' => 'Microsoft SQL Server']);
 		DatabaseTechnology::create(['name' => 'Microsoft SQL Server 2000']);
@@ -113,57 +115,57 @@ class DatabaseTechnologiesTableSeeder extends Seeder {
 		DatabaseTechnology::create(['name' => 'Oracle Database Server 11gR2']);
 		DatabaseTechnology::create(['name' => 'Oracle Database Server 12cR1']);
 	}
-	
+
 }
 
 class ClientsTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the clients table seeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		Client::truncate();
-		
+
 		Client::create(['id' => 'ZZ', 'name' => 'Sample Client 1', 'enabled' => 1, 'description' => 'Sample demo client 1']);
 		Client::create(['id' => 'ZY', 'name' => 'Sample Client 2', 'enabled' => 1, 'description' => 'Sample demo client 2']);
 		Client::create(['id' => 'ZX', 'name' => 'Sample Client 3', 'enabled' => 1, 'description' => 'Sample demo client 3']);
 	}
-	
+
 }
 
 class EnvironmentsTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the environments table seeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		Environment::truncate();
-		
+
 		Environment::create(['id' => 'P', 'name' => 'Production']);
 		Environment::create(['id' => 'S', 'name' => 'Staging/Pre-Production']);
 		Environment::create(['id' => 'T', 'name' => 'Testing']);
 		Environment::create(['id' => 'D', 'name' => 'Development']);
 	}
-	
+
 }
 
 class OperatingSystemsTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the operating systems table seeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		Dodona\OperatingSystem::truncate();
-		
+
 		OperatingSystem::create(['name' => 'Linux']);
 		OperatingSystem::create(['name' => 'Oracle Linux 6.5']);
 		OperatingSystem::create(['name' => 'Oracle Linux 7.0']);
@@ -179,53 +181,53 @@ class OperatingSystemsTableSeeder extends Seeder {
 		OperatingSystem::create(['name' => 'Windows Server 2008']);
 		OperatingSystem::create(['name' => 'Windows Server 2012']);
 	}
-	
+
 }
 
 class ServicesTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the services table seeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		Service::truncate();
-		
+
 		$clients = Client::all()->lists('id');
-		
+
 		foreach ($clients as $client)
 		{
 			$limit = rand(2, 10);
-			
+
 			for ($i = 1; $i < $limit; $i++)
 			{
 				Service::create(['id' => "{$client}" . str_pad($i, 3, '0', STR_PAD_LEFT), 'name' => "Sample Service {$i}", 'enabled' => rand(0, 1), 'description' => "Sample service {$i}", 'client_id' => "{$client}"]);
 			}
 		}
 	}
-	
+
 }
 
 class SitesTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the sites table seeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		Site::truncate();
-		
+
 		$services     = Service::lists('id')->all();
 		$environments = Environment::lists('id')->all();
-		
+
 		foreach ($services as $service)
 		{
 			$limit = rand(2, 4);
-			
+
 			for ($i = 1; $i < $limit; $i++)
 			{
 				$environment = $environments[array_rand($environments, 1)];
@@ -238,28 +240,28 @@ class SitesTableSeeder extends Seeder {
 			}
 		}
 	}
-	
+
 }
 
 class ServersTableSeeder extends Seeder {
-	
+
 	public function run()
 	{
 		Server::truncate();
-		
+
 		$services              = Service::lists('id')->all();
 		$operating_systems     = OperatingSystem::lists('id')->all();
 		$database_technologies = DatabaseTechnology::lists('id')->all();
-		
+
 		foreach ($services as $service)
 		{
 			$limit = rand(2, 20);
-			
+
 			for ($i = 1; $i < $limit; $i++)
 			{
 				$sites = Site::where('service_id', $service)->lists('id')->all();
 				$site  = $sites[array_rand($sites, 1)];
-				
+
 				Server::create([
 					'id'                     => "{$site}" . str_pad($i, 3, '0', STR_PAD_LEFT),
 					'name'                   => "Sample server {$i}",
@@ -272,58 +274,70 @@ class ServersTableSeeder extends Seeder {
 			}
 		}
 	}
-	
+
 }
 
 class CheckCategoriesTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the check categories table seeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		CheckCategory::truncate();
-		
+
 		CheckCategory::create(['id' => 'C', 'name' => 'Capacity']);
 		CheckCategory::create(['id' => 'R', 'name' => 'Recoverability']);
 		CheckCategory::create(['id' => 'A', 'name' => 'Availability']);
 		CheckCategory::create(['id' => 'P', 'name' => 'Performance']);
 	}
-	
+
+}
+
+class CheckModulesTableSeeder extends Seeder {
+
+	public function run()
+	{
+		CheckModule::truncate();
+
+		CheckModule::create(['id' => 1, 'name' => 'Core']);
+		CheckModule::create(['id' => 2, 'name' => 'Vodafone Roaming Fraud']);
+	}
+
 }
 
 class AlertsTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the alerts table seeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		Alert::truncate();
-		
+
 		Alert::create(['id' => 'R', 'name' => 'Red', 'css' => 'danger', 'css_i' => 'danger']);
 		Alert::create(['id' => 'A', 'name' => 'Amber', 'css' => 'warning', 'css_i' => 'warning']);
 		Alert::create(['id' => 'G', 'name' => 'Green', 'css' => 'success', 'css_i' => 'default']);
 		Alert::create(['id' => 'B', 'name' => 'Blue', 'css' => 'info', 'css_i' => 'info']);
 	}
-	
+
 }
 
 class TicketCategoriesTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the ticket categories table seeder.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		TicketCategory::truncate();
-		
+
 		TicketCategory::create(['name' => 'Database']);
 		TicketCategory::create(['name' => 'Hardware']);
 		TicketCategory::create(['name' => 'IT Service']);
@@ -331,20 +345,20 @@ class TicketCategoriesTableSeeder extends Seeder {
 		TicketCategory::create(['name' => 'Server']);
 		TicketCategory::create(['name' => 'Software']);
 	}
-	
+
 }
 
 class TicketPrioritiesTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the ticket priorities table seeds.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		TicketPriority::truncate();
-		
+
 		TicketPriority::create(['id' => 1, 'name' => 'Critical']);
 		TicketPriority::create(['id' => 2, 'name' => 'High']);
 		TicketPriority::create(['id' => 3, 'name' => 'Medium']);
@@ -354,81 +368,88 @@ class TicketPrioritiesTableSeeder extends Seeder {
 }
 
 class TicketTypesTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the ticket types table seeder.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		TicketType::truncate();
-		
+
 		TicketType::create(['id' => 1, 'name' => 'Incident']);
 		TicketType::create(['id' => 2, 'name' => 'Problem']);
 		TicketType::create(['id' => 3, 'name' => 'Service Request']);
 	}
-	
+
 }
 
 class ChecksTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the checks table seeder.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		Check::truncate();
-		
-		Check::create(['id' => 'AML001', 'name' => 'Connection Availability', 'check_category_id' => 'A']);
-		Check::create(['id' => 'AML002', 'name' => 'Security Access', 'check_category_id' => 'A']);
-		Check::create(['id' => 'AOL001', 'name' => 'Connection Availability', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW001', 'name' => 'Instance Availability', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW002', 'name' => 'Agent Availability', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW003', 'name' => 'Offline Databases', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW004', 'name' => '[master] Database Online', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW005', 'name' => 'Logon Errors', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW006', 'name' => 'Database Start/Stop', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW007', 'name' => 'User Password Policy', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW008', 'name' => 'User Expiration Policy', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW009', 'name' => 'User [master] Default', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW010', 'name' => 'xp_CmdShell', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW011', 'name' => 'Encrypted Connections', 'check_category_id' => 'A']);
-		Check::create(['id' => 'ASW012', 'name' => 'HideInstance', 'check_category_id' => 'A']);
-		Check::create(['id' => 'CML001', 'name' => 'Backups Directory', 'check_category_id' => 'C']);
-		Check::create(['id' => 'CML002', 'name' => 'Binlog Directory', 'check_category_id' => 'C']);
-		Check::create(['id' => 'CML003', 'name' => 'Error Log Directory', 'check_category_id' => 'C']);
-		Check::create(['id' => 'CML004', 'name' => 'Slow Query Log Directory', 'check_category_id' => 'C']);
-		Check::create(['id' => 'CML005', 'name' => 'General Log Directory', 'check_category_id' => 'C']);
-		Check::create(['id' => 'CNL001', 'name' => 'Partition', 'check_category_id' => 'C']);
-		Check::create(['id' => 'COL001', 'name' => 'Tablespace', 'check_category_id' => 'C']);
-		Check::create(['id' => 'PML001', 'name' => 'Connection Pool', 'check_category_id' => 'P']);
-		Check::create(['id' => 'PNL001', 'name' => 'Memory', 'check_category_id' => 'P']);
-		Check::create(['id' => 'PNL002', 'name' => 'Swap', 'check_category_id' => 'P']);
-		Check::create(['id' => 'PNL003', 'name' => 'CPU', 'check_category_id' => 'P']);
-		Check::create(['id' => 'PSW001', 'name' => 'Failed Jobs', 'check_category_id' => 'P']);
-		Check::create(['id' => 'PSW002', 'name' => 'Log Errors', 'check_category_id' => 'P']);
-		Check::create(['id' => 'PSW003', 'name' => 'Signal CPU Waits', 'check_category_id' => 'P']);
-		Check::create(['id' => 'RML001', 'name' => 'Master Process', 'check_category_id' => 'R']);
-		Check::create(['id' => 'RML002', 'name' => 'Slave Process', 'check_category_id' => 'R']);
-		Check::create(['id' => 'RSW001', 'name' => 'Backup', 'check_category_id' => 'R']);
+
+		Check::create(['id' => 'AML001', 'name' => 'Connection Availability', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'AML002', 'name' => 'Security Access', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ANL001', 'name' => 'Process Running', 'check_category_id' => 'A', 'check_module_id' => 2]);
+		Check::create(['id' => 'ANL002', 'name' => 'Locked Files', 'check_category_id' => 'A', 'check_module_id' => 2]);
+		Check::create(['id' => 'ANL003', 'name' => 'Rejected Files', 'check_category_id' => 'A', 'check_module_id' => 2]);
+		Check::create(['id' => 'AOL001', 'name' => 'Connection Availability', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW001', 'name' => 'Instance Availability', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW002', 'name' => 'Agent Availability', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW003', 'name' => 'Offline Databases', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW004', 'name' => '[master] Database Online', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW005', 'name' => 'Logon Errors', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW006', 'name' => 'Database Start/Stop', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW007', 'name' => 'User Password Policy', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW008', 'name' => 'User Expiration Policy', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW009', 'name' => 'User [master] Default', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW010', 'name' => 'xp_CmdShell', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW011', 'name' => 'Encrypted Connections', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'ASW012', 'name' => 'HideInstance', 'check_category_id' => 'A', 'check_module_id' => 1]);
+		Check::create(['id' => 'CML001', 'name' => 'Backups Directory', 'check_category_id' => 'C', 'check_module_id' => 1]);
+		Check::create(['id' => 'CML002', 'name' => 'Binlog Directory', 'check_category_id' => 'C', 'check_module_id' => 1]);
+		Check::create(['id' => 'CML003', 'name' => 'Error Log Directory', 'check_category_id' => 'C', 'check_module_id' => 1]);
+		Check::create(['id' => 'CML004', 'name' => 'Slow Query Log Directory', 'check_category_id' => 'C', 'check_module_id' => 1]);
+		Check::create(['id' => 'CML005', 'name' => 'General Log Directory', 'check_category_id' => 'C', 'check_module_id' => 1]);
+		Check::create(['id' => 'CNL001', 'name' => 'O/S Partition', 'check_category_id' => 'C', 'check_module_id' => 1]);
+		Check::create(['id' => 'COL001', 'name' => 'Tablespace', 'check_category_id' => 'C', 'check_module_id' => 1]);
+		Check::create(['id' => 'PML001', 'name' => 'Connection Pool', 'check_category_id' => 'P', 'check_module_id' => 1]);
+		Check::create(['id' => 'PNL001', 'name' => 'Memory', 'check_category_id' => 'P', 'check_module_id' => 1]);
+		Check::create(['id' => 'PNL002', 'name' => 'Swap', 'check_category_id' => 'P', 'check_module_id' => 1]);
+		Check::create(['id' => 'PNL003', 'name' => 'CPU', 'check_category_id' => 'P', 'check_module_id' => 1]);
+		Check::create(['id' => 'PNL004', 'name' => 'Log Warnings', 'check_category_id' => 'P', 'check_module_id' => 2]);
+		Check::create(['id' => 'PNL005', 'name' => 'Log Errors', 'check_category_id' => 'P', 'check_module_id' => 2]);
+		Check::create(['id' => 'PNL006', 'name' => 'File Directory Contents', 'check_category_id' => 'P', 'check_module_id' => 2]);
+		Check::create(['id' => 'POL001', 'name' => 'Outbound NRTRDE Summary', 'check_category_id' => 'P', 'check_module_id' => 2]);
+		Check::create(['id' => 'PSW001', 'name' => 'Failed Jobs', 'check_category_id' => 'P', 'check_module_id' => 1]);
+		Check::create(['id' => 'PSW002', 'name' => 'Log Errors', 'check_category_id' => 'P', 'check_module_id' => 1]);
+		Check::create(['id' => 'PSW003', 'name' => 'Signal CPU Waits', 'check_category_id' => 'P', 'check_module_id' => 1]);
+		Check::create(['id' => 'RML001', 'name' => 'Master Process', 'check_category_id' => 'R', 'check_module_id' => 1]);
+		Check::create(['id' => 'RML002', 'name' => 'Slave Process', 'check_category_id' => 'R', 'check_module_id' => 1]);
+		Check::create(['id' => 'RSW001', 'name' => 'Backup', 'check_category_id' => 'R', 'check_module_id' => 1]);
 	}
-	
+
 }
 
 class CheckResultsTableSeeder extends Seeder {
-	
+
 	/**
 	 * Run the check results table seeder.
-	 * 
+	 *
 	 * @return void
 	 */
 	public function run()
 	{
 		CheckResult::truncate();
-		
+
 		CheckResult::create(['id' => 'AML001G01', 'name' => 'Successful connection to the instance', 'check_id' => 'AML001', 'alert_id' => 'G']);
 		CheckResult::create(['id' => 'AML001R01', 'name' => 'Cannot connect to the instance', 'check_id' => 'AML001', 'alert_id' => 'R']);
 		CheckResult::create(['id' => 'AML002G01', 'name' => 'No instance security access configuration breaches', 'check_id' => 'AML002', 'alert_id' => 'G']);
@@ -572,45 +593,45 @@ class CheckResultsTableSeeder extends Seeder {
 		CheckResult::create(['id' => 'RSW001R01', 'name' => 'Cannot connect to instance', 'check_id' => 'RSW001', 'alert_id' => 'R']);
 		CheckResult::create(['id' => 'RSW001R02', 'name' => 'At least one database backup failed', 'check_id' => 'RSW001', 'alert_id' => 'R']);
 	}
-	
+
 }
 
 class ServerCheckResultsTableSeeder extends Seeder {
-	
+
 	/**
 	 * Randomly creates server check results for test purposes.
-	 * 
+	 *
 	 * @param type $healthchecks
 	 * @return void
 	 */
 	public function run($healthchecks = 1000)
 	{
 		ServerCheckResult::truncate();
-		
+
 		$faker = \Faker\Factory::create();
-		
+
 		$servers       = Server::lists('id')->all();
 		$check_results = CheckResult::lists('id')->all();
-		
+
 		for ($i = 0; $i < $healthchecks; $i++)
 		{
 			$check_result = $faker->randomElement($check_results);
 			$date         = date("H-m-d H:i:s");
-			
+
 			DB::unprepared(
 				"CALL sp_new_server_check_result('"
 				. "{$faker->randomElement($servers)}', "
 				. "'{$check_result}', "
 				. "'{$date}')"
 			);
-			
+
 			sleep(1);
 		}
 	}
 }
 
 class ReportLevelsTableSeeder extends Seeder {
-    
+
     /**
      * Run the report levels table seeder.
      *
@@ -619,7 +640,7 @@ class ReportLevelsTableSeeder extends Seeder {
     public function run()
     {
         ReportLevel::truncate();
-        
+
         ReportLevel::create(['id' => 1, 'name' => 'Client']);
         ReportLevel::create(['id' => 2, 'name' => 'Service']);
         ReportLevel::create(['id' => 3, 'name' => 'Site']);
@@ -628,7 +649,7 @@ class ReportLevelsTableSeeder extends Seeder {
 }
 
 class ReportTypesTableSeeder extends Seeder {
-    
+
     /**
      * Run the report types table seeder.
      *
@@ -637,7 +658,7 @@ class ReportTypesTableSeeder extends Seeder {
     public function run()
     {
         ReportType::truncate();
-        
+
         ReportType::create(['id' => 1, 'name' => 'Daily']);
         ReportType::create(['id' => 2, 'name' => 'Weekly']);
         ReportType::create(['id' => 3, 'name' => 'Monthly']);

@@ -26,6 +26,8 @@ class ServerController extends Controller
 			'database_technology_id' => $request->get('database_technology_id'),
 		]);
 
+		\Flash::success("Server {$request->get('name')} ({$request->get('id')}) successfully created.");
+
 		return redirect('administration/servers');
     }
 	

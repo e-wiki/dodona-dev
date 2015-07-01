@@ -23,6 +23,8 @@ class ClientController extends Controller
 			'description' => $request->get('description'),
 		]);
 
+		\Flash::success("Client {$request->get('name')} ({$request->get('id')}) successfully created.");
+		
 		return redirect('administration/clients');
     }
 	

@@ -23,6 +23,8 @@ class SiteController extends Controller
 			'environment_id' => $request->get('environment_id'),
 		]);
 
+		\Flash::success("Site {$request->get('name')} ({$request->get('id')}) successfully created.");
+
 		return redirect('administration/sites');
     }
 	

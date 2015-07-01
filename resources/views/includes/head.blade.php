@@ -11,8 +11,8 @@
 	{!! HTML::style('css/sticky-footer.css') !!}
 	{!! HTML::style('css/bootstrap-datetimepicker.min.css') !!}
 
-	{!! HTML::script('js/bootstrap.min.js') !!}
 	{!! HTML::script('js/jquery-2.1.4.min.js') !!}
+	{!! HTML::script('js/bootstrap.min.js') !!}
 	{!! HTML::script('js/moment-with-locales.min.js') !!}
 	{!! HTML::script('js/bootstrap-datetimepicker.min.js') !!}
 

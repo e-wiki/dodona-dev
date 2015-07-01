@@ -24,6 +24,8 @@ class ServiceController extends Controller
 			'client_id'   => $request->get('client_id'),
 		]);
 
+		\Flash::success("Service {$request->get('name')} ({$request->get('id')}) successfully created.");
+
 		return redirect('administration/services');
     }
 	

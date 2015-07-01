@@ -8,6 +8,8 @@
 	<p>Actions will take effect immediately. Please note that no data will be
 		deleted at any point.</p>
 	
+	@include('flash::message')
+	
 	<table class="table table-responsive">
 		<thead>
 			<tr>

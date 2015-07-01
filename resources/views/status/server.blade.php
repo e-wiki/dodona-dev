@@ -12,6 +12,8 @@
 		The date/time presented is when the checks were performed (and not when
 		the healthcheck was introduced in the system).</p>
 	
+	@include('flash::message')
+	
 	<table class="table table-responsive">
 		<thead>
             <th class="col-lg-3">Check</th>
