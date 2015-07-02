@@ -9,8 +9,8 @@
         "laravel/framework": "5.1.*",
         "laravelcollective/html": "5.1.*",
         "laracasts/flash": "~1.3",
-        "cartalyst/sentinel": "2.0.*",
-        "ircmaxell/password-compat": "1.0.*"
+        "rydurham/sentinel": "~2.2",
+        "ircmaxell/password-compat": "~1.0.4"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

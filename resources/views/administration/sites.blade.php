@@ -36,7 +36,7 @@
 				<td colspan="6" class="col-lg-12 text-center">No sites identified.</td>
 			</tr>
 			@endforelse
-			{!! Form::open(['url' => '/site/store/', 'class' => 'form-horizontal']) !!}
+			{!! Form::open(['action' => 'Administration\SiteController@store', 'class' => 'form-horizontal']) !!}
 			<tr>
 				<td class="col-lg-3">
 					<div  class="form-group {{ $errors->first('name') ? 'has-error has-feedback' : '' }}">

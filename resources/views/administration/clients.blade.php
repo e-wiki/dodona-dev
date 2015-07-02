@@ -37,9 +37,9 @@
 				<td class="col-lg-1 text-center">{{ $client->services()->count() }}</td>
 				<td class="col-lg-1">
 					@if ($client->isEnabled())
-					<a href="{{ url("administration/client/disable/{$client->id}") }}" class="btn btn-primary btn-block btn-xs">Disable</a>
+					<a href="{{ url("client/disable/{$client->id}") }}" class="btn btn-primary btn-block btn-xs">Disable</a>
 					@else
-					<a href="{{ url("administration/client/enable/{$client->id}") }}" class="btn btn-primary btn-block btn-xs">Enable</a>
+					<a href="{{ url("client/enable/{$client->id}") }}" class="btn btn-primary btn-block btn-xs">Enable</a>
 					@endif
 				</td>
 			</tr>
@@ -48,7 +48,7 @@
 				<td colspan="6" class="col-lg-12 text-center">No clients identified.</td>
 			</tr>
 			@endforelse
-			{!! Form::open(['url' => '/client/store/', 'class' => 'form-horizontal']) !!}
+			{!! Form::open(['action' => 'Administration\ClientController@store', 'class' => 'form-horizontal']) !!}
 			<tr>
 				<td class="col-lg-2">
 					<div  class="form-group {{ $errors->first('name') ? 'has-error has-feedback' : '' }}">

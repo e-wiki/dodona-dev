@@ -41,9 +41,9 @@
 				<td class="col-lg-1 text-center">{{ $service->servers()->count() }}</td>
 				<td class="col-lg-1">
 					@if ($service->isEnabled())
-					<a href="{{ url("administration/service/disable/{$service->id}") }}" class="btn btn-primary btn-block btn-xs">Disable</a>
+					<a href="{{ url("service/disable/{$service->id}") }}" class="btn btn-primary btn-block btn-xs">Disable</a>
 					@else
-					<a href="{{ url("administration/service/enable/{$service->id}") }}" class="btn btn-primary btn-block btn-xs">Enable</a>
+					<a href="{{ url("service/enable/{$service->id}") }}" class="btn btn-primary btn-block btn-xs">Enable</a>
 					@endif
 				</td>
 			</tr>
@@ -52,7 +52,7 @@
 				<td colspan="6" class="col-lg-12 text-center">No services identified.</td>
 			</tr>
 			@endforelse
-			{!! Form::open(['url' => '/service/store/', 'class' => 'form-horizontal']) !!}
+			{!! Form::open(['action' => 'Administration\ServiceController@store', 'class' => 'form-horizontal']) !!}
 			<tr>
 				<td class="col-lg-2">
 					<div  class="form-group {{ $errors->first('name') ? 'has-error has-feedback' : '' }}">

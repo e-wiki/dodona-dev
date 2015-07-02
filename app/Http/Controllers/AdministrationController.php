@@ -26,6 +26,12 @@ use Dodona\Site;
  */
 class AdministrationController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('sentry.member:Admins');
+    }
+
     public function index()
     {
         $clients_count  = Client::count();

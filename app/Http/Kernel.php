@@ -26,8 +26,11 @@ class Kernel extends HttpKernel
      * @var array
      */
     protected $routeMiddleware = [
-        'auth' => \Dodona\Http\Middleware\Authenticate::class,
-        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
-        'guest' => \Dodona\Http\Middleware\RedirectIfAuthenticated::class,
+        'auth'          => \Dodona\Http\Middleware\Authenticate::class,
+        'auth.basic'    => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'guest'         => \Dodona\Http\Middleware\RedirectIfAuthenticated::class,
+        'sentry.auth'   => \Sentinel\Middleware\SentryAuth::class,
+        'sentry.admin'  => \Sentinel\Middleware\SentryAdminAccess::class,
+        'sentry.member' => \Sentinel\Middleware\SentryMember::class,
     ];
 }

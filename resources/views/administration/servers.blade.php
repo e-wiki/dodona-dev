@@ -41,9 +41,9 @@
 				<td class="col-lg-1">{{ $server->site->name }}</td>
 				<td class="col-lg-1">
 					@if ($server->isEnabled())
-					<a href="{{ url("administration/server/disable/{$server->id}") }}" class="btn btn-primary btn-block btn-xs">Disable</a>
+					<a href="{{ url("server/disable/{$server->id}") }}" class="btn btn-primary btn-block btn-xs">Disable</a>
 					@else
-					<a href="{{ url("administration/server/enable/{$server->id}") }}" class="btn btn-primary btn-block btn-xs">Enable</a>
+					<a href="{{ url("server/enable/{$server->id}") }}" class="btn btn-primary btn-block btn-xs">Enable</a>
 					@endif
 				</td>
 			</tr>
@@ -52,7 +52,7 @@
 				<th colspan="8" class="col-lg-12 text-center">No sites identified.</th>
 			</tr>
 			@endforelse
-			{!! Form::open(['url' => '/server/store/', 'class' => 'form-horizontal']) !!}
+			{!! Form::open(['action' => 'Administration\ServerController@store', 'class' => 'form-horizontal']) !!}
 			<tr>
 				<td class="col-lg-2">
 					<div  class="form-group {{ $errors->first('name') ? 'has-error has-feedback' : '' }}">

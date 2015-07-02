@@ -14,68 +14,99 @@
 /**
  * Main page route.
  */
-Route::get('/', 'StatusController@index');
+Route::get('/', ['as' => 'home', 'uses' => 'StatusController@index']);
 
 /**
  * Status Controller routes.
  */
-Route::get('/status/', ['as' => 'status', 'user' => 'StatusController@index']);
-Route::get('/status/client/{client}', 'StatusController@client');
-Route::get('/status/service/{service}', 'StatusController@service');
-Route::get('/status/server/{server}', 'StatusController@server');
+Route::group(['prefix' => 'status', 'as' => 'status.'], function()
+{
+    Route::get('', ['as' => 'all', 'uses' => 'StatusController@index']);
+    Route::get('client/{client}', ['as' => 'client', 'uses' => 'StatusController@client']);
+    Route::get('service/{service}', ['as' => 'service', 'uses' => 'StatusController@service']);
+    Route::get('server/{server}', ['as' => 'server', 'uses' => 'StatusController@server']);
+});
 
 /**
  * Ticket Controller routes.
  */
-Route::get('/ticket/show/{ticket}', 'TicketController@show');
-Route::get('/ticket/create/{server_check_result}', 'TicketController@create');
-Route::post('/ticket/store', 'TicketController@store');
+Route::group(['prefix' => 'ticket', 'as' => 'ticket.'], function()
+{
+    Route::get('show/{ticket}', ['as' => 'show', 'uses' => 'TicketController@show']);
+    Route::get('create/{server_check_result}', ['as' => 'create', 'uses' => 'TicketController@create']);
+    Route::post('store', ['as' => 'store', 'uses' => 'TicketController@store']);
+});
 
 /**
  * Report Controller routes.
  */
-Route::get('/report/', ['as' => 'report', 'uses' => 'ReportController@index']);
-Route::post('/report/', 'ReportController@index');
+Route::group(['prefix' => 'report', 'as' => 'report'], function()
+{
+    Route::get('', 'ReportController@index');
+    Route::post('', 'ReportController@index');
+});
 
 /**
  * Administration Controllers routes.
  */
-Route::get('/administration/', ['as' => 'administration', 'uses' => 'AdministrationController@index']);
-Route::get('/administration/clients', 'AdministrationController@clients');
-Route::get('/administration/client/enable/{client}', function (Dodona\Client $client) {
-    $client->enable();
-
-    return redirect('administration/clients/');
+Route::group(['prefix' => 'administration', 'as' => 'administration.'], function()
+{
+    Route::get('', ['as' => 'main', 'uses' => 'AdministrationController@index']);
+    Route::get('clients', ['as' => 'clients', 'uses' => 'AdministrationController@clients']);
+    Route::get('services', ['as' => 'services', 'uses' => 'AdministrationController@services']);
+    Route::get('sites', ['as' => 'sites', 'uses' => 'AdministrationController@sites']);
+    Route::get('servers', ['as' => 'servers', 'uses' => 'AdministrationController@servers']);
 });
-Route::get('/administration/client/disable/{client}', function (Dodona\Client $client) {
-    $client->disable();
 
-    return redirect('administration/clients/');
-});
-Route::post('/client/store/', 'Administration\ClientController@store');
-Route::get('/administration/services', 'AdministrationController@services');
-Route::get('/administration/service/enable/{service}', function (Dodona\Service $service) {
-    $service->enable();
+Route::group(['prefix' => 'client', 'as' => 'client.'], function()
+{
+    Route::post('store', ['as' => 'store', 'uses' => 'Administration\ClientController@store']);
+    Route::get('enable/{client}', ['as' => 'enable', 'uses' => function (Dodona\Client $client)
+    {
+        $client->enable();
 
-    return redirect('administration/services/');
-});
-Route::get('/administration/service/disable/{service}', function (Dodona\Service $service) {
-    $service->disable();
+        return redirect('administration/clients/');
+    }]);
+    Route::get('disable/{client}', ['as' => 'disable', 'uses' => function (Dodona\Client $client)
+    {
+        $client->disable();
 
-    return redirect('administration/services/');
+        return redirect('administration/clients/');
+    }]);
 });
-Route::post('/service/store/', 'Administration\ServiceController@store');
-Route::get('/administration/sites', 'AdministrationController@sites');
-Route::post('/site/store/', 'Administration\SiteController@store');
-Route::get('/administration/servers', 'AdministrationController@servers');
-Route::get('/administration/server/enable/{server}', function (Dodona\Server $server) {
-    $server->enable();
 
-    return redirect('administration/servers/');
-});
-Route::get('/administration/server/disable/{server}', function (Dodona\Server $server) {
-    $server->disable();
+Route::group(['prefix' => 'service', 'as' => 'service.'], function()
+{
+    Route::post('store', ['as' => 'store', 'uses' => 'Administration\ServiceController@store']);
+    Route::get('enable/{service}', ['as' => 'enable', 'uses' => function (Dodona\Service $service)
+    {
+        $service->enable();
 
-    return redirect('administration/servers/');
+        return redirect('administration/services');
+    }]);
+    Route::get('disable/{service}', ['as' => 'disable', 'uses' => function (Dodona\Service $service)
+    {
+        $service->disable();
+
+        return redirect('administration/services');
+    }]);
 });
-Route::post('/server/store/', 'Administration\ServerController@store');
+
+Route::post('site/store', ['as' => 'site.store', 'uses' => 'Administration\SiteController@store']);
+
+Route::group(['prefix' => 'server', 'as' => 'server.'], function()
+{
+    Route::post('store', ['as' => 'store', 'uses' => 'Administration\ServerController@store']);
+    Route::get('enable/{server}', ['as' => 'enable', 'uses' => function (Dodona\Server $server)
+    {
+        $server->enable();
+
+        return redirect('administration/servers');
+    }]);
+    Route::get('disable/{server}', ['as' => 'disable', 'uses' => function (Dodona\Server $server)
+    {
+        $server->disable();
+
+        return redirect('administration/servers');
+    }]);
+});
