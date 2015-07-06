@@ -17,5 +17,7 @@
 	{!! HTML::script('js/bootstrap-datetimepicker.min.js') !!}
 
 	<link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
-	
+
+    @if (Request::segment(1) === null or Request::segment(1) === 'status')
 	<meta http-equiv="refresh" content="60">
+    @endif
