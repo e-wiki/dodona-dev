@@ -90,4 +90,6 @@
 			{!! Form::close() !!}
 		</tbody>
 	</table>
+
+    {!! $servers->render() !!}
   @stop

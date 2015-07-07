@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -19,10 +19,10 @@ class ReportLevel extends Model
     /**
      * Get the reports associated with the level.
      *
-     * @return collection of Dodona\Report
+     * @return collection
      */
     public function reports()
     {
-        return $this->hasMany('Dodona\Report');
+        return $this->hasMany('Dodona\Models\Report');
     }
 }

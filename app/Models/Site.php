@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Site Model.
@@ -43,30 +43,30 @@ class Site extends Model
     /**
      * Get the service that owns the site.
      *
-     * @return Dodona\Service
+     * @return Dodona\Models\Service
      */
     public function service()
     {
-        return $this->belongsTo('Dodona\Service');
+        return $this->belongsTo('Dodona\Models\Service');
     }
     
     /**
      * Get the environment the site belongs to.
      *
-     * @return Dodona\Environment
+     * @return Dodona\Models\Environment
      */
     public function environment()
     {
-        return $this->belongsTo('Dodona\Environment');
+        return $this->belongsTo('Dodona\Models\Environment');
     }
     
     /**
      * Get the servers of the site.
      *
-     * @return collection of Dodona\Server
+     * @return collection
      */
     public function servers()
     {
-        return $this->hasMany('Dodona\Server');
+        return $this->hasMany('Dodona\Models\Server');
     }
 }

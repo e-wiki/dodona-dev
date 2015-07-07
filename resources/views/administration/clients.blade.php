@@ -80,4 +80,6 @@
 			{!! Form::close() !!}
 		</tbody>
 	</table>
+
+    {!! $clients->render() !!}
   @stop

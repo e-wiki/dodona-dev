@@ -1,7 +1,7 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
- * Operating System Model.
+ * Database Technology Model.
  *
  * @author  Nikolaos Gaitanis <ngaitanis@gmail.com>
  * @version 1.0.0
@@ -12,13 +12,20 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * OperatingSystem class.
+ * DatabaseTechnology class.
  *
- * Maps the operating_systems table.
+ * Maps the database_technologies table.
  */
-class OperatingSystem extends Model
+class DatabaseTechnology extends Model
 {
     use SoftDeletes;
+
+    /**
+     * No timestamp columns.
+     *
+     * @var boolean
+     */
+    public $timestamps = false;
     
     /**
      * The attributes that should be mutated to dates.
@@ -28,19 +35,12 @@ class OperatingSystem extends Model
     protected $dates = ['deleted_at'];
     
     /**
-     * Get servers with this operating system.
+     * Get servers with this database technology.
      *
-     * @return collection of Dodona\Server
+     * @return collection
      */
     public function servers()
     {
-        return $this->hasMany('Dodona\Server');
+        return $this->hasMany('Dodona\Models\Server');
     }
-    
-    /**
-     * No timestamp columns.
-     *
-     * @var boolean
-     */
-    public $timestamps = false;
 }

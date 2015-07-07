@@ -24,7 +24,7 @@
 	@if (Request::segment(1) === 'administration')
 		<a href="{{ url('/administration/') }}" class="btn btn-default"><span class="fa fa-home"></span></a>
 		
-		<a href="{{ url("administration/" . Request::segment(2)) }}" class="btn btn-default">{{ ucfirst(Request::segment(2)) }} Console</a>
+		<a href="{{ url("administration/" . Request::segment(2)) }}" class="btn btn-default">{{ ucwords(str_replace('_', ' ', Request::segment(2))) }} Console</a>
 	@endif
 	</div>
 

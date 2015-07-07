@@ -56,18 +56,20 @@ Route::group(['prefix' => 'administration', 'as' => 'administration.'], function
     Route::get('services', ['as' => 'services', 'uses' => 'AdministrationController@services']);
     Route::get('sites', ['as' => 'sites', 'uses' => 'AdministrationController@sites']);
     Route::get('servers', ['as' => 'servers', 'uses' => 'AdministrationController@servers']);
+    Route::get('check_modules', ['check_modules', 'uses' => 'AdministrationController@checkModules']);
+    Route::get('checks', ['as' => 'checks', 'uses' => 'AdministrationController@checks']);
 });
 
 Route::group(['prefix' => 'client', 'as' => 'client.'], function()
 {
     Route::post('store', ['as' => 'store', 'uses' => 'Administration\ClientController@store']);
-    Route::get('enable/{client}', ['as' => 'enable', 'uses' => function (Dodona\Client $client)
+    Route::get('enable/{client}', ['as' => 'enable', 'uses' => function (Dodona\Models\Client $client)
     {
         $client->enable();
 
         return redirect('administration/clients/');
     }]);
-    Route::get('disable/{client}', ['as' => 'disable', 'uses' => function (Dodona\Client $client)
+    Route::get('disable/{client}', ['as' => 'disable', 'uses' => function (Dodona\Models\Client $client)
     {
         $client->disable();
 
@@ -78,13 +80,13 @@ Route::group(['prefix' => 'client', 'as' => 'client.'], function()
 Route::group(['prefix' => 'service', 'as' => 'service.'], function()
 {
     Route::post('store', ['as' => 'store', 'uses' => 'Administration\ServiceController@store']);
-    Route::get('enable/{service}', ['as' => 'enable', 'uses' => function (Dodona\Service $service)
+    Route::get('enable/{service}', ['as' => 'enable', 'uses' => function (Dodona\Models\Service $service)
     {
         $service->enable();
 
         return redirect('administration/services');
     }]);
-    Route::get('disable/{service}', ['as' => 'disable', 'uses' => function (Dodona\Service $service)
+    Route::get('disable/{service}', ['as' => 'disable', 'uses' => function (Dodona\Models\Service $service)
     {
         $service->disable();
 
@@ -97,16 +99,20 @@ Route::post('site/store', ['as' => 'site.store', 'uses' => 'Administration\SiteC
 Route::group(['prefix' => 'server', 'as' => 'server.'], function()
 {
     Route::post('store', ['as' => 'store', 'uses' => 'Administration\ServerController@store']);
-    Route::get('enable/{server}', ['as' => 'enable', 'uses' => function (Dodona\Server $server)
+    Route::get('enable/{server}', ['as' => 'enable', 'uses' => function (Dodona\Models\Server $server)
     {
         $server->enable();
 
         return redirect('administration/servers');
     }]);
-    Route::get('disable/{server}', ['as' => 'disable', 'uses' => function (Dodona\Server $server)
+    Route::get('disable/{server}', ['as' => 'disable', 'uses' => function (Dodona\Models\Server $server)
     {
         $server->disable();
 
         return redirect('administration/servers');
     }]);
 });
+
+Route::post('check_module/store', ['as' => 'check_module.store', 'uses' => 'Administration\CheckModuleController@store']);
+
+Route::post('check/store', ['as' => 'check.store', 'uses' => 'Administration\CheckController@store']);

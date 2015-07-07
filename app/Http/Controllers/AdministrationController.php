@@ -10,16 +10,18 @@
 
 namespace Dodona\Http\Controllers;
 
-use Dodona\Check;
-use Dodona\CheckResult;
-use Dodona\Client;
-use Dodona\DatabaseTechnology;
-use Dodona\Environment;
+use Dodona\Models\Check;
+use Dodona\Models\CheckCategory;
+use Dodona\Models\CheckModule;
+use Dodona\Models\CheckResult;
+use Dodona\Models\Client;
+use Dodona\Models\DatabaseTechnology;
+use Dodona\Models\Environment;
 use Dodona\Http\Controllers\Controller;
-use Dodona\OperatingSystem;
-use Dodona\Server;
-use Dodona\Service;
-use Dodona\Site;
+use Dodona\Models\OperatingSystem;
+use Dodona\Models\Server;
+use Dodona\Models\Service;
+use Dodona\Models\Site;
 
 /**
  * Handles the administration of the Dodona Framework.
@@ -29,6 +31,8 @@ class AdministrationController extends Controller
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->middleware('sentry.member:Admins');
     }
 
@@ -38,7 +42,8 @@ class AdministrationController extends Controller
         $services_count = Service::count();
         $sites_count    = Site::count();
         $servers_count  = Server::count();
-        
+
+        $check_modules_count = CheckModule::count();
         $checks_count        = Check::count();
         $check_results_count = CheckResult::count();
         
@@ -48,6 +53,7 @@ class AdministrationController extends Controller
                     'services_count',
                     'sites_count',
                     'servers_count',
+                    'check_modules_count',
                     'checks_count',
                     'check_results_count'
         ));
@@ -55,7 +61,9 @@ class AdministrationController extends Controller
     
     public function clients()
     {
-        $clients = Client::orderBy('name', 'asc')->get();
+        $clients = Client::orderBy('name', 'asc')->paginate($this->items_per_page);
+
+        $clients->setPath('clients');
         
         return view('administration.clients', compact('clients'));
     }
@@ -63,7 +71,9 @@ class AdministrationController extends Controller
     public function services()
     {
         $client_list = Client::lists('name', 'id');
-        $services    = Service::orderBy('name', 'asc')->get();
+        $services    = Service::orderBy('name', 'asc')->paginate($this->items_per_page);
+
+        $services->setPath('services');
         
         return view('administration.services', compact('client_list', 'services'));
     }
@@ -72,7 +82,9 @@ class AdministrationController extends Controller
     {
         $service_list     = Service::lists('name', 'id');
         $environment_list = Environment::lists('name', 'id');
-        $sites            = Site::orderBy('name', 'asc')->get();
+        $sites            = Site::orderBy('name', 'asc')->paginate($this->items_per_page);
+
+        $sites->setPath('sites');
         
         return view('administration.sites', compact('service_list', 'environment_list', 'sites'));
     }
@@ -83,14 +95,40 @@ class AdministrationController extends Controller
         $site_list                = Site::lists('name', 'id');
         $operating_system_list    = OperatingSystem::lists('name', 'id');
         $database_technology_list = DatabaseTechnology::lists('name', 'id');
-        $servers                  = Server::orderBy('name', 'asc')->get();
+        $servers                  = Server::orderBy('name', 'asc')->paginate($this->items_per_page);
+
+        $servers->setPath('servers');
         
         return view('administration.servers', compact(
-                'service_list',
-                'site_list',
-                'operating_system_list',
-                'database_technology_list',
-                'servers'
+            'service_list',
+            'site_list',
+            'operating_system_list',
+            'database_technology_list',
+            'servers'
+        ));
+    }
+
+    public function checkModules()
+    {
+        $check_modules = CheckModule::orderBy('name', 'asc')->paginate($this->items_per_page);
+
+        $check_modules->setPath('check_modules');
+
+        return view('administration.check_modules', compact('check_modules'));
+    }
+
+    public function checks()
+    {
+        $check_categories_list = CheckCategory::lists('name', 'id');
+        $check_modules_list    = CheckModule::lists('name', 'id');
+        $checks                = Check::orderBy('id', 'asc')->paginate($this->items_per_page);
+        
+        $checks->setPath('checks');
+
+        return view('administration.checks', compact(
+            'check_categories_list',
+            'check_modules_list',
+            'checks'
         ));
     }
 }

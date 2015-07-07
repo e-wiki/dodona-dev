@@ -1,12 +1,5 @@
-@extends(config('sentinel.layout'))
+@extends('layouts.default')
 
-{{-- Web site Title --}}
-@section('title')
-    @parent
-    Users
-@stop
-
-{{-- Content --}}
 @section('content')
     <div class="row">
         <div class='page-header'>

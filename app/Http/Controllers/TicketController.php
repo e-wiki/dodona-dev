@@ -12,12 +12,12 @@ namespace Dodona\Http\Controllers;
 use Carbon\Carbon;
 use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\TicketRequest;
-use Dodona\Server;
-use Dodona\ServerCheckResult;
-use Dodona\Ticket;
-use Dodona\TicketCategory;
-use Dodona\TicketPriority;
-use Dodona\TicketType;
+use Dodona\Models\Server;
+use Dodona\Models\ServerCheckResult;
+use Dodona\Models\Ticket;
+use Dodona\Models\TicketCategory;
+use Dodona\Models\TicketPriority;
+use Dodona\Models\TicketType;
 
 /**
  * Handles thes tickets for the Dodona Framework.

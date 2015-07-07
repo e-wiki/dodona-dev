@@ -1,7 +1,7 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
- * Database Technology Model.
+ * Operating System Model.
  *
  * @author  Nikolaos Gaitanis <ngaitanis@gmail.com>
  * @version 1.0.0
@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * DatabaseTechnology class.
+ * OperatingSystem class.
  *
- * Maps the database_technologies table.
+ * Maps the operating_systems table.
  */
-class DatabaseTechnology extends Model
+class OperatingSystem extends Model
 {
     use SoftDeletes;
     
@@ -28,13 +28,13 @@ class DatabaseTechnology extends Model
     protected $dates = ['deleted_at'];
     
     /**
-     * Get servers with this database technology.
+     * Get servers with this operating system.
      *
-     * @return collection of Dodona\Server
+     * @return collection
      */
     public function servers()
     {
-        return $this->hasMany('Dodona\Server');
+        return $this->hasMany('Dodona\Models\Server');
     }
     
     /**

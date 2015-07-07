@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Server model.
@@ -8,9 +8,10 @@
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
-use Dodona\Alert;
-use Dodona\LatestServerCheckResult;
 use DB;
+use Dodona\Models\Alert;
+use Dodona\Interfaces\Enablable;
+use Dodona\Models\LatestServerCheckResult;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
@@ -20,16 +21,9 @@ use Illuminate\Support\Collection;
  *
  * Maps the servers table.
  */
-class Server extends Model
+class Server extends Model implements Enablable
 {
     use SoftDeletes;
-    
-    /**
-     * The attributes that should be mutated to dates.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at'];
     
     /**
      * The attributes that are mass assignable.
@@ -49,19 +43,26 @@ class Server extends Model
     ];
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = ['deleted_at'];
+
+    /**
      * Is the server enabled or not.
      *
      * @return boolean
      */
     public function isEnabled()
     {
-        return ($this->enabled === 1) ? true : false;
+        return ($this->enabled === 1);
     }
     
     /**
      * Get the service the server belongs to.
      *
-     * @return Dodona\Service
+     * @return Dodona\Models\Service
      */
     public function service()
     {
@@ -71,47 +72,47 @@ class Server extends Model
     /**
      * Get the site the server belongs to.
      *
-     * @return Dodona\Site
+     * @return Dodona\Models\Site
      */
     public function site()
     {
-        return $this->belongsTo('Dodona\Site');
+        return $this->belongsTo('Dodona\Models\Site');
     }
     
     /**
      * Get the operating system of the server.
      *
-     * @return Dodona\OperatingSystem
+     * @return Dodona\Models\OperatingSystem
      */
     public function operatingSystem()
     {
-        return $this->belongsTo('Dodona\OperatingSystem');
+        return $this->belongsTo('Dodona\Models\OperatingSystem');
     }
     
     /**
      * Get the database technology of the server.
      *
-     * @return Dodona\DatabaseTechnology
+     * @return Dodona\Models\DatabaseTechnology
      */
     public function databaseTechnology()
     {
-        return $this->belongsTo('Dodona\DatabaseTechnology');
+        return $this->belongsTo('Dodona\Models\DatabaseTechnology');
     }
     
     /**
      * Get the server's check results.
      *
-     * @return collection of Dodona\ServerCheckResult
+     * @return collection
      */
     public function serverCheckResults()
     {
-        return $this->hasMany('Dodona\ServerCheckResult');
+        return $this->hasMany('Dodona\Models\ServerCheckResult');
     }
     
     /**
      * Get the latest server's check results.
      *
-     * @return \Dodona\ServerCheckResult
+     * @return Dodona\Models\ServerCheckResult
      */
     public function latestServerCheckResults($check_category_id = null)
     {
@@ -136,7 +137,7 @@ class Server extends Model
      *
      * @param type $check
      * @param type $check_category_id
-     * @return LatestServerCheckResult
+     * @return Dodona\Models\LatestServerCheckResult
      */
     private function _returnCategoryCheckResult($check, $check_category_id = null)
     {
@@ -156,7 +157,7 @@ class Server extends Model
     /**
      * Get the server's area alert level.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function areaStatus($area_id)
     {
@@ -184,7 +185,7 @@ class Server extends Model
     /**
      * Get the server's capacity status.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function capacityStatus()
     {
@@ -194,7 +195,7 @@ class Server extends Model
     /**
      * Get the server's recoverability status.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function recoverabilityStatus()
     {
@@ -204,7 +205,7 @@ class Server extends Model
     /**
      * Get the server's availability status.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function availabilityStatus()
     {
@@ -214,7 +215,7 @@ class Server extends Model
     /**
      * Get the server's performance status.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function performanceStatus()
     {
@@ -225,14 +226,14 @@ class Server extends Model
      * Initialise the result for the areaStatus.
      *
      * @param integer $count
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     private function _initializeAreaResult($count)
     {
+        $result = Alert::find(Alert::BLUE);
+        
         if ($count > 0) {
             $result = Alert::find(Alert::GREEN);
-        } else {
-            $result = Alert::find(Alert::BLUE);
         }
         
         return $result;
@@ -241,11 +242,11 @@ class Server extends Model
     /**
      * Get the server's tickets.
      *
-     * @return collection of Dodona\Ticket
+     * @return collection
      */
     public function tickets()
     {
-        return $this->hasManyThrough('Dodona\Ticket', 'Dodona\ServerCheckResult');
+        return $this->hasManyThrough('Dodona\Models\Ticket', 'Dodona\Models\ServerCheckResult');
     }
     
     /**

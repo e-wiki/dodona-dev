@@ -4,7 +4,7 @@ namespace Dodona\Http\Controllers\Administration;
 
 use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\ServiceRequest;
-use Dodona\Service;
+use Dodona\Models\Service;
 
 class ServiceController extends Controller
 {

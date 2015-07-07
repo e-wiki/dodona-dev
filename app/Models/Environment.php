@@ -1,6 +1,4 @@
-<?php
-
-namespace Dodona;
+<?php namespace Dodona\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -34,6 +32,6 @@ class Environment extends Model
      */
     public function sites()
     {
-        return $this->hasMany('Dodona\Site');
+        return $this->hasMany('Dodona\Models\Site');
     }
 }

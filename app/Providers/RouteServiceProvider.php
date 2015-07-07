@@ -28,12 +28,12 @@ class RouteServiceProvider extends ServiceProvider
 
         parent::boot($router);
         
-        $router->model('client',  'Dodona\Client');
-        $router->model('service', 'Dodona\Service');
-        $router->model('server',  'Dodona\Server');
+        $router->model('client',  'Dodona\Models\Client');
+        $router->model('service', 'Dodona\Models\Service');
+        $router->model('server',  'Dodona\Models\Server');
         
-        $router->model('ticket',              'Dodona\Ticket');
-        $router->model('server_check_result', 'Dodona\ServerCheckResult');
+        $router->model('ticket',              'Dodona\Models\Ticket');
+        $router->model('server_check_result', 'Dodona\Models\ServerCheckResult');
     }
 
     /**

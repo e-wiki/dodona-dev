@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Ticket Type Model.
@@ -29,10 +29,20 @@ class TicketType extends Model
     /**
      * Get tickets of this priority.
      *
-     * @return collection of Dodona\Ticket
+     * @return collection
      */
     public function tickets()
     {
-        return $this->hasMany('Dodona\Ticket');
+        return $this->hasMany('Dodona\Models\Ticket');
+    }
+
+    /**
+     * Get the server results of this type.
+     *
+     * @return collection
+     */
+    public function serverCheckResults()
+    {
+        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\Ticket');
     }
 }

@@ -2,15 +2,14 @@
 
 namespace Dodona\Http\Controllers;
 
-use Carbon\Carbon;
-use Dodona\Client;
+use Carbon\Models\Carbon;
+use Dodona\Models\Client;
 use Dodona\Http\Controllers\Controller;
-use Dodona\Report;
-use Dodona\ReportLevel;
-use Dodona\ReportType;
-use Dodona\Site;
-use Dodona\Server;
-use Dodona\Service;
+use Dodona\Models\ReportLevel;
+use Dodona\Models\ReportType;
+use Dodona\Models\Site;
+use Dodona\Models\Server;
+use Dodona\Models\Service;
 #use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request;
 

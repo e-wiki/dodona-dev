@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Alert Model.
@@ -28,25 +28,31 @@ class Alert extends Model
      * @var array
      */
     protected $fillable = [ 'id', 'name', ];
-    
+
+    /**
+     * Mapped table has no automatic timestamp fields.
+     *
+     * @var boolean
+     */
     public $timestamps = false;
 
     /**
      * Get the check results of this alert level.
-     * @return collection of Dodona\CheckResult
+     *
+     * @return collection
      */
     public function checkResults()
     {
-        return $this->hasMany('Dodona\CheckResult');
+        return $this->hasMany('Dodona\Models\CheckResult');
     }
     
     /**
      * Get the server check results of this alert level.
      *
-     * @return collection of Dodona\ServerCheckResults
+     * @return collection
      */
     public function serverCheckResults()
     {
-        return $this->checkResults()->getResults()->serverCheckResults;
+        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\CheckResult');
     }
 }

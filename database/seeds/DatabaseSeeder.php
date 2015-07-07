@@ -7,24 +7,24 @@
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
-use Dodona\Alert;
-use Dodona\Check;
-use Dodona\CheckCategory;
-use Dodona\CheckModule;
-use Dodona\CheckResult;
-use Dodona\Client;
-use Dodona\DatabaseTechnology;
-use Dodona\Environment;
-use Dodona\OperatingSystem;
-use Dodona\ReportLevel;
-use Dodona\ReportType;
-use Dodona\Server;
-use Dodona\ServerCheckResult;
-use Dodona\Service;
-use Dodona\Site;
-use Dodona\TicketCategory;
-use Dodona\TicketPriority;
-use Dodona\TicketType;
+use Dodona\Models\Alert;
+use Dodona\Models\Check;
+use Dodona\Models\CheckCategory;
+use Dodona\Models\CheckModule;
+use Dodona\Models\CheckResult;
+use Dodona\Models\Client;
+use Dodona\Models\DatabaseTechnology;
+use Dodona\Models\Environment;
+use Dodona\Models\OperatingSystem;
+use Dodona\Models\ReportLevel;
+use Dodona\Models\ReportType;
+use Dodona\Models\Server;
+use Dodona\Models\ServerCheckResult;
+use Dodona\Models\Service;
+use Dodona\Models\Site;
+use Dodona\Models\TicketCategory;
+use Dodona\Models\TicketPriority;
+use Dodona\Models\TicketType;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 

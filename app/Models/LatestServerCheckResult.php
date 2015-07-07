@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Latest Server Check Result Model.
@@ -17,13 +17,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class LatestServerCheckResult extends Model
 {
+
     /**
-     * The attributes that should be mutated to dates.
+     * The table associated with the model.
      *
-     * @var array
+     * @var string
      */
-    protected $dates = ['raised_at'];
-    
+    protected $table = 'v_latest_server_check_results';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -40,71 +41,71 @@ class LatestServerCheckResult extends Model
     ];
 
     /**
-     * The table associated with the model.
+     * The attributes that should be mutated to dates.
      *
-     * @var string
+     * @var array
      */
-    protected $table = 'v_latest_server_check_results';
+    protected $dates = ['raised_at'];
     
     public $timestamps = false;
     
     /**
      * Get the server the server result belongs to.
      *
-     * @return Dodona\Server
+     * @return Dodona\Models\Server
      */
     public function server()
     {
-        return $this->belongsTo('Dodona\Server');
+        return $this->belongsTo('Dodona\Models\Server');
     }
     
     /**
      * Get the check result.
      *
-     * @return Dodona\CheckResult
+     * @return Dodona\Models\CheckResult
      */
     public function checkResult()
     {
-        return $this->belongsTo('Dodona\CheckResult');
+        return $this->belongsTo('Dodona\Models\CheckResult');
     }
     
     /**
      * Get the check the server result belongs to.
      *
-     * @return Dodona\Check
+     * @return Dodona\Models\Check
      */
     public function check()
     {
-        return $this->belongsTo('Dodona\Check');
+        return $this->belongsTo('Dodona\Models\Check');
     }
 
     /**
      * Get the server result's parent.
      *
-     * @return Dodona\ServerCheckResult
+     * @return Dodona\Models\ServerCheckResult
      */
     public function serverCheckResult()
     {
-        return $this->belongsTo('Dodona\ServerCheckResult');
+        return $this->belongsTo('Dodona\Models\ServerCheckResult');
     }
     
     /**
      * Get the server results owned by this server result.
      *
-     * @return collection of Dodona\ServerCheckResult
+     * @return collection
      */
     public function serverCheckResults()
     {
-        return $this->hasMany('Dodona\ServerCheckResult');
+        return $this->hasMany('Dodona\Models\ServerCheckResult');
     }
         
     /**
      * Get the server's check result ticket.
      *
-     * @return Dodona\Ticket
+     * @return Dodona\Models\Ticket
      */
     public function ticket()
     {
-        return $this->hasOne('Dodona\Ticket');
+        return $this->hasOne('Dodona\Models\Ticket');
     }
 }

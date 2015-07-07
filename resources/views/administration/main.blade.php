@@ -13,7 +13,8 @@
 	</div>
 	
 	<div class="list-group col-lg-4">
-		<a href="#" class="list-group-item disabled">Manage Checks<span class="badge badge-info">{{ $checks_count }}</span></a>
+		<a href="{{ url('administration/check_modules') }}" class="list-group-item">Manage Check Modules<span class="badge badge-info">{{ $check_modules_count }}</span></a>
+		<a href="{{ url('administration/checks') }}" class="list-group-item">Manage Checks<span class="badge badge-info">{{ $checks_count }}</span></a>
 		<a href="#" class="list-group-item disabled">Manage Check Results<span class="badge badge-info">{{ $check_results_count }}</span></a>
 	</div>
 	

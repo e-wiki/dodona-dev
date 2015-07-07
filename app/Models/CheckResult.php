@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Check Result Model.
@@ -37,30 +37,40 @@ class CheckResult extends Model
     /**
      * Get the check the result belongs to.
      *
-     * @return Dodona\Check
+     * @return Dodona\Models\Check
      */
     public function check()
     {
-        return $this->belongsTo('Dodona\Check');
+        return $this->belongsTo('Dodona\Models\Check');
     }
     
     /**
      * Get the alert the check result belongs to.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function alert()
     {
-        return $this->belongsTo('Dodona\Alert');
+        return $this->belongsTo('Dodona\Models\Alert');
     }
     
     /**
      * Get the server check results for this check result.
      *
-     * @return collection of Dodona\ServerCheckResult
+     * @return collection
      */
     public function serverCheckResults()
     {
-        return $this->hasMany('Dodona\ServerCheckResult');
+        return $this->hasMany('Dodona\Models\ServerCheckResult');
+    }
+
+    /**
+     * Get the tickets for this check result.
+     * 
+     * @return collection
+     */
+    public function tickets()
+    {
+        return $this->hasManyThrough('Dodona\Models\Ticket', 'Dodona\Models\ServerCheckResult');
     }
 }

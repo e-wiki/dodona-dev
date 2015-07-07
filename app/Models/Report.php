@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -7,20 +7,20 @@ class Report extends Model
     /**
      * Get the level of the report.
      *
-     * @return Dodona\ReportLevel
+     * @return Dodona\Models\ReportLevel
      */
     public function level()
     {
-        return $this->belongsTo('Dodona\ReportLevel');
+        return $this->belongsTo('Dodona\Models\ReportLevel');
     }
     
     /**
      * Get the type of the report.
      *
-     * @return Dodona\ReportType
+     * @return Dodona\Models\ReportType
      */
     public function type()
     {
-        return $this->belongsTo('Dodona\ReportType');
+        return $this->belongsTo('Dodona\Models\ReportType');
     }
 }

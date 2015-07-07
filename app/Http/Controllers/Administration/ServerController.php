@@ -4,7 +4,7 @@ namespace Dodona\Http\Controllers\Administration;
 
 use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\ServerRequest;
-use Dodona\Server;
+use Dodona\Models\Server;
 
 class ServerController extends Controller
 {

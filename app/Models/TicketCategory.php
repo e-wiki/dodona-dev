@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Ticket Category Model.
@@ -29,10 +29,20 @@ class TicketCategory extends Model
     /**
      * Get tickets of this category.
      *
-     * @return collection of Dodona\Ticket
+     * @return collection
      */
     public function tickets()
     {
-        return $this->hasMany('Dodona\Ticket');
+        return $this->hasMany('Dodona\Models\Ticket');
+    }
+
+    /**
+     * Get the server results of this category.
+     *
+     * @return collection
+     */
+    public function serverCheckResults()
+    {
+        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\Ticket');
     }
 }

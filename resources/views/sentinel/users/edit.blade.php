@@ -1,14 +1,6 @@
-@extends(config('sentinel.layout'))
+@extends('layouts.default')
 
-{{-- Web site Title --}}
-@section('title')
-@parent
-Edit Profile
-@stop
-
-{{-- Content --}}
 @section('content')
-
 <?php
     // Pull the custom fields from config
     $isProfileUpdate = ($user->email == Sentry::getUser()->email);

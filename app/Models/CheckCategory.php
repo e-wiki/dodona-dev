@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Check Category Model.
@@ -39,20 +39,20 @@ class CheckCategory extends Model
     /**
      * Get the checks of this category.
      *
-     * @return collection of Dodona\Check
+     * @return collection
      */
     public function checks()
     {
-        return $this->hasMany('Dodona\Check');
+        return $this->hasMany('Dodona\Models\Check');
     }
     
     /**
      * Get the check results of this category.
      *
-     * @return collection of Dodona\CheckResult
+     * @return collection
      */
     public function checkResults()
     {
-        return $this->hasManyThrough('Dodona\CheckResult', 'Dodona\Check');
+        return $this->hasManyThrough('Dodona\Models\CheckResult', 'Dodona\Models\Check');
     }
 }

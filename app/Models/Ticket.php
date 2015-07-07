@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Ticket Model.
@@ -45,11 +45,11 @@ class Ticket extends Model
     /**
      * Get the server check results related to the ticket.
      *
-     * @return collection of Dodona\ServerCheckResult
+     * @return collection
      */
     public function serverCheckResults()
     {
-        return $this->hasMany('Dodona\ServerCheckResult');
+        return $this->hasMany('Dodona\Models\ServerCheckResult');
     }
     
     /**
@@ -58,43 +58,43 @@ class Ticket extends Model
      */
     public function serverCheckResult()
     {
-        return $this->belongsTo('Dodona\ServerCheckResult');
+        return $this->belongsTo('Dodona\Models\ServerCheckResult');
     }
     
     /**
      * Get the category of the ticket.
      *
-     * @return Dodona\TicketCategory
+     * @return Dodona\Models\TicketCategory
      */
     public function ticketCategory()
     {
-        return $this->belongsTo('Dodona\TicketCategory');
+        return $this->belongsTo('Dodona\Models\TicketCategory');
     }
     
     /**
      * Get the priority of the ticket.
      *
-     * @return Dodona\TicketPriority
+     * @return Dodona\Models\TicketPriority
      */
     public function ticketPriority()
     {
-        return $this->belongsTo('Dodona\TicketPriority');
+        return $this->belongsTo('Dodona\Models\TicketPriority');
     }
     
     /**
      * Get the type of the ticket.
      *
-     * @return Dodona\TicketType
+     * @return Dodona\Models\TicketType
      */
     public function ticketType()
     {
-        return $this->belongsTo('Dodona\TicketType');
+        return $this->belongsTo('Dodona\Models\TicketType');
     }
     
     /**
      * Get the server the ticket belongs to.
      *
-     * @return Dodona\Server
+     * @return Dodona\Models\Server
      */
     public function server()
     {

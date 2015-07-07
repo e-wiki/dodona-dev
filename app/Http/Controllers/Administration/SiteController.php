@@ -4,7 +4,7 @@ namespace Dodona\Http\Controllers\Administration;
 
 use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\SiteRequest;
-use Dodona\Site;
+use Dodona\Models\Site;
 
 class SiteController extends Controller
 {

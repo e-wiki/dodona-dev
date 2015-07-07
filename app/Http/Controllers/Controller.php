@@ -10,9 +10,11 @@ abstract class Controller extends BaseController
 {
     use DispatchesJobs, ValidatesRequests;
 
+    public $items_per_page;
+
     public function __construct()
     {
-        #$this->middleware('sentry.auth');
+        $this->items_per_page = (int) getenv('ITEMS_PER_PAGE');
     }
 
 }

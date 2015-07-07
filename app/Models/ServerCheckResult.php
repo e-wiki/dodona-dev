@@ -1,4 +1,4 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
  * Server Check Result Model.
@@ -44,60 +44,60 @@ class ServerCheckResult extends Model
     /**
      * Get the server the server result belongs to.
      *
-     * @return Dodona\Server
+     * @return Dodona\Models\Server
      */
     public function server()
     {
-        return $this->belongsTo('Dodona\Server');
+        return $this->belongsTo('Dodona\Models\Server');
     }
     
     /**
      * Get the check result.
      *
-     * @return Dodona\CheckResult
+     * @return Dodona\Models\CheckResult
      */
     public function checkResult()
     {
-        return $this->belongsTo('Dodona\CheckResult');
+        return $this->belongsTo('Dodona\Models\CheckResult');
     }
     
     /**
      * Get the check the server result belongs to.
      *
-     * @return Dodona\Check
+     * @return Dodona\Models\Check
      */
     public function check()
     {
-        return $this->belongsTo('Dodona\Check');
+        return $this->belongsTo('Dodona\Models\Check');
     }
 
     /**
      * Get the server result's parent.
      *
-     * @return Dodona\ServerCheckResult
+     * @return Dodona\Models\ServerCheckResult
      */
     public function serverCheckResult()
     {
-        return $this->belongsTo('Dodona\ServerCheckResult');
+        return $this->belongsTo('Dodona\Models\ServerCheckResult');
     }
     
     /**
      * Get the server results owned by this server result.
      *
-     * @return collection of Dodona\ServerCheckResult
+     * @return collection
      */
     public function serverCheckResults()
     {
-        return $this->hasMany('Dodona\ServerCheckResult');
+        return $this->hasMany('Dodona\Models\ServerCheckResult');
     }
         
     /**
      * Get the server's check result ticket.
      *
-     * @return Dodona\Ticket
+     * @return Dodona\Models\Ticket
      */
     public function ticket()
     {
-        return $this->hasOne('Dodona\Ticket');
+        return $this->hasOne('Dodona\Models\Ticket');
     }
 }

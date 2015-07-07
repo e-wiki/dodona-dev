@@ -1,24 +1,26 @@
-<?php namespace Dodona;
+<?php namespace Dodona\Models;
 
 /**
- * Service model.
+ * Client model.
  *
  * @author  Nikolaos Gaitanis <ngaitanis@gmail.com>
  * @version 1.0.0
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
-use Dodona\Alert;
-use Dodona\CheckCategory;
+use Dodona\Models\Alert;
+use Dodona\Models\CheckCategory;
+use Dodona\Interfaces\Enablable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
- * Service class.
+ * Client class.
  *
- * Maps the services table.
+ * Maps the clients table.
  */
-class Service extends Model
+class Client extends Model implements Enablable
 {
     use SoftDeletes;
     
@@ -34,80 +36,89 @@ class Service extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'name', 'enabled', 'description', 'client_id'];
+    protected $fillable = ['id', 'name', 'enabled', 'description'];
 
     /**
-     * Is the service enabled or not.
+     * Is the client enabled or not.
      *
      * @return boolean
      */
     public function isEnabled()
     {
-        return ($this->enabled === 1) ? true : false;
+        return ($this->enabled === 1);
     }
-    
+
     /**
-     * Get all enabled services.
+     * Get all enabled clients.
      *
-     * @return collection of Dodona\Service
+     * @return collection
      */
     public static function getEnabled()
     {
-        return Service::where('enabled', 1)->get();
+        return Client::where('enabled', 1)->get();
     }
     
     /**
-     * Get the client that owns the service.
+     * Get the services of the client.
      *
-     * @return Dodona\Client
+     * @return collection
      */
-    public function client()
+    public function services()
     {
-        return $this->belongsTo('Dodona\Client');
+        return $this->hasMany('Dodona\Models\Service');
     }
     
     /**
-     * Get the sites of the service.
+     * Get the enabled services of the client.
      *
-     * @return collection of Dodona\Site
+     * @return collection
+     */
+    public function enabledServices()
+    {
+        return $this->services()->where('enabled', 1)->get();
+    }
+    
+    /**
+     * Get the sites of the client.
+     *
+     * @return collection
      */
     public function sites()
     {
-        return $this->hasMany('Dodona\Site');
+        return $this->hasManyThrough('Dodona\Models\Site', 'Dodona\Models\Service');
     }
     
     /**
-     * Get the servers of the service.
+     * Get the servers of the client.
      *
-     * @return collection of Dodona\Server
+     * @return Collection
      */
     public function servers()
     {
-        return $this->hasManyThrough('Dodona\Server', 'Dodona\Site');
-    }
-    /**
-     * Get the enabled servers of the service.
-     *
-     * @return collection of Dodona\Server
-     */
-    public function enabledServers()
-    {
-        return $this->servers()->where('enabled', 1)->get();
+        $result = new Collection;
+        
+        foreach ($this->sites as $site) {
+            foreach ($site->servers as $server) {
+                $result->push($server);
+            }
+        }
+        
+        return $result;
     }
     
     /**
-     * Get the service's area alert level.
+     * Get the client's area alert level.
      *
-     * @return Dodona\Alert
+     * @return Alert
      */
     public function areaStatus($check_category_id)
     {
         $result = Alert::find(Alert::BLUE);
         
-        $servers = $this->enabledServers();
+        $services = $this->enabledServices();
         
-        foreach ($servers as $server) {
-            $status = $this->_pickStatusArea($server, $check_category_id);
+        foreach ($services as $service) {
+            $status = $this->_pickStatusArea($service, $check_category_id);
             
             if ($status->id === Alert::RED) {
                 $result = Alert::find(Alert::RED);
@@ -130,30 +141,30 @@ class Service extends Model
     /**
      * Returns the status area result depending on the check category id.
      *
-     * @param Dodona\Server $server
+     * @param Service $service
      * @param char $check_category_id
      * @return char
      */
-    private function _pickStatusArea($server, $check_category_id)
+    private function _pickStatusArea($service, $check_category_id)
     {
         switch ($check_category_id) {
             case CheckCategory::CAPACITY_ID:
-                return $server->capacityStatus();
+                return $service->capacityStatus();
             case CheckCategory::RECOVERABILITY_ID:
-                return $server->recoverabilityStatus();
+                return $service->recoverabilityStatus();
             case CheckCategory::AVAILABILITY_ID:
-                return $server->availabilityStatus();
+                return $service->availabilityStatus();
             case CheckCategory::PERFORMANCE_ID:
-                return $server->performanceStatus();
+                return $service->performanceStatus();
             default:
                 return Alert::BLUE;
         }
     }
     
     /**
-     * Get the service's capacity status.
+     * Get the client's capacity status.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function capacityStatus()
     {
@@ -161,9 +172,9 @@ class Service extends Model
     }
     
     /**
-     * Get the service's recoverability status.
+     * Get the client's recoverability status.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function recoverabilityStatus()
     {
@@ -171,9 +182,9 @@ class Service extends Model
     }
     
     /**
-     * Get the service's availability status.
+     * Get the client's availability status.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function availabilityStatus()
     {
@@ -181,9 +192,9 @@ class Service extends Model
     }
     
     /**
-     * Get the service's performance status.
+     * Get the client's performance status.
      *
-     * @return Dodona\Alert
+     * @return Dodona\Models\Alert
      */
     public function performanceStatus()
     {
@@ -191,26 +202,24 @@ class Service extends Model
     }
     
     /**
-     * Enable the service and its client.
+     * Enable the Client, but not its services.
      */
     public function enable()
     {
         $this->enabled = true;
         $this->save();
-        
-        $this->client->enable();
     }
     
     /**
-     * Disable the service, and its servers.
+     * Disable the client and its services.
      */
     public function disable()
     {
         $this->enabled = false;
         $this->save();
         
-        foreach ($this->servers as $server) {
-            $server->disable();
+        foreach ($this->services as $service) {
+            $service->disable();
         }
     }
 }

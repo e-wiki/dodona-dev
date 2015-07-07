@@ -36,7 +36,7 @@
 				<td class="col-lg-5">{{ $check->checkResult->name }}</td>
 				<td class="col-lg-2">{{ $check->raised_at }}</td>
 				<td class="col-lg-1 ">
-					@if($check->checkResult->alert_id === \Dodona\Alert::AMBER or $check->checkResult->alert_id === \Dodona\Alert::RED)
+					@if($check->checkResult->alert_id === \Dodona\Models\Alert::AMBER or $check->checkResult->alert_id === \Dodona\Models\Alert::RED)
 						@if(empty($check->ticket_id))
 						<a href="{{ action('TicketController@create', [$check->id]) }}" class="btn btn-primary btn-xs btn-block"><span class="fa fa-ticket"></span>&nbsp;Create Ticket</a>
 						@else

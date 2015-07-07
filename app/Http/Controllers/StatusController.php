@@ -8,11 +8,11 @@
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
-use Dodona\CheckCategory;
-use Dodona\Client;
+use Dodona\Models\CheckCategory;
+use Dodona\Models\Client;
 use Dodona\Http\Controllers\Controller;
-use Dodona\Server;
-use Dodona\Service;
+use Dodona\Models\Server;
+use Dodona\Models\Service;
 
 /**
  * Handles the status capabilities of the Dodona Framework.

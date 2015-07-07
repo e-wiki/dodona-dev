@@ -2,7 +2,7 @@
 
 namespace Dodona\Http\Controllers\Administration;
 
-use Dodona\Client;
+use Dodona\Models\Client;
 use Dodona\Http\Requests\ClientRequest;
 use Dodona\Http\Controllers\Controller;
 

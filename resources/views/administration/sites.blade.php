@@ -61,4 +61,6 @@
 			{!! Form::close() !!}
 		</tbody>
 	</table>
+
+    {!! $sites->render() !!}
   @stop

@@ -85,4 +85,6 @@
 			{!! Form::close() !!}
 		</tbody>
 	</table>
+
+    {!! $services->render() !!}
 @stop
