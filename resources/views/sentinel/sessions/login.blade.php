@@ -1,18 +1,12 @@
-@extends(config('sentinel.layout'))
+@extends('layouts.default')
 
-{{-- Web site Title --}}
-@section('title')
-Log In
-@stop
-
-{{-- Content --}}
 @section('content')
-<div class="row">
-    <div class="col-md-4 col-md-offset-4">
+    <div class="col-lg-4 col-lg-offset-4">
+        <h1 class="text-center">Dodona Framework</h1>
+
+        <br>
+
         <form method="POST" action="{{ route('sentinel.session.store') }}" accept-charset="UTF-8">
-
-            <h2 class="form-signin-heading">Sign In</h2>
-
             <div class="form-group {{ ($errors->has('email')) ? 'has-error' : '' }}">
                 <input class="form-control" placeholder="Email" autofocus="autofocus" name="email" type="text" value="{{ Input::old('email') }}">
                 {{ ($errors->has('email') ? $errors->first('email') : '') }}
@@ -23,16 +17,13 @@ Log In
                 {{ ($errors->has('password') ?  $errors->first('password') : '') }}
             </div>
 
-            <label class="checkbox">
-                <input name="rememberMe" value="rememberMe" type="checkbox"> Remember Me
-            </label>
-
             <input name="_token" value="{{ csrf_token() }}" type="hidden">
-            <input class="btn btn-primary" value="Sign In" type="submit">
-            <a class="btn btn-link" href="{{ route('sentinel.forgot.form') }}">Forgot Password</a>
+
+            <div class="col-lg-8 col-lg-offset-2">
+                <input class="btn btn-primary btn-block" value="Sign In" type="submit">
+            </div>
 
         </form>
     </div>
-</div>
 
 @stop

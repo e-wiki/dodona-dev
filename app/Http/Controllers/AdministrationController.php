@@ -10,6 +10,8 @@
 
 namespace Dodona\Http\Controllers;
 
+use Dodona\Http\Controllers\Controller;
+use Dodona\Models\Alert;
 use Dodona\Models\Check;
 use Dodona\Models\CheckCategory;
 use Dodona\Models\CheckModule;
@@ -17,7 +19,6 @@ use Dodona\Models\CheckResult;
 use Dodona\Models\Client;
 use Dodona\Models\DatabaseTechnology;
 use Dodona\Models\Environment;
-use Dodona\Http\Controllers\Controller;
 use Dodona\Models\OperatingSystem;
 use Dodona\Models\Server;
 use Dodona\Models\Service;
@@ -129,6 +130,23 @@ class AdministrationController extends Controller
             'check_categories_list',
             'check_modules_list',
             'checks'
+        ));
+    }
+
+    public function checkResults()
+    {
+        $checks_list   = Check::lists('name', 'id');
+        $alerts_list   = Alert::lists('name', 'id');
+        $check_results = CheckResult::orderBy('id', 'asc')->paginate($this->items_per_page);
+
+        $check_results->setPath('check_results');
+
+        #return $check_results;
+
+        return view('administration.check_results', compact(
+            'checks_list',
+            'alerts_list',
+            'check_results'
         ));
     }
 }

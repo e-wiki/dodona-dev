@@ -380,7 +380,7 @@ class ChecksTableSeeder extends Seeder
         Check::create(['id' => 'ANL001', 'name' => 'Process Running', 'check_category_id' => 'A', 'check_module_id' => 2]);
         Check::create(['id' => 'ANL002', 'name' => 'Locked Files', 'check_category_id' => 'A', 'check_module_id' => 2]);
         Check::create(['id' => 'ANL003', 'name' => 'Rejected Files', 'check_category_id' => 'A', 'check_module_id' => 2]);
-        Check::create(['id' => 'AOL001', 'name' => 'Connection Availability', 'check_category_id' => 'A', 'check_module_id' => 1]);
+        Check::create(['id' => 'AOL003', 'name' => 'Connection Availability', 'check_category_id' => 'A', 'check_module_id' => 1]);
         Check::create(['id' => 'ASW001', 'name' => 'Instance Availability', 'check_category_id' => 'A', 'check_module_id' => 1]);
         Check::create(['id' => 'ASW002', 'name' => 'Agent Availability', 'check_category_id' => 'A', 'check_module_id' => 1]);
         Check::create(['id' => 'ASW003', 'name' => 'Offline Databases', 'check_category_id' => 'A', 'check_module_id' => 1]);

@@ -58,6 +58,7 @@ Route::group(['prefix' => 'administration', 'as' => 'administration.'], function
     Route::get('servers', ['as' => 'servers', 'uses' => 'AdministrationController@servers']);
     Route::get('check_modules', ['check_modules', 'uses' => 'AdministrationController@checkModules']);
     Route::get('checks', ['as' => 'checks', 'uses' => 'AdministrationController@checks']);
+    Route::get('check_results', ['as' => 'check_results', 'uses' => 'AdministrationController@checkResults']);
 });
 
 Route::group(['prefix' => 'client', 'as' => 'client.'], function()
@@ -116,3 +117,5 @@ Route::group(['prefix' => 'server', 'as' => 'server.'], function()
 Route::post('check_module/store', ['as' => 'check_module.store', 'uses' => 'Administration\CheckModuleController@store']);
 
 Route::post('check/store', ['as' => 'check.store', 'uses' => 'Administration\CheckController@store']);
+
+Route::post('check_result/store', ['as' => 'check_result.store', 'uses' => 'Administration\CheckResultController@store']);

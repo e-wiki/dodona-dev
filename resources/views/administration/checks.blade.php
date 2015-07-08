@@ -52,7 +52,7 @@
 						@endif
 					</div>
 				</td>
-				<td class="col-lg-3">{!! Form::select('check_category_id', $check_categories_list, Input::old('check-category_id'), ['class' => 'form-control']) !!}</td>
+				<td class="col-lg-3">{!! Form::select('check_category_id', $check_categories_list, Input::old('check_category_id'), ['class' => 'form-control']) !!}</td>
 				<td class="col-lg-3">{!! Form::select('check_module_id', $check_modules_list, Input::old('check_module_id'), ['class' => 'form-control']) !!}</td>
 				<td colspan="1" class="col-lg-2">{!! Form::submit('Add Check', ['class' => 'btn btn-primary btn-block']) !!}</td>
 			</tr>

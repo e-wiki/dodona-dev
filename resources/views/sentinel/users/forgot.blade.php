@@ -1,12 +1,5 @@
-@extends(config('sentinel.layout'))
+@extends('layouts.default')
 
-{{-- Web site Title --}}
-@section('title')
-@parent
-Forgot Password
-@stop
-
-{{-- Content --}}
 @section('content')
 <div class="row">
     <div class="col-md-4 col-md-offset-4">

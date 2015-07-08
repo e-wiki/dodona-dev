@@ -14,6 +14,8 @@ abstract class Controller extends BaseController
 
     public function __construct()
     {
+        $this->middleware('sentry.auth');
+
         $this->items_per_page = (int) getenv('ITEMS_PER_PAGE');
     }
 

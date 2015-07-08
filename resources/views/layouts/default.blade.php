@@ -5,8 +5,10 @@
 </head>
 
 <body>
-	
-	@include('includes.header')
+
+    @if (Sentry::check())
+        @include('includes.header')
+    @endif
 	
 	<article class="col-lg-12 main-template">
 	@yield('content')

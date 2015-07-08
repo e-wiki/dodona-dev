@@ -15,6 +15,7 @@
 	{!! HTML::script('js/bootstrap.min.js') !!}
 	{!! HTML::script('js/moment-with-locales.min.js') !!}
 	{!! HTML::script('js/bootstrap-datetimepicker.min.js') !!}
+    {!! HTML::script('js/restfulizer.js') !!}
 
 	<link rel="icon" href="{{ asset('favicon.png') }}" type="image/png">
 

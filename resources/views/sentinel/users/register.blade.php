@@ -1,8 +1,4 @@
-@extends(config('sentinel.layout'))
-
-@section('title')
-Register
-@stop
+@extends('layouts.default')
 
 @section('content')
 <div class="row">

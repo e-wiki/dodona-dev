@@ -1,31 +1,17 @@
-@extends(config('sentinel.layout'))
+@extends('layouts.default')
 
-{{-- Web site Title --}}
-@section('title')
-@parent
-View Group
-@stop
-
-{{-- Content --}}
 @section('content')
-<h4>{{ $group['name'] }} Group</h4>
-<div class="well clearfix">
-	<div class="col-md-10">
-	    <strong>Permissions:</strong>
-	    <ul>
+<h2>{{ $group['name'] }} Group</h2>
+	<div class="col-lg-5">
+        <label class="col-lg-3">Permissions:</label>
+        <ul class="list-group col-lg-9">
 	    	@foreach ($group->getPermissions() as $key => $value)
-	    		<li>{{ ucfirst($key) }}</li>
+            <li class="list-group-item">{{ ucfirst($key) }}</li>
 	    	@endforeach
 	    </ul>
 	</div>
-	<div class="col-md-2">
-		<a class="btn btn-primary" href="{{ route('sentinel.groups.edit', array($group->hash)) }}">Edit Group</a>
+	<div class="col-lg-offset-5 col-lg-2">
+		<a class="btn btn-primary btn-block" href="{{ route('sentinel.groups.edit', array($group->hash)) }}">Edit Group</a>
 	</div> 
-</div>
-<hr />
-<h4>Group Object</h4>
-<div>
-    {{ var_dump($group) }}
-</div>
 
 @stop
