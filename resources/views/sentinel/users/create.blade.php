@@ -1,11 +1,12 @@
 @extends('layouts.default')
 
 @section('content')
+    <h2>Create New User</h2>
+
+	@include('includes.breadcrumb')
+
     <div class="col-lg-12">
         <form method="POST" action="{{ route('sentinel.users.store') }}" class="form-horizontal" accept-charset="UTF-8">
-
-            <h2>Create New User</h2>
-
             <div class="form-group">
                 {!! Form::label(NULL, 'Username:', ['class' => 'col-lg-1 control-label']) !!}
                 <div class="col-lg-5 {{ $errors->first('username') ? 'has-error has-feedback' : '' }}">
@@ -60,6 +61,9 @@
                 <div class="col-lg-2">
                     <input name="_token" value="{{ csrf_token() }}" type="hidden">
                     <input class="btn btn-primary btn-block" value="Create" type="submit">
+                </div>
+                <div class="col-lg-2">
+                    <a href="{{ action('\\Sentinel\Controllers\UserController@index') }}" class="btn btn-primary btn-block">Cancel</a>
                 </div>
             </div>
 

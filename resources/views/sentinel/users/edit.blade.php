@@ -21,10 +21,12 @@
         @if ($isProfileUpdate)
             Your
         @else
-            {{ $user->email }}'s
+            {{ $user->username }}'s
         @endif
         Account
     </h2>
+
+	@include('includes.breadcrumb')
 
 @if (! empty($customFields))
     <h4>Profile</h4>

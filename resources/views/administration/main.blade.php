@@ -19,7 +19,7 @@
 	</div>
 	
 	<div class="list-group col-lg-4">
-		<a href="#" class="list-group-item disabled">Manage Groups</a>
-		<a href="#" class="list-group-item disabled">Manage Users</a>
+		<a href="{{ action('\\Sentinel\Controllers\GroupController@index') }}" class="list-group-item">Manage Groups<span class="badge badge-info">{{ $groups_count }}</span></a>
+		<a href="{{ action('\\Sentinel\Controllers\UserController@index') }}" class="list-group-item">Manage Users<span class="badge badge-info">{{ $users_count }}</span></a>
 	</div>
 @stop

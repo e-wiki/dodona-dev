@@ -1,14 +1,9 @@
 @extends('layouts.default')
 
 @section('content')
-    <div class='page-header'>
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <a class='btn btn-primary' href="{{ route('sentinel.users.create') }}">Create User</a>
-            </div>
-        </div>
-        <h1>Current Users</h1>
-    </div>
+    <h2>Current Users</h2>
+
+	@include('includes.breadcrumb')
 
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -46,5 +41,9 @@
             @endforeach
             </tbody>
         </table>
+    </div>
+
+    <div class="col-lg-2">
+        <a class='btn btn-primary btn-block' href="{{ route('sentinel.users.create') }}">Create User</a>
     </div>
 @stop

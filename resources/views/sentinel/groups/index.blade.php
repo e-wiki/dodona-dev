@@ -1,14 +1,9 @@
 @extends('layouts.default')
 
 @section('content')
-    <div class='page-header'>
-        <div class='btn-toolbar pull-right'>
-            <div class='btn-group'>
-                <a class='btn btn-primary' href="{{ route('sentinel.groups.create') }}">Create Group</a>
-            </div>
-        </div>
-        <h2>Available Groups</h2>
-    </div>
+    <h2>Available Groups</h2>
+
+	@include('includes.breadcrumb')
 
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -42,9 +37,9 @@
             </tbody>
         </table>
     </div>
-<!--  
-	The delete button uses Resftulizer.js to restfully submit with "Delete".  The "action_confirm" class triggers an optional confirm dialog.
-	Also, I have hardcoded adding the "disabled" class to the Admin group - deleting your own admin access causes problems.
--->
+
+    <div class="col-lg-2">
+        <a class='btn btn-primary btn-block' href="{{ route('sentinel.groups.create') }}">Create Group</a>
+    </div>
 @stop
 

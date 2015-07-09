@@ -18,10 +18,6 @@
                     @endif
 				</ul>
 	          <ul class="nav navbar-nav navbar-right">
-				@if (Sentry::check() && Sentry::getUser()->hasAccess('admin'))
-					<li {{ (Request::is('users*') ? 'class="active"' : '') }}><a href="{{ action('\\Sentinel\Controllers\UserController@index') }}">Users</a></li>
-					<li {{ (Request::is('groups*') ? 'class="active"' : '') }}><a href="{{ action('\\Sentinel\Controllers\GroupController@index') }}">Groups</a></li>
-				@endif
 	            @if (Sentry::check())
 				<li {{ (Request::is('profile') ? 'class="active"' : '') }}><a href="{{ route('sentinel.profile.show') }}">Account</a>
 				</li>

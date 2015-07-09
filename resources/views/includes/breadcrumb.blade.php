@@ -26,6 +26,21 @@
 		
 		<a href="{{ url("administration/" . Request::segment(2)) }}" class="btn btn-default">{{ ucwords(str_replace('_', ' ', Request::segment(2))) }} Console</a>
 	@endif
+
+    @if (Request::segment(1) === 'groups' or Request::segment(1) === 'users')
+		<a href="{{ url('/administration/') }}" class="btn btn-default"><span class="fa fa-home"></span></a>
+
+		<a href="{{ url(Request::segment(1)) }}" class="btn btn-default">{{ ucwords(Request::segment(1)) }} Console</a>
+
+        @if (Request::segment(2) === 'create')
+		<a href="{{ url(Request::segment(1) . '/' . Request::segment(2)) }}" class="btn btn-default">Create</a>
+        @endif
+
+
+        @if (Request::segment(3) === 'edit')
+		<a href="{{ url(Request::segment(1) . '/' . Request::segment(2) . '/edit') }}" class="btn btn-default">Edit</a>
+        @endif
+    @endif
 	</div>
 
 	<br><br>

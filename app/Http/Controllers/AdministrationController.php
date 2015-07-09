@@ -23,6 +23,8 @@ use Dodona\Models\OperatingSystem;
 use Dodona\Models\Server;
 use Dodona\Models\Service;
 use Dodona\Models\Site;
+use Sentinel\Models\Group;
+use Sentinel\Models\User;
 
 /**
  * Handles the administration of the Dodona Framework.
@@ -47,6 +49,9 @@ class AdministrationController extends Controller
         $check_modules_count = CheckModule::count();
         $checks_count        = Check::count();
         $check_results_count = CheckResult::count();
+
+        $groups_count = Group::count();
+        $users_count  = User::count();
         
         return view('administration.main',
                 compact(
@@ -56,7 +61,9 @@ class AdministrationController extends Controller
                     'servers_count',
                     'check_modules_count',
                     'checks_count',
-                    'check_results_count'
+                    'check_results_count',
+                    'groups_count',
+                    'users_count'
         ));
     }
     
