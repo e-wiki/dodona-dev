@@ -128,8 +128,7 @@ class Dodona extends Migration
             $table->softDeletes();
             $table->foreign('client_id')
                     ->references('id')->on('clients')
-                    ->onDelete('restrict')
-                    ->onUpdate('cascade');
+                    ->onDelete('restrict')->onUpdate('cascade');
         });
     }
 

@@ -26,7 +26,7 @@
 		<div class="form-group" >
 			{!! Form::label('', 'User:', ['class' => 'col-lg-2 control-label']) !!}
 			<div class="col-lg-10" >
-				{!! Form::select('user_id', [0 => '--- NO USER CAPABILITY YET ---'], 0, ['class' => 'form-control', 'disabled' => 'disabled']) !!}
+				{!! Form::select('user_id', $users, Input::old('id'), ['class' => 'form-control', 'autofocus' => 'autofocus']) !!}
 			</div>
 		</div>
 		

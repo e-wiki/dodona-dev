@@ -8,15 +8,15 @@
     <div class="table-responsive">
         <table class="table table-striped table-hover">
             <thead>
-            <th class="col-lg-4">User</th>
-            <th class="col-lg-4">Status</th>
+            <th class="col-lg-5">User</th>
+            <th class="col-lg-3">Status</th>
             <th colspan="4" class="col-lg-4">Options</th>
             </thead>
             <tbody>
             @foreach ($users as $user)
                 <tr>
-                    <td class="col-lg-4"><a href="{{ route('sentinel.users.show', array($user->hash)) }}">{{ $user->first_name }} {{ $user->last_name }} &lt;{{ $user->email }}&gt;</a></td>
-                    <td class="col-lg-4">{{ $user->status }} </td>
+                    <td class="col-lg-5"><a href="{{ route('sentinel.users.show', array($user->hash)) }}">{{ $user->first_name }} {{ $user->last_name }} &lt;{{ $user->email }}&gt;</a></td>
+                    <td class="col-lg-3">{{ $user->status }} </td>
                     <td class="col-lg-1">
                         <button class="btn btn-primary btn-block btn-xs" type="button" onClick="location.href='{{ route('sentinel.users.edit', array($user->hash)) }}'">Edit</button>
                     </td>

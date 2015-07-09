@@ -15,7 +15,7 @@
 	    <pre class="alert alert-info">
 Contact Details
 Service Name: {{ $service->client->name }} {{ $service->name }}
-User:         --- Not Available Yet ---
+User:         {{ $ticket->user->full_name }} &lt;{{ $ticket->user->email }}&gt;
 &NewLine;
 Configuration Item Details
 Service Name: {{ $service->name }}

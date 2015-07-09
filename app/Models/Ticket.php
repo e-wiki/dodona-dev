@@ -33,6 +33,7 @@ class Ticket extends Model
         'server_check_result_id',
         'raised_at',
         'reference',
+        'user_id',
         'ticket_category_id',
         'ticket_priority_id',
         'ticket_type_id',
@@ -42,6 +43,16 @@ class Ticket extends Model
     
     public $timestamps = false;
     
+    /**
+     * Get the user the ticket belongs to.
+     * 
+     * @return Dodona\Models\User
+     */
+    public function user()
+    {
+        return $this->belongsTo('Dodona\Models\User');
+    }
+
     /**
      * Get the server check results related to the ticket.
      *

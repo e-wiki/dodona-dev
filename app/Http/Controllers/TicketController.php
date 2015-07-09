@@ -18,6 +18,7 @@ use Dodona\Models\Ticket;
 use Dodona\Models\TicketCategory;
 use Dodona\Models\TicketPriority;
 use Dodona\Models\TicketType;
+use Dodona\Models\User;
 
 /**
  * Handles thes tickets for the Dodona Framework.
@@ -58,6 +59,7 @@ class TicketController extends Controller
             'service'             => $service,
             'server'              => $server,
             'server_check_result' => $server_check_result,
+            'users'               => User::all()->lists('full_name', 'id'),
             'ticket_categories'   => TicketCategory::lists('name', 'id'),
             'ticket_priorities'   => TicketPriority::lists('name', 'id'),
             'ticket_priority'     => (($server_check_result->checkResult->alert->id === 'R') ? 2 : 3),
@@ -73,10 +75,13 @@ class TicketController extends Controller
      */
     public function store(TicketRequest $request)
     {
+        #return $request->get('user_id');
+
         $ticket = Ticket::create([
             'server_check_result_id' => $request->get('server_check_result_id'),
             'raised_at'              => Carbon::now(),
             'reference'              => $request->get('reference'),
+            'user_id'                => $request->get('user_id'),
             'ticket_category_id'     => $request->get('ticket_category_id'),
             'ticket_priority_id'     => $request->get('ticket_priority_id'),
             'ticket_type_id'         => $request->get('ticket_type_id'),
