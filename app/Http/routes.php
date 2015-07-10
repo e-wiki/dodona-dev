@@ -24,6 +24,7 @@ Route::group(['prefix' => 'status', 'as' => 'status.'], function()
     Route::get('', ['as' => 'all', 'uses' => 'StatusController@index']);
     Route::get('client/{client}', ['as' => 'client', 'uses' => 'StatusController@client']);
     Route::get('service/{service}', ['as' => 'service', 'uses' => 'StatusController@service']);
+    Route::get('site/{site}', ['as' => 'site', 'uses' => 'StatusController@site']);
     Route::get('server/{server}', ['as' => 'server', 'uses' => 'StatusController@server']);
 });
 
@@ -95,7 +96,22 @@ Route::group(['prefix' => 'service', 'as' => 'service.'], function()
     }]);
 });
 
-Route::post('site/store', ['as' => 'site.store', 'uses' => 'Administration\SiteController@store']);
+Route::group(['prefix' => 'site', 'as' => 'site'], function()
+{
+    Route::post('site/store', ['as' => 'site.store', 'uses' => 'Administration\SiteController@store']);
+    Route::get('enable/{site}', ['as' => 'enable', 'uses' => function (Dodona\Models\Site $site)
+    {
+        $site->enable();
+
+        return redirect('administration/sites');
+    }]);
+    Route::get('disable/{site}', ['as' => 'disable', 'uses' => function (Dodona\Models\Site $site)
+    {
+        $site->disable();
+
+        return redirect('administration/sites');
+    }]);
+});
 
 Route::group(['prefix' => 'server', 'as' => 'server.'], function()
 {

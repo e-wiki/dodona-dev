@@ -11,6 +11,8 @@
 		Performance) and individual checks is depicted here using RAG statuses.
 		The date/time presented is when the checks were performed (and not when
 		the healthcheck was introduced in the system).</p>
+
+    <p class="alert alert-info text-center">The server's healthchecks are <strong>{{ ($server->auto_refreshed) ? 'AUTO' : 'MANUALLY' }}</strong> refreshed.</p>
 	
 	@include('flash::message')
 	

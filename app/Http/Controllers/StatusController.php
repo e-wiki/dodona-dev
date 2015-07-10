@@ -8,11 +8,12 @@
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
+use Dodona\Http\Controllers\Controller;
 use Dodona\Models\CheckCategory;
 use Dodona\Models\Client;
-use Dodona\Http\Controllers\Controller;
 use Dodona\Models\Server;
 use Dodona\Models\Service;
+use Dodona\Models\Site;
 
 /**
  * Handles the status capabilities of the Dodona Framework.
@@ -54,6 +55,14 @@ class StatusController extends Controller
         
         return view('status.service', compact('client', 'service'));
     }
+
+    public function site(Site $site)
+    {
+        $service = $site->service;
+        $client  = $service->client;
+
+        return view('status.site', compact('client', 'service', 'site'));
+    }
     
     /**
      * Loads the server status page.
@@ -63,11 +72,19 @@ class StatusController extends Controller
      */
     public function server(Server $server)
     {
-        $service          = $server->service();
+        $site             = $server->site;
+        $service          = $site->service;
         $client           = $service->client;
         $checks           = $server->latestServerCheckResults();
         $check_categories = CheckCategory::all();
         
-        return view('status.server', compact('client', 'service', 'server', 'checks', 'check_categories'));
+        return view('status.server', compact(
+            'client',
+            'service',
+            'site',
+            'server',
+            'checks',
+            'check_categories'
+        ));
     }
 }

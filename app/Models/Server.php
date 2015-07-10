@@ -34,12 +34,12 @@ class Server extends Model implements Enablable
         'id',
         'name',
         'enabled',
+        'auto_refreshed',
         'description',
         'service_id',
         'site_id',
         'operating_system_id',
         'database_technology_id',
-        'automatic_checks',
     ];
 
     /**

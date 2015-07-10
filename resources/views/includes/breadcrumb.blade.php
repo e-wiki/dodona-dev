@@ -4,8 +4,12 @@
 		
 		<a href="{{ url('/status/client/' . $client->id) }}" class="btn btn-default"><span class="fa fa-cogs"></span>&nbsp;{{ $client->name }}</a>
 		
-		@if (Request::segment(2) === 'service' or Request::segment(2) === 'server' or Request::segment(1) === 'ticket')
+		@if (Request::segment(2) === 'service' or Request::segment(2) === 'site' or Request::segment(2) === 'server' or Request::segment(1) === 'ticket')
 		<a href="{{ url('/status/service/' . $service->id) }}" class="btn btn-default"><span class="fa fa-sitemap"></span>&nbsp;{{ $service->name }}</a>
+		@endif
+
+		@if (Request::segment(2) === 'site' or Request::segment(2) === 'server' or Request::segment(1) === 'ticket')
+		<a href="{{ url('/status/site/' . $site->id) }}" class="btn btn-default"><span class="fa fa-building-o"></span>&nbsp;{{ $site->name }}</a>
 		@endif
 		
 		@if (Request::segment(2) === 'server' or Request::segment(1) === 'ticket')

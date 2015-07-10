@@ -222,4 +222,21 @@ class Client extends Model implements Enablable
             $service->disable();
         }
     }
+
+    public function refreshed()
+    {
+        $result = [
+            'manual' => 0,
+            'auto'   => 0,
+        ];
+
+        foreach ($this->enabledServices() as $service)
+        {
+            $result['manual'] += $service->refreshed()['manual'];
+            $result['auto']   += $service->refreshed()['auto'];
+        }
+
+        return $result;
+    }
+
 }

@@ -12,7 +12,7 @@ class MigrationDodona11 extends Migration
      */
     public function up()
     {
-        Schema::table('tickets', function (Blueprint $table)
+        Schema::table('tickets', function(Blueprint $table)
         {
             $table->integer('user_id')->unsigned()->after('reference');
             $table->foreign('user_id')
@@ -24,6 +24,11 @@ class MigrationDodona11 extends Migration
         {
             $table->boolean('auto_refreshed')->default(0)->after('enabled');
         });
+
+        Schema::table('sites', function(Blueprint $table)
+        {
+            $table->boolean('enabled')->default(0)->after('description');
+        });
     }
 
     /**
@@ -33,16 +38,21 @@ class MigrationDodona11 extends Migration
      */
     public function down()
     {
-        Schema::table('tickets', function (Blueprint $table)
+        Schema::table('tickets', function(Blueprint $table)
         {
             $table->dropForeign('tickets_user_id_foreign');
 
             $table->dropColumn('user_id');
         });
 
-        Schema::table('servers', function (Blueprint $table)
+        Schema::table('servers', function(Blueprint $table)
         {
             $table->dropColumn('auto_refreshed');
+        });
+
+        Schema::table('sites', function(Blueprint $table)
+        {
+            $table->dropColumn('enabled');
         });
     }
     

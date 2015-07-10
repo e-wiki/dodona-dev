@@ -21,7 +21,15 @@
 		<tbody>
 		@forelse($clients as $client)
 			<tr>
-				<td class="col-lg-3">{{ $client->name }} ({{ $client->id }})</td>
+				<td class="col-lg-3">
+                    @if ($client->refreshed()['manual'] > 0)
+                    <span class="fa fa-book"></span>
+                    @endif
+                    @if ($client->refreshed()['auto'] > 0)
+                    <span class="fa fa-spin fa-cog"></span>
+                    @endif
+                    {{ $client->name }} ({{ $client->id }})
+                </td>
 				<td class="col-lg-2 alert alert-{{ $client->capacityStatus()->css }} text-center text-capitalize">{{ $client->capacityStatus()->name }}</td>
 				<td class="col-lg-2 alert alert-{{ $client->recoverabilityStatus()->css }} text-center text-capitalize">{{ $client->recoverabilityStatus()->name }}</td>
 				<td class="col-lg-2 alert alert-{{ $client->availabilityStatus()->css }} text-center text-capitalize">{{ $client->availabilityStatus()->name }}</td>

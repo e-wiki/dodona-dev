@@ -6,7 +6,7 @@
 	@include('includes.breadcrumb')
 	
 	<p>The current status of the <strong>{{ $service->client->name }}
-		{{ $service->name }} ({{ $service->id }})</strong> service per server
+		{{ $service->name }} ({{ $service->id }})</strong> service per site
 		and monitored area (Capacity, Recoverability, Availability, and
 		Performance) is depicted here using RAG statuses. The date/time
 		presented is when the checks were performed.</p>
@@ -22,22 +22,30 @@
 		</thead>
 		
 		<tbody>
-		@forelse($service->enabledServers() as $server)
+		@forelse($service->enabledSites() as $site)
 			<tr>
-				<td class="col-lg-3">{{ $server->name }} ({{ $server->id }})</td>
-				<td class="col-lg-2 alert alert-{{ $server->capacityStatus()->css }} text-center text-capitalize">{{ $server->capacityStatus()->name }}</td>
-				<td class="col-lg-2 alert alert-{{ $server->recoverabilityStatus()->css }} text-center text-capitalize">{{ $server->recoverabilityStatus()->name }}</td>
-				<td class="col-lg-2 alert alert-{{ $server->availabilityStatus()->css }} text-center text-capitalize">{{ $server->availabilityStatus()->name }}</td>
-				<td class="col-lg-2 alert alert-{{ $server->performanceStatus()->css }} text-center text-capitalize">{{ $server->performanceStatus()->name }}</td>
+				<td class="col-lg-3">
+                    @if ($site->refreshed()['manual'] > 0)
+                    <span class="fa fa-book"></span>
+                    @endif
+                    @if ($site->refreshed()['auto'] > 0)
+                    <span class="fa fa-spin fa-cog"></span>
+                    @endif
+                    {{ $site->name }} ({{ $site->id }})
+                </td>
+				<td class="col-lg-2 alert alert-{{ $site->capacityStatus()->css }} text-center text-capitalize">{{ $site->capacityStatus()->name }}</td>
+				<td class="col-lg-2 alert alert-{{ $site->recoverabilityStatus()->css }} text-center text-capitalize">{{ $site->recoverabilityStatus()->name }}</td>
+				<td class="col-lg-2 alert alert-{{ $site->availabilityStatus()->css }} text-center text-capitalize">{{ $site->availabilityStatus()->name }}</td>
+				<td class="col-lg-2 alert alert-{{ $site->performanceStatus()->css }} text-center text-capitalize">{{ $site->performanceStatus()->name }}</td>
 				<td class="col-lg-1 text-center">
-					<a href="{{ url("status/server/{$server->id}") }}" class="btn btn-primary btn-xs">
-						<span class="fa fa-server"></span>&nbsp;Details
+					<a href="{{ url("status/site/{$site->id}") }}" class="btn btn-primary btn-xs btn-block">
+						<span class="fa fa-building-o"></span>&nbsp;Details
 					</a>
 				</td>
 			</tr>
 		@empty
 			<tr>
-				<td colspan="6" class="alert alert-info text-center">No active servers found for this service.</td>
+				<td colspan="6" class="alert alert-info text-center">No sites found for this service.</td>
 			</tr>
 		@endforelse
 		</tbody>

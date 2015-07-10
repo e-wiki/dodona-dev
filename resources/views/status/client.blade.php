@@ -27,13 +27,21 @@
 		<tbody>
 		@forelse($client->enabledServices() as $service)
 			<tr>
-				<td class="col-lg-3">{{ $client->name }} - {{ $service->name }} ({{ $service->id }})</td>
+				<td class="col-lg-3">
+                    @if ($service->refreshed()['manual'] > 0)
+                    <span class="fa fa-book"></span>
+                    @endif
+                    @if ($service->refreshed()['auto'] > 0)
+                    <span class="fa fa-spin fa-cog"></span>
+                    @endif
+                    {{ $client->name }} - {{ $service->name }} ({{ $service->id }})
+                </td>
 				<td class="col-lg-2 alert alert-{{ $service->capacityStatus()->css }} text-center text-capitalize">{{ $service->capacityStatus()->name }}</td>
 				<td class="col-lg-2 alert alert-{{ $service->recoverabilityStatus()->css }} text-center text-capitalize">{{ $service->recoverabilityStatus()->name }}</td>
 				<td class="col-lg-2 alert alert-{{ $service->availabilityStatus()->css }} text-center text-capitalize">{{ $service->availabilityStatus()->name }}</td>
 				<td class="col-lg-2 alert alert-{{ $service->performanceStatus()->css }} text-center text-capitalize">{{ $service->performanceStatus()->name }}</td>
 				<td class="col-lg-1 text-center">
-					<a href="{{ url("/status/service/{$service->id}") }}" class="btn btn-primary btn-xs">
+					<a href="{{ url("/status/service/{$service->id}") }}" class="btn btn-primary btn-xs btn-block">
 						<span class="fa fa-sitemap"></span>&nbsp;Details
 					</a>
 				</td>

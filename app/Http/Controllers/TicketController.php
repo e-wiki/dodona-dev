@@ -34,11 +34,19 @@ class TicketController extends Controller
     public function show(Ticket $ticket)
     {
         $server              = Server::find($ticket->serverCheckResult->server_id);
-        $service             = $server->service();
+        $site                = $server->site;
+        $service             = $site->service;
         $client              = $service->client;
         $server_check_result = ServerCheckResult::find($ticket->server_check_result_id);
         
-        return view('ticket.show', compact('client', 'service', 'server', 'server_check_result', 'ticket'));
+        return view('ticket.show', compact(
+            'client',
+            'service',
+            'site',
+            'server',
+            'server_check_result',
+            'ticket'
+        ));
     }
     
     
@@ -50,13 +58,15 @@ class TicketController extends Controller
      */
     public function create(ServerCheckResult $server_check_result)
     {
-        $server              = Server::find($server_check_result->server->id);
-        $service             = $server->service();
-        $client              = $service->client;
+        $server  = Server::find($server_check_result->server->id);
+        $site    = $server->site;
+        $service = $site->service;
+        $client  = $service->client;
         
         return view('ticket.create', [
             'client'              => $client,
             'service'             => $service,
+            'site'                => $site,
             'server'              => $server,
             'server_check_result' => $server_check_result,
             'users'               => User::all()->lists('full_name', 'id'),

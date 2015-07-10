@@ -15,10 +15,11 @@
 			<tr>
 				<th class="col-lg-3 text-center">Site</th>
 				<th class="col-lg-1 text-center">ID</th>
+                <th class="col-lg-1 text-center">Enabled</th>
 				<th class="col-lg-3 text-center">Service (ID)</th>
 				<th class="col-lg-2 text-center">Environment</th>
 				<th class="col-lg-1 text-center"># of Servers</th>
-				<th class="col-lg-2" />
+				<th class="col-lg-1" />
 			</tr>
 		</thead>
 		<tbody>
@@ -26,10 +27,23 @@
 			<tr>
 				<td class="col-lg-3">{{ $site->name }}</td>
 				<td class="col-lg-1 text-center">{{ $site->id }}</td>
+				<td class="col-lg-1 text-center">
+					@if ($site->isEnabled())
+					<span class="fa fa-check-circle-o text-success"></span>
+					@else
+					<span class="fa fa-circle-o text-danger"></span>
+					@endif
+				</td>
 				<td class="col-lg-3">{{ $site->service->name }} ({{ $site->service->id }})</td>
 				<td class="col-lg-2 text-center">{{ $site->environment->name }} ({{ $site->environment->id }})</td>
 				<td class="col-lg-1 text-center">{{ $site->servers()->count() }}</td>
-				<td class="col-lg-2" />
+				<td class="col-lg-1">
+					@if ($site->isEnabled())
+					<a href="{{ url("site/disable/{$site->id}") }}" class="btn btn-primary btn-block btn-xs">Disable</a>
+					@else
+					<a href="{{ url("site/enable/{$site->id}") }}" class="btn btn-primary btn-block btn-xs">Enable</a>
+					@endif
+				</td>
 			</tr>
 			@empty
 			<tr class="alert alert-info">
@@ -54,6 +68,7 @@
 						@endif
 					</div>
 				</td>
+				<td class="col-lg-1 text-center">{!! Form::checkbox('enabled', 1, FALSE) !!}</td>
 				<td class="col-lg-3">{!! Form::select('service_id', $service_list, Input::old('service_id'), ['class' => 'form-control']) !!}</td>
 				<td class="col-lg-2">{!! Form::select('environment_id', $environment_list, Input::old('environment_id'), ['class' => 'form-control']) !!}</td>
 				<td colspan="2" class="col-lg-2">{!! Form::submit('Add Site', ['class' => 'btn btn-primary btn-block']) !!}</td>

@@ -86,14 +86,15 @@ class Service extends Model implements Enablable
     {
         return $this->hasManyThrough('Dodona\Models\Server', 'Dodona\Models\Site');
     }
+
     /**
      * Get the enabled servers of the service.
      *
      * @return collection
      */
-    public function enabledServers()
+    public function enabledSites()
     {
-        return $this->servers()->where('enabled', 1)->get();
+        return $this->sites()->where('enabled', 1)->get();
     }
     
     /**
@@ -105,10 +106,10 @@ class Service extends Model implements Enablable
     {
         $result = Alert::find(Alert::BLUE);
         
-        $servers = $this->enabledServers();
+        $sites = $this->enabledSites();
         
-        foreach ($servers as $server) {
-            $status = $this->_pickStatusArea($server, $check_category_id);
+        foreach ($sites as $site) {
+            $status = $this->_pickStatusArea($site, $check_category_id);
             
             if ($status->id === Alert::RED) {
                 $result = Alert::find(Alert::RED);
@@ -214,8 +215,25 @@ class Service extends Model implements Enablable
         $this->enabled = false;
         $this->save();
         
-        foreach ($this->servers as $server) {
-            $server->disable();
+        foreach ($this->sites as $site) {
+            $site->disable();
         }
     }
+
+    public function refreshed()
+    {
+        $result = [
+            'manual' => 0,
+            'auto'   => 0,
+        ];
+
+        foreach ($this->sites as $site)
+        {
+            $result['manual'] += $site->refreshed()['manual'];
+            $result['auto']   += $site->refreshed()['auto'];
+        }
+
+        return $result;
+    }
+
 }
