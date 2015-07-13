@@ -1,4 +1,4 @@
-<?php namespace Dodona\Models;
+<?php namespace Dodona\Models\Ticketing;
 
 /**
  * Ticket Priority Model.
@@ -33,7 +33,7 @@ class TicketPriority extends Model
      */
     public function tickets()
     {
-        return $this->hasMany('Dodona\Models\Ticket');
+        return $this->hasMany('Dodona\Models\Ticketing\Ticket');
     }
 
     /**
@@ -43,6 +43,6 @@ class TicketPriority extends Model
      */
     public function serverCheckResults()
     {
-        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\Ticket');
+        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\Ticketing\Ticket');
     }
 }

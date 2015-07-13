@@ -54,21 +54,21 @@ class ServerCheckResult extends Model
     /**
      * Get the check result.
      *
-     * @return Dodona\Models\CheckResult
+     * @return Dodona\Models\Status\CheckResult
      */
     public function checkResult()
     {
-        return $this->belongsTo('Dodona\Models\CheckResult');
+        return $this->belongsTo('Dodona\Models\Status\CheckResult');
     }
     
     /**
      * Get the check the server result belongs to.
      *
-     * @return Dodona\Models\Check
+     * @return Dodona\Models\Status\Check
      */
     public function check()
     {
-        return $this->belongsTo('Dodona\Models\Check');
+        return $this->belongsTo('Dodona\Models\Status\Check');
     }
 
     /**
@@ -94,10 +94,10 @@ class ServerCheckResult extends Model
     /**
      * Get the server's check result ticket.
      *
-     * @return Dodona\Models\Ticket
+     * @return Dodona\Models\Ticketing\Ticket
      */
     public function ticket()
     {
-        return $this->hasOne('Dodona\Models\Ticket');
+        return $this->hasOne('Dodona\Models\Ticketing\Ticket');
     }
 }

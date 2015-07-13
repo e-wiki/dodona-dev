@@ -9,7 +9,7 @@
  */
 
 use Dodona\Http\Controllers\Controller;
-use Dodona\Models\CheckCategory;
+use Dodona\Models\Status\CheckCategory;
 use Dodona\Models\Client;
 use Dodona\Models\Server;
 use Dodona\Models\Service;

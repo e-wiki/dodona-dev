@@ -1,4 +1,4 @@
-<?php namespace Dodona\Models;
+<?php namespace Dodona\Models\Support;
 
 /**
  * Alert Model.
@@ -43,7 +43,7 @@ class Alert extends Model
      */
     public function checkResults()
     {
-        return $this->hasMany('Dodona\Models\CheckResult');
+        return $this->hasMany('Dodona\Models\Status\CheckResult');
     }
     
     /**
@@ -53,6 +53,6 @@ class Alert extends Model
      */
     public function serverCheckResults()
     {
-        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\CheckResult');
+        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\Status\CheckResult');
     }
 }

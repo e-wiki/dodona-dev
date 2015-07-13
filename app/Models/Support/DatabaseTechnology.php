@@ -1,4 +1,4 @@
-<?php namespace Dodona\Models;
+<?php namespace Dodona\Models\Support;
 
 /**
  * Database Technology Model.

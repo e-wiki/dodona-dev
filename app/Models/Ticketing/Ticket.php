@@ -1,4 +1,4 @@
-<?php namespace Dodona\Models;
+<?php namespace Dodona\Models\Ticketing;
 
 /**
  * Ticket Model.
@@ -50,7 +50,7 @@ class Ticket extends Model
      */
     public function user()
     {
-        return $this->belongsTo('Dodona\Models\User');
+        return $this->belongsTo('Dodona\Models\Authentication\User');
     }
 
     /**
@@ -79,7 +79,7 @@ class Ticket extends Model
      */
     public function ticketCategory()
     {
-        return $this->belongsTo('Dodona\Models\TicketCategory');
+        return $this->belongsTo('Dodona\Models\Ticketing\TicketCategory');
     }
     
     /**
@@ -89,7 +89,7 @@ class Ticket extends Model
      */
     public function ticketPriority()
     {
-        return $this->belongsTo('Dodona\Models\TicketPriority');
+        return $this->belongsTo('Dodona\Models\Ticketing\TicketPriority');
     }
     
     /**
@@ -99,7 +99,7 @@ class Ticket extends Model
      */
     public function ticketType()
     {
-        return $this->belongsTo('Dodona\Models\TicketType');
+        return $this->belongsTo('Dodona\Models\Ticketing\TicketType');
     }
     
     /**

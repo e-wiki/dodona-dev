@@ -8,9 +8,9 @@
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
-use Dodona\Models\Alert;
-use Dodona\Models\CheckCategory;
 use Dodona\Interfaces\Enablable;
+use Dodona\Models\Status\CheckCategory;
+use Dodona\Models\Support\Alert;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
@@ -164,7 +164,7 @@ class Client extends Model implements Enablable
     /**
      * Get the client's capacity status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function capacityStatus()
     {
@@ -174,7 +174,7 @@ class Client extends Model implements Enablable
     /**
      * Get the client's recoverability status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function recoverabilityStatus()
     {
@@ -184,7 +184,7 @@ class Client extends Model implements Enablable
     /**
      * Get the client's availability status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function availabilityStatus()
     {
@@ -194,7 +194,7 @@ class Client extends Model implements Enablable
     /**
      * Get the client's performance status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function performanceStatus()
     {

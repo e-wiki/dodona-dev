@@ -2,7 +2,7 @@
 
 namespace Dodona\Http\Controllers\Administration;
 
-use Dodona\Models\CheckResult;
+use Dodona\Models\Status\CheckResult;
 use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\CheckResultRequest;
 

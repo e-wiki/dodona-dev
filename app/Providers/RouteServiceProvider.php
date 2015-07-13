@@ -33,7 +33,7 @@ class RouteServiceProvider extends ServiceProvider
         $router->model('site',    'Dodona\Models\Site');
         $router->model('server',  'Dodona\Models\Server');
         
-        $router->model('ticket',              'Dodona\Models\Ticket');
+        $router->model('ticket',              'Dodona\Models\Ticketing\Ticket');
         $router->model('server_check_result', 'Dodona\Models\ServerCheckResult');
     }
 

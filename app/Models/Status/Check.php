@@ -1,4 +1,4 @@
-<?php namespace Dodona\Models;
+<?php namespace Dodona\Models\Status;
 
 /**
  * Check Model.
@@ -27,21 +27,21 @@ class Check extends Model
     /**
      * Get the category the check belongs to.
      *
-     * @return Dodona\Models\CheckCategory
+     * @return Dodona\Models\Status\CheckCategory
      */
     public function checkCategory()
     {
-        return $this->belongsTo('Dodona\Models\CheckCategory');
+        return $this->belongsTo('Dodona\Models\Status\CheckCategory');
     }
 
     /**
      * Get the module the check belongs to.
      *
-     * @return Dodona\Models\CheckModule
+     * @return Dodona\Models\Status\CheckModule
      */
     public function checkModule()
     {
-        return $this->belongsTo('Dodona\Models\CheckModule');
+        return $this->belongsTo('Dodona\Models\Status\CheckModule');
     }
     
     /**
@@ -51,7 +51,7 @@ class Check extends Model
      */
     public function checkResults()
     {
-        return $this->hasMany('Dodona\Models\CheckResult');
+        return $this->hasMany('Dodona\Models\Status\CheckResult');
     }
 
     /**
@@ -61,6 +61,6 @@ class Check extends Model
      */
     public function serverCheckResults()
     {
-        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\CheckResult');
+        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\Status\CheckResult');
     }
 }

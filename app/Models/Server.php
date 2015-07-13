@@ -1,5 +1,19 @@
 <?php namespace Dodona\Models;
 
+use Dodona\Interfaces\Enablable;
+use Dodona\Interfaces\Refreshable;
+use Dodona\Models\LatestServerCheckResult;
+use Dodona\Models\ServerCheckResult;
+use Dodona\Models\Site;
+use Dodona\Models\Status\CheckCategory;
+use Dodona\Models\Support\Alert;
+use Dodona\Models\Support\DatabaseTechnology;
+use Dodona\Models\Support\OperatingSystem;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+
 /**
  * Server model.
  *
@@ -8,20 +22,12 @@
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
-use DB;
-use Dodona\Models\Alert;
-use Dodona\Interfaces\Enablable;
-use Dodona\Models\LatestServerCheckResult;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
-
 /**
  * Server class.
  *
  * Maps the servers table.
  */
-class Server extends Model implements Enablable
+class Server extends Model implements Enablable, Refreshable
 {
     use SoftDeletes;
     
@@ -62,7 +68,7 @@ class Server extends Model implements Enablable
     /**
      * Get the service the server belongs to.
      *
-     * @return Dodona\Models\Service
+     * @return Service
      */
     public function service()
     {
@@ -72,7 +78,7 @@ class Server extends Model implements Enablable
     /**
      * Get the site the server belongs to.
      *
-     * @return Dodona\Models\Site
+     * @return Site
      */
     public function site()
     {
@@ -82,21 +88,21 @@ class Server extends Model implements Enablable
     /**
      * Get the operating system of the server.
      *
-     * @return Dodona\Models\OperatingSystem
+     * @return OperatingSystem
      */
     public function operatingSystem()
     {
-        return $this->belongsTo('Dodona\Models\OperatingSystem');
+        return $this->belongsTo('Dodona\Models\Support\OperatingSystem');
     }
     
     /**
      * Get the database technology of the server.
      *
-     * @return Dodona\Models\DatabaseTechnology
+     * @return DatabaseTechnology
      */
     public function databaseTechnology()
     {
-        return $this->belongsTo('Dodona\Models\DatabaseTechnology');
+        return $this->belongsTo('Dodona\Models\Support\DatabaseTechnology');
     }
     
     /**
@@ -112,7 +118,7 @@ class Server extends Model implements Enablable
     /**
      * Get the latest server's check results.
      *
-     * @return Dodona\Models\ServerCheckResult
+     * @return ServerCheckResult
      */
     public function latestServerCheckResults($check_category_id = null)
     {
@@ -137,7 +143,7 @@ class Server extends Model implements Enablable
      *
      * @param type $check
      * @param type $check_category_id
-     * @return Dodona\Models\LatestServerCheckResult
+     * @return LatestServerCheckResult
      */
     private function _returnCategoryCheckResult($check, $check_category_id = null)
     {
@@ -157,7 +163,7 @@ class Server extends Model implements Enablable
     /**
      * Get the server's area alert level.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function areaStatus($area_id)
     {
@@ -185,7 +191,7 @@ class Server extends Model implements Enablable
     /**
      * Get the server's capacity status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function capacityStatus()
     {
@@ -195,7 +201,7 @@ class Server extends Model implements Enablable
     /**
      * Get the server's recoverability status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function recoverabilityStatus()
     {
@@ -205,7 +211,7 @@ class Server extends Model implements Enablable
     /**
      * Get the server's availability status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function availabilityStatus()
     {
@@ -215,7 +221,7 @@ class Server extends Model implements Enablable
     /**
      * Get the server's performance status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function performanceStatus()
     {
@@ -226,7 +232,7 @@ class Server extends Model implements Enablable
      * Initialise the result for the areaStatus.
      *
      * @param integer $count
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     private function _initializeAreaResult($count)
     {
@@ -246,7 +252,7 @@ class Server extends Model implements Enablable
      */
     public function tickets()
     {
-        return $this->hasManyThrough('Dodona\Models\Ticket', 'Dodona\Models\ServerCheckResult');
+        return $this->hasManyThrough('Dodona\Models\Ticketing\Ticket', 'Dodona\Models\ServerCheckResult');
     }
     
     /**
@@ -266,6 +272,23 @@ class Server extends Model implements Enablable
     public function disable()
     {
         $this->enabled = false;
+        $this->save();
+    }
+
+    public function isAutoRefreshed()
+    {
+        return $this->auto_refreshed;
+    }
+
+    public function autoRefresh()
+    {
+        $this->auto_refreshed = true;
+        $this->save();
+    }
+
+    public function manualRefresh()
+    {
+        $this->auto_refreshed = false;
         $this->save();
     }
 }

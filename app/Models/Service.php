@@ -1,5 +1,13 @@
 <?php namespace Dodona\Models;
 
+use Dodona\Interfaces\Enablable;
+use Dodona\Models\Client;
+use Dodona\Models\Server;
+use Dodona\Models\Status\CheckCategory;
+use Dodona\Models\Support\Alert;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 /**
  * Service model.
  *
@@ -7,12 +15,6 @@
  * @version 1.0.0
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
-
-use Dodona\Models\Alert;
-use Dodona\Models\CheckCategory;
-use Dodona\Interfaces\Enablable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Service class.
@@ -60,7 +62,7 @@ class Service extends Model implements Enablable
     /**
      * Get the client that owns the service.
      *
-     * @return Dodona\Models\Client
+     * @return Client
      */
     public function client()
     {
@@ -100,7 +102,7 @@ class Service extends Model implements Enablable
     /**
      * Get the service's area alert level.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function areaStatus($check_category_id)
     {
@@ -155,7 +157,7 @@ class Service extends Model implements Enablable
     /**
      * Get the service's capacity status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function capacityStatus()
     {
@@ -165,7 +167,7 @@ class Service extends Model implements Enablable
     /**
      * Get the service's recoverability status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function recoverabilityStatus()
     {
@@ -175,7 +177,7 @@ class Service extends Model implements Enablable
     /**
      * Get the service's availability status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function availabilityStatus()
     {
@@ -185,7 +187,7 @@ class Service extends Model implements Enablable
     /**
      * Get the service's performance status.
      *
-     * @return Dodona\Models\Alert
+     * @return Dodona\Models\Support\Alert
      */
     public function performanceStatus()
     {

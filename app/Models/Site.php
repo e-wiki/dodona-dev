@@ -9,6 +9,9 @@
  */
 
 use Dodona\Interfaces\Enablable;
+use Dodona\Models\Status\CheckCategory;
+use Dodona\Models\Support\Alert;
+use Dodona\Models\Support\Environment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -68,7 +71,7 @@ class Site extends Model implements Enablable
      */
     public function environment()
     {
-        return $this->belongsTo('Dodona\Models\Environment');
+        return $this->belongsTo('Dodona\Models\Support\Environment');
     }
     
     /**

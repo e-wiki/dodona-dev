@@ -1,5 +1,12 @@
 <?php namespace Dodona\Models;
 
+use Dodona\Models\Server;
+use Dodona\Models\ServerCheckResult;
+use Dodona\Models\Status\Check;
+use Dodona\Models\Status\CheckResult;
+use Dodona\Models\Ticketing\Ticket;
+use Illuminate\Database\Eloquent\Model;
+
 /**
  * Latest Server Check Result Model.
  *
@@ -7,8 +14,6 @@
  * @version 1.0.0
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
-
-use Illuminate\Database\Eloquent\Model;
 
 /**
  * LatestServerCheckResult class.
@@ -52,7 +57,7 @@ class LatestServerCheckResult extends Model
     /**
      * Get the server the server result belongs to.
      *
-     * @return Dodona\Models\Server
+     * @return Server
      */
     public function server()
     {
@@ -62,27 +67,27 @@ class LatestServerCheckResult extends Model
     /**
      * Get the check result.
      *
-     * @return Dodona\Models\CheckResult
+     * @return CheckResult
      */
     public function checkResult()
     {
-        return $this->belongsTo('Dodona\Models\CheckResult');
+        return $this->belongsTo('Dodona\Models\Status\CheckResult');
     }
     
     /**
      * Get the check the server result belongs to.
      *
-     * @return Dodona\Models\Check
+     * @return Check
      */
     public function check()
     {
-        return $this->belongsTo('Dodona\Models\Check');
+        return $this->belongsTo('Dodona\Models\Status\Check');
     }
 
     /**
      * Get the server result's parent.
      *
-     * @return Dodona\Models\ServerCheckResult
+     * @return ServerCheckResult
      */
     public function serverCheckResult()
     {
@@ -102,10 +107,10 @@ class LatestServerCheckResult extends Model
     /**
      * Get the server's check result ticket.
      *
-     * @return Dodona\Models\Ticket
+     * @return Ticket
      */
     public function ticket()
     {
-        return $this->hasOne('Dodona\Models\Ticket');
+        return $this->hasOne('Dodona\Models\Ticketing\Ticket');
     }
 }

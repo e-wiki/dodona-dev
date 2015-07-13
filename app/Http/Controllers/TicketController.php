@@ -14,11 +14,11 @@ use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\TicketRequest;
 use Dodona\Models\Server;
 use Dodona\Models\ServerCheckResult;
-use Dodona\Models\Ticket;
-use Dodona\Models\TicketCategory;
-use Dodona\Models\TicketPriority;
-use Dodona\Models\TicketType;
-use Dodona\Models\User;
+use Dodona\Models\Ticketing\Ticket;
+use Dodona\Models\Ticketing\TicketCategory;
+use Dodona\Models\Ticketing\TicketPriority;
+use Dodona\Models\Ticketing\TicketType;
+use Dodona\Models\Authentication\User;
 
 /**
  * Handles thes tickets for the Dodona Framework.

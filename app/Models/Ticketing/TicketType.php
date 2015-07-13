@@ -1,7 +1,7 @@
-<?php namespace Dodona\Models;
+<?php namespace Dodona\Models\Ticketing;
 
 /**
- * Ticket Category Model.
+ * Ticket Type Model.
  *
  * @author  Nikolaos Gaitanis <ngaitanis@gmail.com>
  * @version 1.0.0
@@ -11,38 +11,38 @@
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * TicketCategory class.
+ * TicketPriority class.
  *
- * Maps the ticket_categories table.
+ * Maps the ticket_priorities table.
  */
-class TicketCategory extends Model
+class TicketType extends Model
 {
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['id', 'name'];
     
     public $timestamps = false;
-    
+
     /**
-     * Get tickets of this category.
+     * Get tickets of this priority.
      *
      * @return collection
      */
     public function tickets()
     {
-        return $this->hasMany('Dodona\Models\Ticket');
+        return $this->hasMany('Dodona\Models\Ticketing\Ticket');
     }
 
     /**
-     * Get the server results of this category.
+     * Get the server results of this type.
      *
      * @return collection
      */
     public function serverCheckResults()
     {
-        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\Ticket');
+        return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\Ticketing\Ticket');
     }
 }

@@ -1,4 +1,4 @@
-<?php namespace Dodona\Models;
+<?php namespace Dodona\Models\Reporting;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,6 +23,6 @@ class ReportType extends Model
      */
     public function reports()
     {
-        return $this->hasMany('Dodona\Models\Report');
+        return $this->hasMany('Dodona\Models\Reporting\Report');
     }
 }

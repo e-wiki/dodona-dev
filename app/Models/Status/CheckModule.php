@@ -1,4 +1,4 @@
-<?php namespace Dodona\Models;
+<?php namespace Dodona\Models\Status;
 
 /**
  * Check Module Model.
@@ -34,7 +34,7 @@ class CheckModule extends Model
      */
     public function checks()
     {
-        return $this->hasMany('Dodona\Models\Check');
+        return $this->hasMany('Dodona\Models\Status\Check');
     }
     
     /**
@@ -44,6 +44,6 @@ class CheckModule extends Model
      */
     public function checkResults()
     {
-        return $this->hasManyThrough('Dodona\Models\CheckResult', 'Dodona\Models\Check');
+        return $this->hasManyThrough('Dodona\Models\Status\CheckResult', 'Dodona\Models\Status\Check');
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Dodona\Http\Controllers\Administration;
 
-use Dodona\Models\Check;
+use Dodona\Models\Status\Check;
 use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\CheckRequest;
 

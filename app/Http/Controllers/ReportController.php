@@ -5,12 +5,11 @@ namespace Dodona\Http\Controllers;
 use Carbon\Models\Carbon;
 use Dodona\Models\Client;
 use Dodona\Http\Controllers\Controller;
-use Dodona\Models\ReportLevel;
-use Dodona\Models\ReportType;
+use Dodona\Models\Reporting\ReportLevel;
+use Dodona\Models\Reporting\ReportType;
 use Dodona\Models\Site;
 use Dodona\Models\Server;
 use Dodona\Models\Service;
-#use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request;
 
 class ReportController extends Controller

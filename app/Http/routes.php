@@ -128,6 +128,18 @@ Route::group(['prefix' => 'server', 'as' => 'server.'], function()
 
         return redirect('administration/servers');
     }]);
+    Route::get('manual/{server}', ['as' => 'manual', 'uses' => function (Dodona\Models\Server $server)
+    {
+        $server->manualRefresh();
+
+        return redirect('administration/servers');
+    }]);
+    Route::get('auto/{server}', ['as' => 'auto', 'uses' => function (Dodona\Models\Server $server)
+    {
+        $server->autoRefresh();
+
+        return redirect('administration/servers');
+    }]);
 });
 
 Route::post('check_module/store', ['as' => 'check_module.store', 'uses' => 'Administration\CheckModuleController@store']);
