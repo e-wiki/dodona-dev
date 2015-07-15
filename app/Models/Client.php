@@ -66,6 +66,14 @@ class Client extends Entity
         return $this->services()->where('enabled', 1)->get();
     }
 
+    public function enable()
+    {
+        $this->enabled = true;
+        $this->save();
+    }
+
+    public function owner() {}
+
     public function enabledChildren()
     {
         return $this->enabledServices();

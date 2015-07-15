@@ -12,7 +12,6 @@ namespace Dodona\Http\Controllers;
 use Carbon\Carbon;
 use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\TicketRequest;
-use Dodona\Models\Server;
 use Dodona\Models\ServerCheckResult;
 use Dodona\Models\Ticketing\Ticket;
 use Dodona\Models\Ticketing\TicketCategory;
@@ -33,11 +32,11 @@ class TicketController extends Controller
      */
     public function show(Ticket $ticket)
     {
-        $server              = Server::find($ticket->serverCheckResult->server_id);
+        $server              = $ticket->server;
         $site                = $server->site;
         $service             = $site->service;
         $client              = $service->client;
-        $server_check_result = ServerCheckResult::find($ticket->server_check_result_id);
+        $server_check_result = $ticket->serverCheckResult;
         
         return view('ticket.show', compact(
             'client',
@@ -58,7 +57,7 @@ class TicketController extends Controller
      */
     public function create(ServerCheckResult $server_check_result)
     {
-        $server  = Server::find($server_check_result->server->id);
+        $server  = $server_check_result->server;
         $site    = $server->site;
         $service = $site->service;
         $client  = $service->client;

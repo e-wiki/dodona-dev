@@ -52,7 +52,12 @@ class Site extends Entity
     {
         return $this->belongsTo('Dodona\Models\Service');
     }
-    
+
+    public function owner()
+    {
+        return $this->service;
+    }
+
     /**
      * Get the environment the site belongs to.
      *

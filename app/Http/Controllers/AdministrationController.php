@@ -53,17 +53,16 @@ class AdministrationController extends Controller
         $groups_count = Group::count();
         $users_count  = User::count();
         
-        return view('administration.main',
-                compact(
-                    'clients_count',
-                    'services_count',
-                    'sites_count',
-                    'servers_count',
-                    'check_modules_count',
-                    'checks_count',
-                    'check_results_count',
-                    'groups_count',
-                    'users_count'
+        return view('administration.main', compact(
+            'clients_count',
+            'services_count',
+            'sites_count',
+            'servers_count',
+            'check_modules_count',
+            'checks_count',
+            'check_results_count',
+            'groups_count',
+            'users_count'
         ));
     }
     

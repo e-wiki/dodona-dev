@@ -53,6 +53,11 @@ class Service extends Entity
     {
         return $this->belongsTo('Dodona\Models\Client');
     }
+
+    public function owner()
+    {
+        return $this->client;
+    }
     
     /**
      * Get the sites of the service.

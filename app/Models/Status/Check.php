@@ -22,7 +22,12 @@ class Check extends Model
      *
      * @var array
      */
-    protected $fillable = [ 'id', 'name', 'check_category_id', 'check_module_id' ];
+    protected $fillable = [
+        'id',
+        'name',
+        'check_category_id',
+        'check_module_id'
+    ];
 
     /**
      * Get the category the check belongs to.

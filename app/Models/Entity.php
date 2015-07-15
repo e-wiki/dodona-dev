@@ -27,6 +27,8 @@ abstract class Entity extends Model implements Enablable
     {
         $this->enabled = true;
         $this->save();
+
+        $this->owner()->enable();
     }
 
     /**
@@ -36,7 +38,14 @@ abstract class Entity extends Model implements Enablable
     {
         $this->enabled = false;
         $this->save();
+
+        foreach ($this->enabledChildren() as $child)
+        {
+            $child->disable();
+        }
     }
+
+    abstract public function owner();
 
     abstract public function enabledChildren();
 

@@ -1,16 +1,12 @@
 <?php namespace Dodona\Models;
 
-use Dodona\Models\LatestServerCheckResult;
 use Dodona\Models\ServerCheckResult;
 use Dodona\Models\Site;
-use Dodona\Models\Status\Check;
 use Dodona\Models\Status\CheckCategory;
 use Dodona\Models\Support\Alert;
 use Dodona\Models\Support\DatabaseTechnology;
 use Dodona\Models\Support\OperatingSystem;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\DB;
 
 /**
  * Server model.
@@ -52,7 +48,13 @@ class Server extends Entity
      * @var array
      */
     protected $dates = ['deleted_at'];
-    
+
+    public function disable()
+    {
+        $this->enabled = false;
+        $this->save();
+    }
+
     /**
      * Get the service the server belongs to.
      *
@@ -111,6 +113,11 @@ class Server extends Entity
     public function tickets()
     {
         return $this->hasManyThrough('Dodona\Models\Ticketing\Ticket', 'Dodona\Models\ServerCheckResult');
+    }
+
+    public function owner()
+    {
+        return $this->site;
     }
 
     public function enabledChildren() {}

@@ -30,7 +30,7 @@
 						</span>
 					</div>
 				</div>
-				@if ($fields['report_type_id'] == \Dodona\ReportType::CUSTOM)
+				@if ($fields['report_type_id'] == \Dodona\Models\Reporting\ReportType::CUSTOM)
 				<div class="form-group">
 					<div class="input-group date" id="end_at">
 						{!! Form::text('end_date', $fields['end_date'], ['class' => 'form-control']) !!}
