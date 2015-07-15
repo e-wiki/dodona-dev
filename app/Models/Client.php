@@ -1,5 +1,10 @@
 <?php namespace Dodona\Models;
 
+use Dodona\Models\Client;
+use Dodona\Models\Entity;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 /**
  * Client model.
  *
@@ -8,19 +13,12 @@
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
-use Dodona\Interfaces\Enablable;
-use Dodona\Models\Status\CheckCategory;
-use Dodona\Models\Support\Alert;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
-
 /**
  * Client class.
  *
  * Maps the clients table.
  */
-class Client extends Model implements Enablable
+class Client extends Entity
 {
     use SoftDeletes;
     
@@ -37,16 +35,6 @@ class Client extends Model implements Enablable
      * @var array
      */
     protected $fillable = ['id', 'name', 'enabled', 'description'];
-
-    /**
-     * Is the client enabled or not.
-     *
-     * @return boolean
-     */
-    public function isEnabled()
-    {
-        return ($this->enabled === 1);
-    }
 
     /**
      * Get all enabled clients.
@@ -77,7 +65,12 @@ class Client extends Model implements Enablable
     {
         return $this->services()->where('enabled', 1)->get();
     }
-    
+
+    public function enabledChildren()
+    {
+        return $this->enabledServices();
+    }
+
     /**
      * Get the sites of the client.
      *
@@ -104,123 +97,6 @@ class Client extends Model implements Enablable
         }
         
         return $result;
-    }
-    
-    /**
-     * Get the client's area alert level.
-     *
-     * @return Alert
-     */
-    public function areaStatus($check_category_id)
-    {
-        $result = Alert::find(Alert::BLUE);
-        
-        $services = $this->enabledServices();
-        
-        foreach ($services as $service) {
-            $status = $this->_pickStatusArea($service, $check_category_id);
-            
-            if ($status->id === Alert::RED) {
-                $result = Alert::find(Alert::RED);
-                
-                break;
-            }
-            
-            if ($status->id === Alert::AMBER) {
-                $result = Alert::find(Alert::AMBER);
-            }
-            
-            if ($status->id === Alert::GREEN && $result->id === Alert::BLUE) {
-                $result = Alert::find(Alert::GREEN);
-            }
-        }
-        
-        return $result;
-    }
-    
-    /**
-     * Returns the status area result depending on the check category id.
-     *
-     * @param Service $service
-     * @param char $check_category_id
-     * @return char
-     */
-    private function _pickStatusArea($service, $check_category_id)
-    {
-        switch ($check_category_id) {
-            case CheckCategory::CAPACITY_ID:
-                return $service->capacityStatus();
-            case CheckCategory::RECOVERABILITY_ID:
-                return $service->recoverabilityStatus();
-            case CheckCategory::AVAILABILITY_ID:
-                return $service->availabilityStatus();
-            case CheckCategory::PERFORMANCE_ID:
-                return $service->performanceStatus();
-            default:
-                return Alert::BLUE;
-        }
-    }
-    
-    /**
-     * Get the client's capacity status.
-     *
-     * @return Dodona\Models\Support\Alert
-     */
-    public function capacityStatus()
-    {
-        return $this->areaStatus(CheckCategory::CAPACITY_ID);
-    }
-    
-    /**
-     * Get the client's recoverability status.
-     *
-     * @return Dodona\Models\Support\Alert
-     */
-    public function recoverabilityStatus()
-    {
-        return $this->areaStatus(CheckCategory::RECOVERABILITY_ID);
-    }
-    
-    /**
-     * Get the client's availability status.
-     *
-     * @return Dodona\Models\Support\Alert
-     */
-    public function availabilityStatus()
-    {
-        return $this->areaStatus(CheckCategory::AVAILABILITY_ID);
-    }
-    
-    /**
-     * Get the client's performance status.
-     *
-     * @return Dodona\Models\Support\Alert
-     */
-    public function performanceStatus()
-    {
-        return $this->areaStatus(CheckCategory::PERFORMANCE_ID);
-    }
-    
-    /**
-     * Enable the Client, but not its services.
-     */
-    public function enable()
-    {
-        $this->enabled = true;
-        $this->save();
-    }
-    
-    /**
-     * Disable the client and its services.
-     */
-    public function disable()
-    {
-        $this->enabled = false;
-        $this->save();
-        
-        foreach ($this->services as $service) {
-            $service->disable();
-        }
     }
 
     public function refreshed()

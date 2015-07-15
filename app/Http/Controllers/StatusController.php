@@ -75,7 +75,7 @@ class StatusController extends Controller
         $site             = $server->site;
         $service          = $site->service;
         $client           = $service->client;
-        $checks           = $server->latestServerCheckResults();
+        $checks           = $server->latestServerCheckResults;
         $check_categories = CheckCategory::all();
         
         return view('status.server', compact(

@@ -1,16 +1,14 @@
 <?php namespace Dodona\Models;
 
-use Dodona\Interfaces\Enablable;
-use Dodona\Interfaces\Refreshable;
 use Dodona\Models\LatestServerCheckResult;
 use Dodona\Models\ServerCheckResult;
 use Dodona\Models\Site;
+use Dodona\Models\Status\Check;
 use Dodona\Models\Status\CheckCategory;
 use Dodona\Models\Support\Alert;
 use Dodona\Models\Support\DatabaseTechnology;
 use Dodona\Models\Support\OperatingSystem;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
@@ -27,7 +25,7 @@ use Illuminate\Support\Facades\DB;
  *
  * Maps the servers table.
  */
-class Server extends Model implements Enablable, Refreshable
+class Server extends Entity
 {
     use SoftDeletes;
     
@@ -54,16 +52,6 @@ class Server extends Model implements Enablable, Refreshable
      * @var array
      */
     protected $dates = ['deleted_at'];
-
-    /**
-     * Is the server enabled or not.
-     *
-     * @return boolean
-     */
-    public function isEnabled()
-    {
-        return ($this->enabled === 1);
-    }
     
     /**
      * Get the service the server belongs to.
@@ -114,137 +102,7 @@ class Server extends Model implements Enablable, Refreshable
     {
         return $this->hasMany('Dodona\Models\ServerCheckResult');
     }
-    
-    /**
-     * Get the latest server's check results.
-     *
-     * @return ServerCheckResult
-     */
-    public function latestServerCheckResults($check_category_id = null)
-    {
-        $checks = DB::table('v_latest_server_check_results')
-                ->where('server_id', $this->id)
-                ->orderBy('check_id', 'asc')
-                ->get();
-        
-        $results = new Collection;
-        foreach ($checks as $check) {
-            $latest_server_check_result = $this->_returnCategoryCheckResult($check, $check_category_id);
-            if (! is_null($latest_server_check_result)) {
-                $results->push($latest_server_check_result);
-            }
-        }
-        
-        return $results;
-    }
-    
-    /**
-     * Return latest server check result if matching category id.
-     *
-     * @param type $check
-     * @param type $check_category_id
-     * @return LatestServerCheckResult
-     */
-    private function _returnCategoryCheckResult($check, $check_category_id = null)
-    {
-        $result = null;
-        
-        if (!empty($check_category_id)) {
-            if ($check->check_category_id === $check_category_id) {
-                $result = new LatestServerCheckResult(( array ) $check, true);
-            }
-        } else {
-            $result = new LatestServerCheckResult(( array ) $check, true);
-        }
-        
-        return $result;
-    }
-    
-    /**
-     * Get the server's area alert level.
-     *
-     * @return Dodona\Models\Support\Alert
-     */
-    public function areaStatus($area_id)
-    {
-        $checks = $this->latestServerCheckResults($area_id);
-        
-        $result = $this->_initializeAreaResult(count($checks));
-        
-        foreach ($checks as $check) {
-            if ($check->checkResult->check->checkCategory->id === $area_id
-                    and $check->checkResult->alert->id === Alert::RED) {
-                $result = Alert::find(Alert::RED);
 
-                break;
-            }
-
-            if ($check->checkResult->check->checkCategory->id === $area_id
-                    and $check->checkResult->alert->id === Alert::AMBER) {
-                $result = Alert::find(Alert::AMBER);
-            }
-        }
-        
-        return $result;
-    }
-    
-    /**
-     * Get the server's capacity status.
-     *
-     * @return Dodona\Models\Support\Alert
-     */
-    public function capacityStatus()
-    {
-        return $this->areaStatus(CheckCategory::CAPACITY_ID);
-    }
-    
-    /**
-     * Get the server's recoverability status.
-     *
-     * @return Dodona\Models\Support\Alert
-     */
-    public function recoverabilityStatus()
-    {
-        return $this->areaStatus(CheckCategory::RECOVERABILITY_ID);
-    }
-    
-    /**
-     * Get the server's availability status.
-     *
-     * @return Dodona\Models\Support\Alert
-     */
-    public function availabilityStatus()
-    {
-        return $this->areaStatus(CheckCategory::AVAILABILITY_ID);
-    }
-    
-    /**
-     * Get the server's performance status.
-     *
-     * @return Dodona\Models\Support\Alert
-     */
-    public function performanceStatus()
-    {
-        return $this->areaStatus(CheckCategory::PERFORMANCE_ID);
-    }
-
-    /**
-     * Initialise the result for the areaStatus.
-     *
-     * @param integer $count
-     * @return Dodona\Models\Support\Alert
-     */
-    private function _initializeAreaResult($count)
-    {
-        $result = Alert::find(Alert::BLUE);
-        
-        if ($count > 0) {
-            $result = Alert::find(Alert::GREEN);
-        }
-        
-        return $result;
-    }
-    
     /**
      * Get the server's tickets.
      *
@@ -254,25 +112,61 @@ class Server extends Model implements Enablable, Refreshable
     {
         return $this->hasManyThrough('Dodona\Models\Ticketing\Ticket', 'Dodona\Models\ServerCheckResult');
     }
+
+    public function enabledChildren() {}
     
     /**
-     * Enable the server, its service, and its client.
+     * Get the latest server's check results.
+     *
+     * @return ServerCheckResult
      */
-    public function enable()
+    public function latestServerCheckResults()
     {
-        $this->enabled = true;
-        $this->save();
-        
-        $this->service()->enable();
+        return $this->hasMany('Dodona\Models\LatestServerCheckResult');
     }
     
     /**
-     * Disable the server.
+     * Get the server's area alert level.
+     *
+     * @param CheckCategory $check_category
+     * @return Alert
      */
-    public function disable()
+    public function areaStatus(CheckCategory $check_category)
     {
-        $this->enabled = false;
-        $this->save();
+        $checks = $this->latestServerCheckResults()->where('check_category_id', $check_category->id)->get();
+
+        $result = $this->initializeAreaResult(count($checks));
+        
+        foreach ($checks as $check) {
+            if ($check->checkResult->alert->id === Alert::RED) {
+                $result = Alert::find(Alert::RED);
+
+                break;
+            }
+
+            if ($check->checkResult->alert->id === Alert::AMBER) {
+                $result = Alert::find(Alert::AMBER);
+            }
+        }
+        
+        return $result;
+    }
+
+    /**
+     * Initialise the result for the areaStatus.
+     *
+     * @param integer $count
+     * @return Alert
+     */
+    private function initializeAreaResult($count)
+    {
+        $result = Alert::find(Alert::BLUE);
+        
+        if ($count > 0) {
+            $result = Alert::find(Alert::GREEN);
+        }
+        
+        return $result;
     }
 
     public function isAutoRefreshed()
