@@ -12,12 +12,13 @@ namespace Dodona\Http\Controllers;
 use Carbon\Carbon;
 use Dodona\Http\Controllers\Controller;
 use Dodona\Http\Requests\TicketRequest;
+use Dodona\Models\Authentication\User;
 use Dodona\Models\ServerCheckResult;
 use Dodona\Models\Ticketing\Ticket;
 use Dodona\Models\Ticketing\TicketCategory;
 use Dodona\Models\Ticketing\TicketPriority;
 use Dodona\Models\Ticketing\TicketType;
-use Dodona\Models\Authentication\User;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Handles thes tickets for the Dodona Framework.
@@ -97,7 +98,7 @@ class TicketController extends Controller
             'summary'                => $request->get('summary'),
             'description'            => $request->get('description'),
         ]);
-        
+
         $server_check_result = ServerCheckResult::find($request->get('server_check_result_id'));
         $server_check_result->ticket_id = $ticket->id;
         $server_check_result->save();
@@ -107,6 +108,12 @@ class TicketController extends Controller
         }
 
         \Flash::success("Ticket email {$request->get('reference')} successfully created.");
+
+//        Mail::send('emails.ticket', ['ticket' => $ticket], function($message) use ($ticket) {
+//            $message->from('dodona@miserver.imp.net', 'Dodona');
+//            $message->to($ticket->user->email);
+//            $message->subject('Dodona Framework Ticket');
+//        });
         
         return redirect('status/server/' . $request->get('server_id'));
     }

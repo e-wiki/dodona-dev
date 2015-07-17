@@ -10,7 +10,8 @@
         "laravelcollective/html": "5.1.*",
         "laracasts/flash": "~1.3",
         "rydurham/sentinel": "~2.2",
-        "ircmaxell/password-compat": "~1.0.4"
+        "ircmaxell/password-compat": "~1.0.4",
+        "aws/aws-sdk-php-laravel": "~3.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

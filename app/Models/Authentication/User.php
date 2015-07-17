@@ -1,6 +1,6 @@
 <?php namespace Dodona\Models\Authentication;
 
-use Sentinel\Models\User;
+use Sentinel\Models\User as SentinelUser;
 
 /**
  * Alert Model.
@@ -15,7 +15,7 @@ use Sentinel\Models\User;
  *
  * Maps the alerts table.
  */
-class User extends User
+class User extends SentinelUser
 {
 
     public function getFullNameAttribute()

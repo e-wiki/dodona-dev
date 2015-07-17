@@ -40,7 +40,7 @@
 				<td class="col-lg-1 ">
 					@if($check->checkResult->alert_id === \Dodona\Models\Support\Alert::AMBER or $check->checkResult->alert_id === \Dodona\Models\Support\Alert::RED)
 						@if(empty($check->ticket_id))
-						<a href="{{ action('TicketController@create', [$check->id]) }}" class="btn btn-primary btn-xs btn-block"><span class="fa fa-ticket"></span>&nbsp;Create Ticket</a>
+						<a href="{{ action('TicketController@create', [$check->id]) }}" class="btn btn-primary btn-xs btn-block disabled"><span class="fa fa-ticket"></span>&nbsp;Create Ticket</a>
 						@else
 						<a href="{{ action('TicketController@show', [$check->ticket_id]) }}" class="btn btn-default btn-xs btn-block"><span class="fa fa-ticket"></span>&nbsp;Show Ticket</a>
 						@endif
