@@ -26,35 +26,40 @@ class Dodona extends Migration
     public function up()
     {
         // Create tables
-        $this->_createClients();
-        $this->_createServices();
-        $this->_createEnvironments();
-        $this->_createSites();
-        $this->_createOperatingSystems();
-        $this->_createDatabaseTechnologies();
-        $this->_createServers();
-        $this->_createCheckCategories();
-        $this->_createCheckModulesTable();
-        $this->_createChecks();
-        $this->_createAlerts();
-        $this->_createCheckResults();
-        $this->_createServerCheckResults();
-        $this->_createTicketCategories();
-        $this->_createTicketPriorities();
-        $this->_createTicketTypes();
-        $this->_createTickets();
-        $this->_createReportLevels();
-        $this->_createReportTypes();
-        $this->_createReports();
+        $this->createUsers();
+        $this->createGroups();
+        $this->createUserGroups();
+        $this->createThrottle();
+        $this->createClients();
+        $this->createServices();
+        $this->createEnvironments();
+        $this->createSites();
+        $this->createOperatingSystems();
+        $this->createDatabaseTechnologies();
+        $this->createServers();
+        $this->createCheckCategories();
+        $this->createCheckModules();
+        $this->createChecks();
+        $this->createAlerts();
+        $this->createCheckResults();
+        $this->createServerCheckResults();
+        $this->createTicketCategories();
+        $this->createTicketPriorities();
+        $this->createTicketTypes();
+        $this->createTickets();
+        $this->createReportLevels();
+        $this->createReportTypes();
+        $this->createReports();
 
         // Create views
-        $this->_createViewExpandedServers();
-        $this->_createViewMaxServerCheckResults();
-        $this->_createViewLatestServerCheckResults();
-        $this->_createViewExpandedChecks();
+        $this->createViewExpandedServers();
+        $this->createViewMaxServerCheckResults();
+        $this->createViewLatestServerCheckResults();
+        $this->createViewExpandedChecks();
+        $this->createViewExpandedServerCheckResults();
 
         // Create procedures
-        $this->_createNewServerCheckResultProc();
+        $this->createNewServerCheckResultProc();
     }
 
     /**
@@ -68,6 +73,7 @@ class Dodona extends Migration
         DB::unprepared("DROP PROCEDURE IF EXISTS sp_new_server_check_result");
 
         // Drop views
+        DB::unprepared("DROP VIEW IF EXISTS v_server_check_results");
         DB::unprepared("DROP VIEW IF EXISTS v_checks");
         DB::unprepared("DROP VIEW IF EXISTS v_latest_server_check_results");
         DB::unprepared("DROP VIEW IF EXISTS v_max_server_check_results");
@@ -96,11 +102,90 @@ class Dodona extends Migration
         Schema::drop('environments');
         Schema::drop('services');
         Schema::drop('clients');
+        Schema::drop('throttle');
+        Schema::drop('users_groups');
+        Schema::drop('groups');
+        Schema::drop('users');
 
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
     }
 
-    private function _createClients()
+    private function createUsers()
+    {
+		Schema::create('users', function($table)
+		{
+			$table->engine = 'InnoDB';
+
+			$table->increments('id');
+            $table->string('username', 100)->nullable()->unique();
+			$table->string('email', 100)->unique();
+			$table->string('password');
+			$table->text('permissions')->nullable();
+			$table->boolean('activated')->default(0);
+			$table->string('activation_code', 100)->nullable()->index();
+			$table->timestamp('activated_at')->nullable();
+			$table->timestamp('last_login')->nullable();
+			$table->string('persist_code')->nullable();
+			$table->string('reset_password_code', 100)->nullable()->index();
+			$table->string('first_name')->nullable();
+			$table->string('last_name')->nullable();
+			$table->timestamps();
+		});
+    }
+
+    private function createGroups()
+    {
+		Schema::create('groups', function($table)
+		{
+			$table->engine = 'InnoDB';
+
+			$table->increments('id');
+			$table->string('name', 100)->unique();
+			$table->text('permissions')->nullable();
+			$table->timestamps();
+		});
+    }
+
+    private function createUserGroups()
+    {
+		Schema::create('users_groups', function($table)
+		{
+			$table->engine = 'InnoDB';
+
+			$table->integer('user_id')->unsigned();
+			$table->integer('group_id')->unsigned();
+			$table->primary(['user_id', 'group_id']);
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('group_id')
+                ->references('id')->on('groups')
+                ->onDelete('restrict')->onUpdate('cascade');
+		});
+    }
+
+    private function createThrottle()
+    {
+		Schema::create('throttle', function($table)
+		{
+			$table->engine = 'InnoDB';
+
+			$table->increments('id');
+			$table->integer('user_id')->unsigned();
+			$table->string('ip_address')->nullable();
+			$table->integer('attempts')->default(0);
+			$table->boolean('suspended')->default(0);
+			$table->boolean('banned')->default(0);
+			$table->timestamp('last_attempt_at')->nullable();
+			$table->timestamp('suspended_at')->nullable();
+			$table->timestamp('banned_at')->nullable();
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('restrict')->onUpdate('cascade');
+		});
+    }
+
+    private function createClients()
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -114,7 +199,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createServices()
+    private function createServices()
     {
         Schema::create('services', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -132,7 +217,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createEnvironments()
+    private function createEnvironments()
     {
         Schema::create('environments', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -142,7 +227,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createSites()
+    private function createSites()
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -152,6 +237,7 @@ class Dodona extends Migration
             $table->char('id', 7)->primary();
             $table->string('name', 45);
             $table->string('description', 200)->nullable();
+            $table->boolean('enabled')->default(0);
             $table->char('service_id', 5);
             $table->char('environment_id', 1);
             $table->timestamps();
@@ -165,7 +251,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createOperatingSystems()
+    private function createOperatingSystems()
     {
         Schema::create('operating_systems', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -177,7 +263,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createDatabaseTechnologies()
+    private function createDatabaseTechnologies()
     {
         Schema::create('database_technologies', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -189,7 +275,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createServers()
+    private function createServers()
     {
         Schema::create('servers', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -197,6 +283,7 @@ class Dodona extends Migration
             $table->char('id', 10)->primary();
             $table->string('name', 45);
             $table->boolean('enabled')->default(0);
+            $table->boolean('auto_refreshed')->default(0);
             $table->string('description', 200)->nullable();
             $table->char('site_id', 7);
             $table->integer('operating_system_id')->unsigned();
@@ -215,7 +302,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createCheckCategories()
+    private function createCheckCategories()
     {
         Schema::create('check_categories', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -225,19 +312,23 @@ class Dodona extends Migration
         });
     }
 
-    private function _createCheckModulesTable()
+    private function createCheckModules()
     {
         Schema::create('check_modules', function (Blueprint $table) {
             $table->engine = 'InnoDB';
 
             $table->increments('id');
             $table->string('name', 50)->unique();
+            $table->char('service_id', 5)->nullable()->unique();
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('service_id')
+                    ->references('id')->on('services')
+                    ->onDelete('restrict')->onUpdate('cascade');
         });
     }
 
-    private function _createAlerts()
+    private function createAlerts()
     {
         Schema::create('alerts', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -249,7 +340,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createChecks()
+    private function createChecks()
     {
         Schema::create('checks', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -269,7 +360,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createCheckResults()
+    private function createCheckResults()
     {
         Schema::create('check_results', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -289,7 +380,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createTicketPriorities()
+    private function createTicketPriorities()
     {
         Schema::create('ticket_priorities', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -299,7 +390,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createTicketTypes()
+    private function createTicketTypes()
     {
         Schema::create('ticket_types', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -309,7 +400,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createTicketCategories()
+    private function createTicketCategories()
     {
         Schema::create('ticket_categories', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -319,7 +410,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createServerCheckResults()
+    private function createServerCheckResults()
     {
         Schema::create('server_check_results', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -346,7 +437,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createTickets()
+    private function createTickets()
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -355,6 +446,7 @@ class Dodona extends Migration
             $table->integer('server_check_result_id')->unsigned();
             $table->timestamp('raised_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->char('reference', 33)->unique();
+            $table->integer('user_id')->unsigned();
             $table->integer('ticket_category_id')->unsigned();
             $table->integer('ticket_priority_id')->unsigned();
             $table->integer('ticket_type_id')->unsigned();
@@ -364,6 +456,9 @@ class Dodona extends Migration
             $table->foreign('server_check_result_id')
                     ->references('id')->on('server_check_results')
                     ->onDelete('restrict')->onUpdate('cascade');
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onDelete('restrict')->onUpdate('cascade');
             $table->foreign('ticket_category_id')
                     ->references('id')->on('ticket_categories')
                     ->onDelete('restrict')->onUpdate('cascade');
@@ -375,10 +470,10 @@ class Dodona extends Migration
                     ->onDelete('restrict')->onUpdate('cascade');
         });
 
-        $this->_linkServerChechResultTickets();
+        $this->linkServerChechResultTickets();
     }
 
-    private function _linkServerChechResultTickets()
+    private function linkServerChechResultTickets()
     {
         Schema::table('server_check_results', function (Blueprint $table) {
             $table->integer('ticket_id')
@@ -392,7 +487,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createReportLevels()
+    private function createReportLevels()
     {
         Schema::create('report_levels', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -402,7 +497,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createReportTypes()
+    private function createReportTypes()
     {
         Schema::create('report_types', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -412,7 +507,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createReports()
+    private function createReports()
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->engine = 'InnoDB';
@@ -435,7 +530,7 @@ class Dodona extends Migration
         });
     }
 
-    private function _createViewExpandedServers()
+    private function createViewExpandedServers()
     {
         DB::unprepared("DROP VIEW IF EXISTS v_servers");
 
@@ -449,7 +544,7 @@ class Dodona extends Migration
                 . "JOIN database_technologies dt ON dt.id = s.database_technology_id");
     }
 
-    private function _createViewMaxServerCheckResults()
+    private function createViewMaxServerCheckResults()
     {
         DB::unprepared("DROP VIEW IF EXISTS v_max_server_check_results");
 
@@ -459,7 +554,7 @@ class Dodona extends Migration
                 . "GROUP BY server_id , check_id");
     }
 
-    private function _createViewLatestServerCheckResults()
+    private function createViewLatestServerCheckResults()
     {
         DB::unprepared("DROP VIEW IF EXISTS v_latest_server_check_results");
 
@@ -473,7 +568,7 @@ class Dodona extends Migration
                 . "JOIN check_categories cc ON cc.id = c.check_category_id");
     }
 
-    private function _createViewExpandedChecks()
+    private function createViewExpandedChecks()
     {
         DB::unprepared("DROP VIEW IF EXISTS v_checks");
 
@@ -484,7 +579,25 @@ class Dodona extends Migration
                 . "JOIN check_modules cm ON cm.id = c.check_module_id");
     }
 
-    private function _createNewServerCheckResultProc()
+    private function createViewExpandedServerCheckResults()
+    {
+        DB::unprepared("DROP VIEW IF EXISTS v_servers");
+
+        DB::unprepared("CREATE VIEW v_server_check_results AS "
+                . "SELECT scr.id, "
+                . "s.id as server_id, s.name as server_name, "
+                . "cr.id as check_result_id, cr.name as check_result, cr.alert_id, "
+                . "scr.raised_at, "
+                . "c.id as check_id, c.name as check_name, "
+                . "scr.server_check_result_id, "
+                . "scr.ticket_id "
+                . "FROM server_check_results scr "
+                . "JOIN servers s ON s.id = scr.server_id "
+            . "JOIN check_results cr ON cr.id = scr.check_result_id "
+            . "JOIN checks c ON c.id = scr.check_id");
+    }
+
+    private function createNewServerCheckResultProc()
     {
         DB::unprepared("DROP PROCEDURE IF EXISTS sp_new_server_check_result");
 

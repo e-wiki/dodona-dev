@@ -7,26 +7,27 @@
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
-use Dodona\Models\Support\Alert;
-use Dodona\Models\Status\Check;
-use Dodona\Models\Status\CheckCategory;
-use Dodona\Models\Status\CheckModule;
-use Dodona\Models\Status\CheckResult;
+use Cartalyst\Sentry\Sentry;
 use Dodona\Models\Client;
-use Dodona\Models\Support\DatabaseTechnology;
-use Dodona\Models\Support\Environment;
-use Dodona\Models\Support\OperatingSystem;
 use Dodona\Models\Reporting\ReportLevel;
 use Dodona\Models\Reporting\ReportType;
 use Dodona\Models\Server;
 use Dodona\Models\ServerCheckResult;
 use Dodona\Models\Service;
 use Dodona\Models\Site;
+use Dodona\Models\Status\Check;
+use Dodona\Models\Status\CheckCategory;
+use Dodona\Models\Status\CheckModule;
+use Dodona\Models\Status\CheckResult;
+use Dodona\Models\Support\Alert;
+use Dodona\Models\Support\DatabaseTechnology;
+use Dodona\Models\Support\Environment;
+use Dodona\Models\Support\OperatingSystem;
 use Dodona\Models\Ticketing\TicketCategory;
 use Dodona\Models\Ticketing\TicketPriority;
 use Dodona\Models\Ticketing\TicketType;
-use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Seeder;
 
 /**
  * DatabaseSeeder class
@@ -51,6 +52,9 @@ class DatabaseSeeder extends Seeder
          */
         DB::statement('SET FOREIGN_KEY_CHECKS = 0;');
 
+        #$this->call('UsersTableSeeder');
+        #$this->call('GroupsTableSeeder');
+        #$this->call('UsersGroupsTableSeeder');
         $this->call('AlertsTableSeeder');
         $this->call('CheckCategoriesTableSeeder');
         $this->call('CheckModulesTableSeeder');
@@ -158,7 +162,7 @@ class OperatingSystemsTableSeeder extends Seeder
      */
     public function run()
     {
-        Dodona\OperatingSystem::truncate();
+        OperatingSystem::truncate();
 
         OperatingSystem::create(['name' => 'Linux']);
         OperatingSystem::create(['name' => 'Oracle Linux 6.5']);
@@ -641,4 +645,90 @@ class ReportTypesTableSeeder extends Seeder
         ReportType::create(['id' => 4, 'name' => 'Yearly']);
         ReportType::create(['id' => 5, 'name' => 'Custom']);
     }
+}
+
+class UsersTableSeeder extends Seeder
+{
+
+	/**
+	 * Run the database seeds.
+	 *
+	 * @return void
+	 */
+	public function run()
+	{
+		DB::table('users')->truncate();
+
+		Sentry::createUser([
+	        'email'    => 'admin@admin.com',
+	        'username' => 'admin',
+	        'password' => 'sentryadmin',
+	        'activated' => 1,
+	    ]);
+
+		Sentry::createUser([
+	        'email'    => 'user@user.com',
+	        'username' => 'user',
+	        'password' => 'sentryuser',
+	        'activated' => 1,
+	    ]);
+	}
+
+}
+
+class GroupsTableSeeder extends Seeder
+{
+
+	/**
+	 * Run the database seeds.
+	 *
+	 * @return void
+	 */
+	public function run()
+	{
+		DB::table('groups')->truncate();
+
+		Sentry::createGroup([
+	        'name'        => 'Users',
+	        'permissions' => [
+	            'admin' => 0,
+	            'users' => 1,
+            ]
+        ]);
+
+		Sentry::createGroup([
+	        'name'        => 'Admins',
+	        'permissions' => [
+	            'admin' => 1,
+	            'users' => 1,
+            ]
+        ]);
+	}
+
+}
+
+class UsersGroupsTableSeeder extends Seeder
+{
+
+    /**
+     * Run the report types table seeder.
+     *
+     * @return void
+     */
+    public function run()
+    {
+		DB::table('users_groups')->truncate();
+
+		$userUser = Sentry::getUserProvider()->findByLogin('user@user.com');
+		$adminUser = Sentry::getUserProvider()->findByLogin('admin@admin.com');
+
+		$userGroup = Sentry::getGroupProvider()->findByName('Users');
+		$adminGroup = Sentry::getGroupProvider()->findByName('Admins');
+
+	    // Assign the groups to the users
+	    $userUser->addGroup($userGroup);
+	    $adminUser->addGroup($userGroup);
+	    $adminUser->addGroup($adminGroup);
+    }
+
 }

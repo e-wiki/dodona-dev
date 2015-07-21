@@ -17,6 +17,9 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ServerCheckResult extends Model
 {
+
+    protected $table = 'v_server_check_results';
+
     /**
      * The attributes that should be mutated to dates.
      *

@@ -80,6 +80,16 @@ class Service extends Entity
     }
 
     /**
+     * Get the check module of the service.
+     *
+     * @return Dodona\Models\Status\CheckModule
+     */
+    public function checkModules()
+    {
+        return $this->hasOne('Dodona\Models\Status\CheckModule');
+    }
+
+    /**
      * Get the enabled servers of the service.
      *
      * @return collection

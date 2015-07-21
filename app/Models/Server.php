@@ -1,7 +1,7 @@
 <?php namespace Dodona\Models;
 
-use Dodona\Models\ServerCheckResult;
-use Dodona\Models\Site;
+use Dodona\Interfaces\Refreshable;
+use Dodona\Models\Entity;
 use Dodona\Models\Status\CheckCategory;
 use Dodona\Models\Support\Alert;
 use Dodona\Models\Support\DatabaseTechnology;
@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * Maps the servers table.
  */
-class Server extends Entity
+class Server extends Entity implements Refreshable
 {
     use SoftDeletes;
     
@@ -192,4 +192,22 @@ class Server extends Entity
         $this->auto_refreshed = false;
         $this->save();
     }
+
+    public function getAlerts($alert_id)
+    {
+        return $this->serverCheckResults()
+            ->whereNull('server_check_result_id')
+            ->where('alert_id', $alert_id);
+    }
+
+    public function getRedAlerts()
+    {
+        return $this->getAlerts(Alert::RED);
+    }
+
+    public function getAmberAlerts()
+    {
+        return $this->getAlerts(Alert::AMBER);
+    }
+    
 }

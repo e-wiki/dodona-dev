@@ -2,12 +2,11 @@
 
 namespace Dodona\Http\Controllers;
 
-use Dodona\Http\Controllers\Controller;
 use Dodona\Models\Client;
 use Dodona\Models\Reporting\ReportLevel;
-use Dodona\Models\Server;
 use Dodona\Models\Service;
 use Dodona\Models\Site;
+use Dodona\Models\Server;
 use Illuminate\Support\Facades\Input;
 
 class ReportController extends Controller
@@ -20,22 +19,16 @@ class ReportController extends Controller
      */
     public function index()
     {
+        if (Input::get('store'))
+        {
+            return $this->createReport();
+        }
+
         $choices = $this->getChoices();
 
-        $report_levels = ReportLevel::orderBy('id', 'asc')->lists('name', 'id');
-        $client_list   = Client::lists('name', 'id')->push('--- Select client ---');
-        $service_list  = Service::where('client_id', $choices['client_id'])->lists('name', 'id')->push('--- Select service ---');
-        $site_list     = Site::where('service_id', $choices['service_id'])->lists('name', 'id')->push('--- Select site ---');
-        $server_list   = Server::where('site_id', $choices['site_id'])->lists('name', 'id')->push('--- Select server ---');
+        $dropdowns = $this->getDropdowns($choices);
 
-        return view('report.form', compact(
-            'choices',
-            'report_levels',
-            'client_list',
-            'service_list',
-            'site_list',
-            'server_list'
-        ));
+        return view('report.form', compact('choices', 'dropdowns'));
     }
 
     private function getChoices($choices = [])
@@ -52,6 +45,27 @@ class ReportController extends Controller
         $choices['server_id']       = ($choices['site_id'] === $choices['current_site_id']) ? Input::get('server_id') : 0;
 
         return $choices;
+    }
+
+    private function getDropdowns($choices)
+    {
+        $dropdowns['report_levels'] = ReportLevel::orderBy('id', 'asc')->lists('name', 'id');
+        $dropdowns['client_list']   = Client::lists('name', 'id')->push('--- Select client ---');
+        $dropdowns['service_list']  = Service::where('client_id', $choices['client_id'])->lists('name', 'id')->push('--- Select service ---');
+        $dropdowns['site_list']     = Site::where('service_id', $choices['service_id'])->lists('name', 'id')->push('--- Select site ---');
+        $dropdowns['server_list']   = Server::where('site_id', $choices['site_id'])->lists('name', 'id')->push('--- Select server ---');
+
+        return $dropdowns;
+    }
+
+    private function createReport()
+    {
+        $server = Server::find(Input::get('current_server_id'));
+
+        $red_alerts   = $server->getRedAlerts;
+        $amber_alerts = $server->getAmberAlerts;
+
+        return $red_alerts;
     }
     
 }
