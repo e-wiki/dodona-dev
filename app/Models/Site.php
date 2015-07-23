@@ -21,6 +21,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Site extends Entity
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'sites';
+
     use SoftDeletes;
     
     /**
@@ -53,9 +61,19 @@ class Site extends Entity
         return $this->belongsTo('Dodona\Models\Service');
     }
 
+    /**
+     * Get the parent service of the site.
+     *
+     * @return Dodona\Models\Entity
+     */
     public function owner()
     {
         return $this->service;
+    }
+
+    public function children()
+    {
+        return $this->servers;
     }
 
     /**
@@ -79,7 +97,7 @@ class Site extends Entity
     }
 
     /**
-     * Get the enabled servers of the service.
+     * Get the enabled servers of the site.
      *
      * @return collection
      */
@@ -88,25 +106,14 @@ class Site extends Entity
         return $this->servers()->where('enabled', 1)->get();
     }
 
+    /**
+     * Get the enabled servers of the site.
+     *
+     * @return collection
+     */
     public function enabledChildren()
     {
         return $this->enabledServers();
-    }
-
-    public function refreshed()
-    {
-        $result = [
-            'manual' => 0,
-            'auto'   => 0,
-        ];
-
-        foreach ($this->enabledServers() as $server)
-        {
-            $result['manual'] += ( ! $server->auto_refreshed) ? 1 : 0;
-            $result['auto']   += (   $server->auto_refreshed) ? 1 : 0;
-        }
-
-        return $result;
     }
     
 }

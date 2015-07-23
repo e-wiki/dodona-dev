@@ -120,6 +120,8 @@ class Server extends Entity implements Refreshable
         return $this->site;
     }
 
+    public function children() {}
+
     public function enabledChildren() {}
     
     /**
@@ -130,6 +132,16 @@ class Server extends Entity implements Refreshable
     public function latestServerCheckResults()
     {
         return $this->hasMany('Dodona\Models\LatestServerCheckResult');
+    }
+
+    /**
+     *
+     * @param CheckCategory $check_category
+     * @return type
+     */
+    public function latestCategoryServerCheckResults(CheckCategory $check_category)
+    {
+        return count($this->latestServerCheckResults()->where('check_category_id', $check_category->id)->get());
     }
     
     /**
@@ -179,6 +191,14 @@ class Server extends Entity implements Refreshable
     public function isAutoRefreshed()
     {
         return $this->auto_refreshed;
+    }
+
+    public function refreshed()
+    {
+        $result['manual'] = $this->isAutoRefreshed() ? 0 : 1;
+        $result['auto']   = $this->isAutoRefreshed() ? 1 : 0;
+
+        return $result;
     }
 
     public function autoRefresh()

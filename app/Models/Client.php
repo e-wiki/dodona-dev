@@ -1,9 +1,5 @@
-<?php namespace Dodona\Models;
-
-use Dodona\Models\Client;
-use Dodona\Models\Entity;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\SoftDeletes;
+<?php
+namespace Dodona\Models;
 
 /**
  * Client model.
@@ -13,6 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
+use Dodona\Models\Client;
+use Dodona\Models\Entity;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 /**
  * Client class.
  *
@@ -20,6 +21,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Client extends Entity
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'clients';
+
     use SoftDeletes;
     
     /**
@@ -66,6 +75,9 @@ class Client extends Entity
         return $this->services()->where('enabled', 1)->get();
     }
 
+    /**
+     * Enable the entity.
+     */
     public function enable()
     {
         $this->enabled = true;
@@ -73,6 +85,11 @@ class Client extends Entity
     }
 
     public function owner() {}
+
+    public function children()
+    {
+        return $this->services;
+    }
 
     public function enabledChildren()
     {
@@ -104,22 +121,6 @@ class Client extends Entity
             }
         }
         
-        return $result;
-    }
-
-    public function refreshed()
-    {
-        $result = [
-            'manual' => 0,
-            'auto'   => 0,
-        ];
-
-        foreach ($this->enabledServices() as $service)
-        {
-            $result['manual'] += $service->refreshed()['manual'];
-            $result['auto']   += $service->refreshed()['auto'];
-        }
-
         return $result;
     }
 

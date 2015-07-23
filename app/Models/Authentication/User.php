@@ -18,6 +18,11 @@ use Sentinel\Models\User as SentinelUser;
 class User extends SentinelUser
 {
 
+    /**
+     * Concatenates first and last name.
+     * 
+     * @return string
+     */
     public function getFullNameAttribute()
     {
         return $this->attributes['first_name'] . ' ' . $this->attributes['last_name'];

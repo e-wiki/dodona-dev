@@ -35,7 +35,7 @@ class StatusController extends Controller
     /**
      * Loads the client status page.
      *
-     * @param unsigned integer $id
+     * @param Dodona\Models\Client $client
      * @return string
      */
     public function client(Client $client)
@@ -46,7 +46,7 @@ class StatusController extends Controller
     /**
      * Loads the service status page.
      *
-     * @param unsigned integer $id
+     * @param Dodona\Models\Service $service
      * @return string
      */
     public function service(Service $service)
@@ -56,6 +56,12 @@ class StatusController extends Controller
         return view('status.service', compact('client', 'service'));
     }
 
+    /**
+     * Loads the site status page.
+     * 
+     * @param Dodona\Models\Site $site
+     * @return string
+     */
     public function site(Site $site)
     {
         $service = $site->service;
@@ -67,7 +73,7 @@ class StatusController extends Controller
     /**
      * Loads the server status page.
      *
-     * @param unsigned integer $id
+     * @param Dodona\Models\Server $server
      * @return string
      */
     public function server(Server $server)
@@ -75,7 +81,7 @@ class StatusController extends Controller
         $site             = $server->site;
         $service          = $site->service;
         $client           = $service->client;
-        $checks           = $server->latestServerCheckResults;
+        $check_results    = $server->latestServerCheckResults;
         $check_categories = CheckCategory::all();
         
         return view('status.server', compact(
@@ -83,7 +89,7 @@ class StatusController extends Controller
             'service',
             'site',
             'server',
-            'checks',
+            'check_results',
             'check_categories'
         ));
     }

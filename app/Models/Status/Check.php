@@ -1,4 +1,5 @@
-<?php namespace Dodona\Models\Status;
+<?php
+namespace Dodona\Models\Status;
 
 /**
  * Check Model.
@@ -68,4 +69,16 @@ class Check extends Model
     {
         return $this->hasManyThrough('Dodona\Models\ServerCheckResult', 'Dodona\Models\Status\CheckResult');
     }
+
+    /**
+     * Get all the checks of a give module.
+     *
+     * @param \Dodona\Models\Status\CheckModule $check_module
+     * @return collection
+     */
+    public static function moduleChecks(CheckModule $check_module)
+    {
+        return Check::where('check_module_id', $check_module->id)->get();
+    }
+
 }

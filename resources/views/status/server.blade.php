@@ -15,7 +15,7 @@
     <p class="alert alert-info text-center">The server's healthchecks are <strong>{{ ($server->auto_refreshed) ? 'AUTO' : 'MANUALLY' }}</strong> refreshed.</p>
 	
 	@include('flash::message')
-	
+
 	<table class="table table-responsive">
 		<thead>
             <th class="col-lg-3">Check</th>
@@ -30,29 +30,25 @@
 			<tr>
 				<th colspan="5">{{ $check_category->name }}</th>
 			</tr>
-			@forelse($checks as $check)
-				@if($check->check->checkCategory->id === $check_category->id)
-			<tr class="alert alert-{{ $check->checkResult->alert->css_i }}">
-				<td class="col-lg-3">{{ $check->check->name }} ({{ $check->check->id }})</td>
-				<td class="col-lg-1 text-capitalize">{{ $check->checkResult->id }}</td>
-				<td class="col-lg-5">{{ $check->checkResult->name }}</td>
-				<td class="col-lg-2">{{ $check->raised_at }}</td>
+			@foreach($check_results as $check_result)
+				@if($check_result->check_category_id === $check_category->id)
+			<tr class="alert alert-{{ $check_result->checkResult->alert->css_i }}">
+				<td class="col-lg-3">{{ $check_result->check->name }} ({{ $check_result->check->id }})</td>
+				<td class="col-lg-1 text-capitalize">{{ $check_result->checkResult->id }}</td>
+				<td class="col-lg-5">{{ $check_result->checkResult->name }}</td>
+				<td class="col-lg-2">{{ $check_result->raised_at }}</td>
 				<td class="col-lg-1 ">
-					@if($check->checkResult->alert_id === \Dodona\Models\Support\Alert::AMBER or $check->checkResult->alert_id === \Dodona\Models\Support\Alert::RED)
+					@if($check_result->checkResult->alert_id === \Dodona\Models\Support\Alert::AMBER or $check_result->checkResult->alert_id === \Dodona\Models\Support\Alert::RED)
 						@if(empty($check->ticket_id))
-						<a href="{{ action('TicketController@create', [$check->id]) }}" class="btn btn-primary btn-xs btn-block disabled"><span class="fa fa-ticket"></span>&nbsp;Create Ticket</a>
+						<a href="{{ action('TicketController@create', [$check_result->id]) }}" class="btn btn-primary btn-xs btn-block disabled"><span class="fa fa-ticket"></span>&nbsp;Create Ticket</a>
 						@else
-						<a href="{{ action('TicketController@show', [$check->ticket_id]) }}" class="btn btn-default btn-xs btn-block"><span class="fa fa-ticket"></span>&nbsp;Show Ticket</a>
+						<a href="{{ action('TicketController@show', [$check_result->ticket_id]) }}" class="btn btn-default btn-xs btn-block"><span class="fa fa-ticket"></span>&nbsp;Show Ticket</a>
 						@endif
 					@endif
 				</td>
 			</tr>
 				@endif
-			@empty
-			<tr>
-				<td colspan="5" class="alert alert-info text-center">No active {{ $check_category->name }} checks found for this server.</td>
-			</tr>
-			@endforelse
+			@endforeach
 		@endforeach
 		</tbody>
 	</table>

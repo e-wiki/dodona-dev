@@ -18,6 +18,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Service extends Entity
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'services';
+
     use SoftDeletes;
     
     /**
@@ -57,6 +65,11 @@ class Service extends Entity
     public function owner()
     {
         return $this->client;
+    }
+
+    public function children()
+    {
+        return $this->sites;
     }
     
     /**
@@ -102,22 +115,6 @@ class Service extends Entity
     public function enabledChildren()
     {
         return $this->enabledSites();
-    }
-
-    public function refreshed()
-    {
-        $result = [
-            'manual' => 0,
-            'auto'   => 0,
-        ];
-
-        foreach ($this->sites as $site)
-        {
-            $result['manual'] += $site->refreshed()['manual'];
-            $result['auto']   += $site->refreshed()['auto'];
-        }
-
-        return $result;
     }
 
 }

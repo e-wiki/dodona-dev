@@ -17,6 +17,14 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Ticket extends Model
 {
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'tickets';
+
     /**
      * The attributes that should be mutated to dates.
      *

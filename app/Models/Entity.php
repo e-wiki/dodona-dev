@@ -47,6 +47,8 @@ abstract class Entity extends Model implements Enablable
 
     abstract public function owner();
 
+    abstract public function children();
+
     abstract public function enabledChildren();
 
     /**
@@ -143,4 +145,26 @@ abstract class Entity extends Model implements Enablable
     {
         return $this->areaStatus(CheckCategory::find(CheckCategory::PERFORMANCE_ID));
     }
+
+    /**
+     * Get whether the site is refreshed manually, auto, or both.
+     *
+     * @return array
+     */
+    public function refreshed()
+    {
+        $result = [
+            'manual' => 0,
+            'auto'   => 0,
+        ];
+
+        foreach ($this->enabledChildren() as $child)
+        {
+            $result['manual'] += $child->refreshed()['manual'];
+            $result['auto']   += $child->refreshed()['auto'];
+        }
+
+        return $result;
+    }
+    
 }

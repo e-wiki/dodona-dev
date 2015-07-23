@@ -1,4 +1,5 @@
-<?php namespace Dodona\Models\Ticketing;
+<?php
+namespace Dodona\Models\Ticketing;
 
 /**
  * Ticket Type Model.
