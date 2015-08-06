@@ -8,7 +8,7 @@
 
         <form method="POST" action="{{ route('sentinel.session.store') }}" accept-charset="UTF-8">
             <div class="form-group {{ $errors->first('email') ? 'has-error has-feedback' : '' }}">
-                <input class="form-control" placeholder="Email" autofocus="autofocus" name="email" type="text" value="{{ Input::old('email') }}">
+                <input class="form-control" placeholder="Email or Username" autofocus="autofocus" name="email" type="text" value="{{ Input::old('email') }}">
                 @if ($errors->first('email'))
                 <span class="form-control-feedback glyphicon glyphicon-alert"></span>
                 @endif

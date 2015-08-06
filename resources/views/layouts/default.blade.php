@@ -13,6 +13,9 @@
 	<article class="col-lg-12 main-template">
 	@yield('content')
 	</article>
-	
+
+    @if (app('env') !== 'production')
+        @include('includes.footer')
+    @endif
 </body>
 </html>

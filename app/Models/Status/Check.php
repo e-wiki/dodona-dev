@@ -81,4 +81,14 @@ class Check extends Model
         return Check::where('check_module_id', $check_module->id)->get();
     }
 
+    /**
+     * Concatenates first and last name.
+     *
+     * @return string
+     */
+    public function getNameIdAttribute()
+    {
+        return $this->attributes['name'] . ' (' . $this->attributes['id'] . ')';
+    }
+
 }

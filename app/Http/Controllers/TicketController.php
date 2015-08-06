@@ -18,7 +18,7 @@ use Dodona\Models\Ticketing\Ticket;
 use Dodona\Models\Ticketing\TicketCategory;
 use Dodona\Models\Ticketing\TicketPriority;
 use Dodona\Models\Ticketing\TicketType;
-use Illuminate\Support\Facades\Mail;
+//use Illuminate\Support\Facades\Mail;
 
 /**
  * Handles thes tickets for the Dodona Framework.

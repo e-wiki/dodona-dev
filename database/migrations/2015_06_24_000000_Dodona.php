@@ -43,6 +43,7 @@ class Dodona extends Migration
         $this->createAlerts();
         $this->createCheckResults();
         $this->createServerCheckResults();
+        $this->createServerCheckResultsArchive();
         $this->createTicketCategories();
         $this->createTicketPriorities();
         $this->createTicketTypes();
@@ -89,6 +90,7 @@ class Dodona extends Migration
         Schema::drop('ticket_types');
         Schema::drop('ticket_priorities');
         Schema::drop('ticket_categories');
+        Schema::drop('server_check_results_archive');
         Schema::drop('server_check_results');
         Schema::drop('check_results');
         Schema::drop('alerts');
@@ -434,6 +436,20 @@ class Dodona extends Migration
             $table->foreign('server_check_result_id')
                     ->references('id')->on('server_check_results')
                     ->onDelete('restrict')->onUpdate('cascade');
+        });
+    }
+
+    private function createServerCheckResultsArchive()
+    {
+        Schema::create('server_check_results_archive', function (Blueprint $table) {
+            $table->engine = 'InnoDB';
+
+            $table->integer('id')->unsigned();
+            $table->char('server_id', 10);
+            $table->char('check_result_id', 9);
+            $table->timestamp('raised_at');
+            $table->char('check_id', 6);
+            $table->integer('server_check_result_id')->unsigned()->nullable();
         });
     }
 

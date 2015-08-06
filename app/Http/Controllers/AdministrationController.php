@@ -141,13 +141,11 @@ class AdministrationController extends Controller
 
     public function checkResults()
     {
-        $checks_list   = Check::lists('name', 'id');
+        $checks_list   = Check::all()->lists('name_id', 'id');
         $alerts_list   = Alert::lists('name', 'id');
         $check_results = CheckResult::orderBy('id', 'asc')->paginate($this->items_per_page);
 
         $check_results->setPath('check_results');
-
-        #return $check_results;
 
         return view('administration.check_results', compact(
             'checks_list',

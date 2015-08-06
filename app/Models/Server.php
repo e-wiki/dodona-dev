@@ -62,7 +62,7 @@ class Server extends Entity implements Refreshable
      */
     public function service()
     {
-        return $this->site()->getResults()->service;
+        return $this->site->service;
     }
     
     /**

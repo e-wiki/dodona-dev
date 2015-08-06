@@ -63,7 +63,7 @@ class ReportController extends Controller
         $server = Server::find(Input::get('current_server_id'));
 
         $red_alerts   = $server->getRedAlerts;
-        $amber_alerts = $server->getAmberAlerts;
+//        $amber_alerts = $server->getAmberAlerts;
 
         return $red_alerts;
     }
