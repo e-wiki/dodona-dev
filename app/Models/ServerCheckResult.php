@@ -18,6 +18,11 @@ use Illuminate\Database\Eloquent\Model;
 class ServerCheckResult extends Model
 {
 
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'v_server_check_results';
 
     /**

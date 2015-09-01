@@ -31,9 +31,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Server extends Entity implements Enablable, Refreshable, Child
 {
-    use SoftDeletes;
 
-    use RefreshableTrait;
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'servers';
+    
+    use RefreshableTrait, SoftDeletes;
     
     /**
      * The attributes that are mass assignable.

@@ -9,9 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class Entity extends Model implements Enablable
 {
-    use EnablableTrait;
-
-    use AreaStatusTrait;
+    use AreaStatusTrait, EnablableTrait;
 
     /**
      * Get whether the site is refreshed manually, auto, or both.
