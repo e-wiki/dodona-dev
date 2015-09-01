@@ -9,6 +9,8 @@ namespace Dodona\Models;
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
+use Dodona\Interfaces\Enablable;
+use Dodona\Interfaces\Owner;
 use Dodona\Models\Client;
 use Dodona\Models\Entity;
 use Illuminate\Database\Eloquent\Collection;
@@ -19,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * Maps the clients table.
  */
-class Client extends Entity
+class Client extends Entity implements Enablable, Owner
 {
 
     /**
@@ -83,8 +85,6 @@ class Client extends Entity
         $this->enabled = true;
         $this->save();
     }
-
-    public function owner() {}
 
     public function children()
     {

@@ -8,9 +8,10 @@
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
+use Dodona\Interfaces\Child;
+use Dodona\Interfaces\Enablable;
+use Dodona\Interfaces\Owner;
 use Dodona\Models\Entity;
-use Dodona\Models\Status\CheckCategory;
-use Dodona\Models\Support\Alert;
 use Dodona\Models\Support\Environment;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -19,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * Maps the sites table.
  */
-class Site extends Entity
+class Site extends Entity implements Enablable, Owner, Child
 {
 
     /**
@@ -64,7 +65,7 @@ class Site extends Entity
     /**
      * Get the parent service of the site.
      *
-     * @return Dodona\Models\Entity
+     * @return Entity
      */
     public function owner()
     {

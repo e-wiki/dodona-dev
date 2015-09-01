@@ -1,4 +1,6 @@
-<?php namespace Dodona\Interfaces;
+<?php
+
+namespace Dodona\Interfaces;
 
 interface Enablable {
 

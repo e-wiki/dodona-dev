@@ -1,12 +1,6 @@
-<?php namespace Dodona\Models;
+<?php
 
-use Dodona\Interfaces\Refreshable;
-use Dodona\Models\Entity;
-use Dodona\Models\Status\CheckCategory;
-use Dodona\Models\Support\Alert;
-use Dodona\Models\Support\DatabaseTechnology;
-use Dodona\Models\Support\OperatingSystem;
-use Illuminate\Database\Eloquent\SoftDeletes;
+namespace Dodona\Models;
 
 /**
  * Server model.
@@ -16,14 +10,30 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
+use Dodona\Interfaces\Child;
+use Dodona\Interfaces\Enablable;
+use Dodona\Interfaces\Refreshable;
+use Dodona\Models\Entity;
+use Dodona\Models\ServerCheckResult;
+use Dodona\Models\Service;
+use Dodona\Models\Site;
+use Dodona\Models\Status\CheckCategory;
+use Dodona\Models\Support\Alert;
+use Dodona\Models\Support\DatabaseTechnology;
+use Dodona\Models\Support\OperatingSystem;
+use Dodona\Traits\RefreshableTrait;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 /**
  * Server class.
  *
  * Maps the servers table.
  */
-class Server extends Entity implements Refreshable
+class Server extends Entity implements Enablable, Refreshable, Child
 {
     use SoftDeletes;
+
+    use RefreshableTrait;
     
     /**
      * The attributes that are mass assignable.
@@ -49,6 +59,9 @@ class Server extends Entity implements Refreshable
      */
     protected $dates = ['deleted_at'];
 
+    /**
+     * Disable the server.
+     */
     public function disable()
     {
         $this->enabled = false;
@@ -119,10 +132,6 @@ class Server extends Entity implements Refreshable
     {
         return $this->site;
     }
-
-    public function children() {}
-
-    public function enabledChildren() {}
     
     /**
      * Get the latest server's check results.
@@ -186,31 +195,6 @@ class Server extends Entity implements Refreshable
         }
         
         return $result;
-    }
-
-    public function isAutoRefreshed()
-    {
-        return $this->auto_refreshed;
-    }
-
-    public function refreshed()
-    {
-        $result['manual'] = $this->isAutoRefreshed() ? 0 : 1;
-        $result['auto']   = $this->isAutoRefreshed() ? 1 : 0;
-
-        return $result;
-    }
-
-    public function autoRefresh()
-    {
-        $this->auto_refreshed = true;
-        $this->save();
-    }
-
-    public function manualRefresh()
-    {
-        $this->auto_refreshed = false;
-        $this->save();
     }
 
     public function getAlerts($alert_id)

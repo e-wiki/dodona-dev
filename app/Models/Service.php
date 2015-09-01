@@ -1,7 +1,6 @@
-<?php namespace Dodona\Models;
+<?php
 
-use Dodona\Models\Client;
-use Illuminate\Database\Eloquent\SoftDeletes;
+namespace Dodona\Models;
 
 /**
  * Service model.
@@ -11,12 +10,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @copyright (c) 2015, Nikolaos Gaitanis
  */
 
+use Dodona\Interfaces\Child;
+use Dodona\Interfaces\Enablable;
+use Dodona\Interfaces\Owner;
+use Dodona\Models\Client;
+use Dodona\Models\Status\CheckModule;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 /**
  * Service class.
  *
  * Maps the services table.
  */
-class Service extends Entity
+class Service extends Entity implements Enablable, Owner, Child
 {
 
     /**
@@ -95,7 +101,7 @@ class Service extends Entity
     /**
      * Get the check module of the service.
      *
-     * @return Dodona\Models\Status\CheckModule
+     * @return CheckModule
      */
     public function checkModules()
     {
